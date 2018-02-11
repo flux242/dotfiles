@@ -1,0 +1,43 @@
+#!/bin/sh
+
+service=$1
+userdir=$HOME/media
+enc_config=".encfs6.$1.xml"
+
+[ -z "$service" ] && {
+  notify-send -u low -i error "Service parameter is missing" "Please, specify a service name" 
+  exit 1
+}
+
+isdavmounted=$(mount | grep "$service" | grep davfs)
+isencmounted=$(mount | grep "$service" | grep encfs)
+
+if [ -n "$isencmounted" -o -n "$isdavmounted" ]; then 
+  #unmount
+  [ -n "$isencmounted" ] && {
+    fusermount -u "${userdir}/${service}.crypt" && msg="Encfs,"
+  }
+  [ -n "$isdavmounted" ] && {
+    umount "${userdir}/${service}" && msg="${msg}Davfs "
+  }
+  if [ -n "$msg" ]; then
+    notify-send -u low -i info "$service unmounting" "$msg unmouned successfuly!" 
+  else
+    notify-send -u low -i error "$service unmounting" "Failed to unmount $service!" 
+  fi
+else
+  #mount
+  mount "${userdir}/${service}" && {
+    msg="Davfs,"
+    export ENCFS6_CONFIG="$HOME/.encfs/$enc_config"
+    encfs --extpass="cat $HOME/.encfs/$service" "${userdir}/${service}/crypt" "${userdir}/${service}.crypt/" && {
+      msg="${msg}Encfs "
+    }
+  }
+  if [ -n "$msg" ]; then
+    notify-send -u low -i info "$service mounting" "$msg mounted successfuly!" 
+  else
+    notify-send -u low -i error "$service mounting" "Failed to mount $service!" 
+  fi
+fi
+

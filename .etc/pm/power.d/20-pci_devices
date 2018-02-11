@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#
+# This script adjusts the power control of all PCI devices
+#
+
+PCI_DEVICES_PM_ENABLE="${PCI_DEVICES_PM_ENABLE:-true}"
+
+set_pci_device()
+{
+  for dev in /sys/bus/pci/devices/*/power/control; do
+    echo $1 > $dev
+  done
+}
+
+case "$1" in
+  true)
+    logger "Powersaving for PCI deviced is on"
+    [ "$PCI_DEVICES_PM_ENABLE" = true ] && set_pci_device "auto" ;;
+  false)
+    logger "Powersaving for PCI deviced is off"
+    [ "$PCI_DEVICES_PM_ENABLE" = true ] && set_pci_device "on" ;;
+esac
+
+exit 0
+

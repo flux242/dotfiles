@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+# gistit requires either GITOKEN or GITOKENCMD variables to be defined.
+# If no GITOKEN is defined then the GITOKENCMD will be eval'ed to get
+# the Git token. If GITOKENCMD is also not difined then the by default
+# the token will be read from the keyring using the following command:
+#   python3 -c 'import keyring; print(keyring.get_password("gist","'"$USER"'"))'
+# One could put the Git token into the keyring using the following command:
+#   python3 -c 'import keyring; keyring.set_password("gist","'"$USER"'", "MYTOKEN")'
+# where MYTOKEN is the token string obtained from https://github.com/settings/tokens
+#
+# One could specify a gist description using -d option. If no description
+# is given then the input file name will be used as the description
+# 
+# Specify -p option to make gists public.
+#
+# Usage examples:
+# 1.  echo "my piped text" | gistit -d "Piped text"
+# 2.  gistit -p bin/gistit # gists itself and make it public
+#
+
+[[ -z "$GITOKENCMD" ]] && {
+  GITOKENCMD='python3 -c "import keyring; print(keyring.get_password(\"gist\",\"'"$USER"'\"))"'
+}
+
+[[ -z "$GITOKEN" ]] && GITOKEN=$(eval "$GITOKENCMD")
+PUBLIC=false
+
+OPTIND=1 #reset index
+while getopts "pd:" opt; do
+  case $opt in
+     p)  PUBLIC=true; ;;
+     d)  DESCR="$OPTARG" ;;
+     \?) exit 1 ;;
+     :)  echo "Option -$OPTARG requires gist descripiton text as an argument" >&2;exit 1 ;;
+  esac
+done
+shift $((OPTIND-1)) 
+ 
+FNAME=$1
+[[ -z "$FNAME" ]] && FNAME=/dev/stdin
+[[ -z "$DESCR" ]] && DESCR="$(basename $FNAME)"
+
+CONTENT=$(sed -e 's/\\/\\\\/g' -e 's/\r//' -e's/\t/\\t/g' -e 's/"/\\"/g' "${FNAME}" | awk '{ printf($0 "\\n") }')
+result=$(curl -H "Authorization: token $GITOKEN" -H "Accept: application/json" -H "Content-type: application/json" \
+          -X POST -d '{"public":'"$PUBLIC"',"files":{"'"$DESCR"'":{"content":"'"$CONTENT"'"}}}' https://api.github.com/gists)
+url=$(echo "$result"|awk '/html_url/{print substr($2, 2, length($2)-3)}'|head -n1)
+[[ -z "$url" ]] && url="$result"
+echo "$url"|tee >(xclip -i -sel c)
+

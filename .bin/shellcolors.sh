@@ -1,0 +1,40 @@
+export BOLD='\e[1m'              # bold
+export DIM='\e[2m'               # dim
+export UNDERLINE='\e[4m'         # underlined
+export INVERT='\e[7m'            # inverted
+
+export BLACK='\e[0;30m'          # ${black}
+export RED='\e[0;31m'            # ${red}
+export GREEN='\e[0;32m'          # ${green}
+export YELLOW='\e[0;33m'         # ${yellow}
+export BLUE='\e[0;34m'           # ${blue}
+export MAGENTA='\e[0;35m'        # ${purple}
+export CYAN='\e[0;36m'           # ${cyan}
+export LIGHTGRAY='\e[0;37m'      # ${lightgray}
+export DARKGRAY='\e[1;30m'       # ${darkgray}
+export LIGHTRED='\e[1;31m'       # ${lightred}
+export LIGHTGREEN='\e[1;32m'     # ${lightgreen}
+export LIGHTYELLOW='\e[1;33m'    # ${yellow}
+export LIGHTBLUE='\e[1;34m'      # ${lightblue}
+export LIGHTMAGENTA='\e[1;35m'   # ${lightpurple}
+export LIGHTCYAN='\e[1;36m'      # ${lightcyan}
+export WHITE='\e[1;37m'          # ${white}
+
+export BLACKBG='\e[40m'          # ${black}
+export REDBG='\e[41m'            # ${red}
+export GREENBG='\e[42m'          # ${green}
+export YELLOWBG='\e[43m'         # ${yellow}
+export BLUEBG='\e[44m'           # ${blue}
+export MAGENTABG='\e[45m'        # ${purple}
+export CYANBG='\e[46m'           # ${cyan}
+export LIGHTGRAYBG='\e[47m'      # ${lightgray}
+export DARKGRAYBG='\e[100m'      # ${darkgray}
+export LIGHTREDBG='\e[101m'      # ${lightblue}
+export LIGHTGREENBG='\e[102m'    # ${lightgreen}
+export LIGHTYELLOWBG='\e[103m'   # ${yellow}
+export LIGHTBLUEBG='\e[104m'     # ${lightblue}
+export LIGHTMAGENTABG='\e[105m'  # ${lightpurple}
+export LIGHTCYANBG='\e[106m'     # ${lightcyan}
+export WHITEBG='\e[107m'         # ${white}
+
+export NC='\e[0m'                # ${nc} (no color - resets previous color selection)

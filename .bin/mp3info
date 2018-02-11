@@ -1,0 +1,35 @@
+#!/usr/bin/env python3
+
+""" shows mp3 info using python mutagen lib
+    mp3info "%a %l %t" file_name
+    %a for an artist, %l for an album, %t for a title """
+
+def show_usage(prog_name):
+    """ shows usage """
+    print('Usage: ' + prog_name + ' "%a %l %t" file_name.mp3')
+
+def main():
+    """ main function """
+    try:
+        import sys
+        sys.tracebacklimit = 0
+        import re
+        from mutagen.id3 import ID3
+
+        if len(sys.argv) < 3:
+            show_usage(sys.argv[0])
+            sys.exit(2)
+        if not sys.argv[1] or not sys.argv[2]:
+            sys.exit(1)
+        t = sys.argv[1]
+        a = ID3(sys.argv[2])
+        t = re.sub('%a', a['TPE1'].text[0], t)
+        t = re.sub('%l', a['TALB'].text[0], t)
+        t = re.sub('%t', a['TIT2'].text[0], t)
+        sys.stdout.write(t+'\n')
+    except:
+        sys.exit(0)
+
+if __name__ == "__main__":
+    main()
+

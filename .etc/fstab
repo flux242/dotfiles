@@ -1,0 +1,25 @@
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/sdb1 during installation
+UUID=75b93787-86d3-448e-887f-1cd6c18d4be7 /               ext4    commit=60,noatime,errors=remount-ro 0       1
+# /home was on /dev/sdb2 during installation
+UUID=b111540e-8fc7-44f7-825f-b8ad61a75a87 /home           ext4    commit=15,noatime         0       2
+
+# binding
+/home/opt /opt  none bind 0 0
+# swap file
+/home/swapfile1 none swap sw 0 0
+# temp on tmpfs
+#tmpfs  /tmp       tmpfs   size=256m,noexec,nodev,nosuid  0 0
+tmpfs  /tmp       tmpfs   defaults,noexec,nodev,nosuid  0 0
+tmpfs  /var/tmp   tmpfs   defaults,noexec,nodev,nosuid   0 0
+tmpfs  /var/log   tmpfs   defaults,noexec,nodev,nosuid   0 0
+# external resources
+#https://dav.box.com/dav/  /home/alex/media/box.com        davfs   noauto,user   0   0
+#https://webdav.yandex.ru/ /home/alex/media/yandex.disk    davfs   noauto,user   0   0
+//192.168.1.200/media     /home/alex/media/nas  cifs  rw,vers=1.0,noauto,users,credentials=/home/alex/.smbcredentials  0   0

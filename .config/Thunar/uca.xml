@@ -1,0 +1,30 @@
+<?xml encoding="UTF-8" version="1.0"?>
+<actions>
+<action>
+	<icon>Terminal</icon>
+	<name>Open Terminal Here</name>
+	<unique-id>1449164099750207-1</unique-id>
+	<command>exo-open --working-directory %f --launch TerminalEmulator</command>
+	<description>Example for a custom action</description>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+<action>
+	<icon>filefind</icon>
+	<name>Find in this folder</name>
+	<unique-id>1449164099750318-2</unique-id>
+	<command>catfish --path=%f</command>
+	<description>Search for files within this folder</description>
+	<patterns>*</patterns>
+	<directories/>
+</action>
+<action>
+	<icon>preferences-desktop-wallpaper</icon>
+	<name>Set as wallpaper</name>
+	<unique-id>1481448599201653-2</unique-id>
+	<command>feh --bg-scale %f</command>
+	<description></description>
+	<patterns>*</patterns>
+	<image-files/>
+</action>
+</actions>

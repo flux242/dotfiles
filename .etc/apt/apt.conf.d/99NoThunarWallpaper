@@ -1,0 +1,3 @@
+DPkg::options {
+    "--path-exclude=/usr/lib/*/thunarx-2/thunar-wallpaper-plugin.so";
+}

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+case $1 in
+  true)
+    logger "Compton is disabled if run on a battery"
+    killall compton
+    ;;
+  false)
+    logger "Compton is enabled"
+    /usr/bin/pgrep '^compton' &>/dev/null || {
+      pid=$(/usr/bin/pgrep 'xfsettingsd') # pid of some process that is always started
+      user=$(/usr/bin/awk 'BEGIN{RS="\x00";FS="="}/(USER)/{print $2}' "/proc/$pid/environ")
+      export $(/usr/bin/awk 'BEGIN{RS="\x00"}/(DISPLAY|HOME)/{print $0}' "/proc/$pid/environ")
+      su $user -c '/usr/bin/compton -b'
+    }
+    ;;
+esac
+
+exit 0
+

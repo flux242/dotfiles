@@ -1,0 +1,13 @@
+[Unit]
+Description=pm-utils sleep hook
+Before=sleep.target
+StopWhenUnneeded=yes
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=-/usr/sbin/pm-suspend --direct true
+ExecStop=-/usr/sbin/pm-suspend --direct false
+
+[Install]
+WantedBy=sleep.target

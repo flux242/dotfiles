@@ -1,0 +1,13 @@
+[Unit]
+Description=pm-powersave after system start hook
+After=sysinit.target
+StopWhenUnneeded=yes
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=-/bin/sh -c "/home/alex/bin/isonbattery.sh && /usr/sbin/pm-powersave true"
+#ExecStop=-/usr/sbin/pm-suspend --direct false
+
+[Install]
+WantedBy=sysinit.target

@@ -1,0 +1,46 @@
+#out_to_x no
+#own_window no
+out_to_console yes
+background no
+max_text_width 0
+update_interval 2.0
+total_run_times 0
+short_units on
+if_up_strictness address
+use_spacer left
+#pad_percents 2
+#override_utf8_locale no
+cpu_avg_samples 2
+template1 ${if_up \1} \1:${exec ethtool \1 2>/dev/null|awk -F'Speed: ' '/Speed:/{print $2}'}${endif} 
+template2 ${template1 \1}${template1 \2}
+template3 ${template1 \1}${template2 \2 \3}
+
+template5 ${if_up \1} ${exec ~/bin/apstatus.sh \1}${endif} 
+template6 ${template5 \1}${template5 \2}
+template7 ${template5 \1}${template6 \2 \3}
+
+template0 ${if_existing /sys/class/power_supply/\1/online}${if_existing /sys/class/power_supply/\1/online 1} ${if_match ${exec xset -q | awk '/LED mask:/{print and(4096,strtonum("0x"$10))}'}>0}RU${else}EN${endif}${endif}${endif}
+template9 ${template0 \1}${template0 \2}
+
+template4 ${if_existing /sys/class/power_supply/\1/online}${if_existing /sys/class/power_supply/\1/online 1}${if_match ${exec xset -q | awk '/LED mask:/{print and(1,strtonum("0x"$10))}'}>0}ff0000${else}ffffff${endif}${endif}${endif}
+template8 ${template4 \1}${template4 \2}
+
+# if running on battery no keyboard layout is show because of xset
+#{ "full_text" : "${if_up wlan0}↓${downspeed wlan0} ↑${upspeed wlan0}${endif}", "color" : "\#ffffff", "name" : "wlan_speed"},\
+#      
+TEXT
+[{ "full_text" : "${template9 AC ADP1}", "color" : "\#${template8 AC ADP1}", "name" : "keyboard" },\
+{ "full_text" : " ${fs_free /}", "color" : "${if_match ${fs_free_perc}<10}\#ff0000${else}\#ffffff${endif}", "name" : "disk" },\
+{ "full_text" : " ${fs_free /home}", "color" : "${if_match ${fs_free_perc}<10}\#ff0000${else}\#ffffff${endif}", "name" : "disk" },\
+{ "full_text" : " ${cpu}%", "color" : "${if_match ${acpitemp}>70}\#ff0000${else}${if_match ${acpitemp}>65}\#ff6000${else}${if_match ${acpitemp}>60}\#ffff00${else}\#4fff4f${endif}${endif}${endif}", "name" : "cpu" },\
+{ "full_text" : " ${memperc}%", "color" : "${if_match ${memperc}<90}\#ffffff${else}\#ff0000${endif}", "name" : "memory" },\
+{ "full_text" : "${if_match ${battery_percent}>80}${else}${if_match ${battery_percent}>50}${else}${if_match ${battery_percent}>20}${else}${endif}${endif}${endif} ${battery_percent}%${if_empty ${battery_time}}${else} ${battery_time}${endif}",\
+      "color" : "${if_match ${battery_percent}>50}\#ffffff${else}${if_match ${battery_percent}>20}\#ffff00${else}\#ff0000${endif}${endif}", "name" : "battery" },\
+{ "full_text" : "${template7 wlan0 wlan1 wlp1s0}", "color" : "\#ffffff", "name" : "wlan"},\
+{ "full_text" : "${template3 eth0 eth1 p3p1}", "color" : "\#ffffff", "name" : "lan" },\
+{ "full_text" : "${if_up tap0}${endif}", "color" : "\#0000ff", "name" : "vpn"},\
+{ "full_text" : " ${time %a %d %b}", "color" : "\#ffffff", "name" : "date" },\
+{ "full_text" : "${time %k:%M}", "color" : "\#ffff00", "name" : "time" },\
+{ "full_text" : "${if_existing /tmp/newMail}${if_existing /tmp/newMail 0}${else}${if_existing /tmp/newMail 1}${else}${exec cat /tmp/newMail}${endif}${endif}${endif}", "color" : "\#ff0000", "name" : "mail" },\
+{ "full_text" : "", "color" : "\#ffffff", "name" : "display" },\
+{ "full_text" : "   ", "color" : "\#ffffff", "name" : "logout" }],

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# copy this script into /etc/smartmontools/run.d/01smartnotifyd
+
+echo "$SMARTD_MESSAGE" | /home/alex/bin/notifyemail.sh -s "$SMARTD_FAILTYPE" -e "$SMARTD_ADDRESS"

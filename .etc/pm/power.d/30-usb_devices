@@ -1,0 +1,27 @@
+#!/bin/bash
+
+case "$1" in
+  true)
+    logger "Powersaving for USB devices is on"
+    for i in /sys/bus/usb/devices/*/power/autosuspend; do
+      echo 1 > $i
+    done
+    for i in /sys/bus/usb/devices/*/power/control; do
+      echo auto > $i
+    done
+    #sysctl kernel.nmi_watchdog=0
+    ;;
+  false)
+    logger "Powersaving for USB devices is off"
+    for i in /sys/bus/usb/devices/*/power/autosuspend; do
+      echo 2 > $i
+    done
+    for i in /sys/bus/usb/devices/*/power/control; do
+      echo on > $i
+    done
+    #sysctl kernel.nmi_watchdog=1
+    ;;
+esac
+
+exit 0
+

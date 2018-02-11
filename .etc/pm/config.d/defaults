@@ -1,0 +1,9 @@
+# Enable SATA link power management in /usr/lib/pm-utils/power.d/sata_alpm
+SATA_ALPM_ENABLE=true
+
+# these are default system values to override pm-utils values
+# defined in the /usr/lib/pm-utils/power.d/laptop-mode
+LAPTOP_DIRTY_RATIO=10
+LAPTOP_DIRTY_BG_RATIO=5
+# this value is suggested by the powertop
+LAPTOP_DIRTY_WRITEBACK=1500
