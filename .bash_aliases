@@ -2,10 +2,6 @@
 set -o notify
 shopt -s dotglob
 
-# fix for the Error retrieving accessibility bus address: org.freedesktop.DBus.Error.ServiceUnknown
-# or put in into the /etc/environment
-export NO_AT_BRIDGE=1
-
 # Ignore some controlling instructions
 export HISTIGNORE="[   ]*:&:bg:fg:exit:ls:la:ll:l:ps:df:vim:vi:man*:info*:exit:dmesg:ifconfig:route:"
 export HISTSIZE=-1     # unlimited
@@ -15,9 +11,9 @@ export HISTTIMEFORMAT='%F %T '
 export EDITOR=vi
 export PAGER=less
 export BANNER="echo"
-[[ -n "$(which banner)" ]] && export BANNER="banner"
-[[ -n "$(which figlet)" ]] && export BANNER="figlet -f banner"
-[[ -n "$(which toilet)" ]] && export BANNER="toilet -f mono9.tlf"
+[[ -n "$(which banner 2>/dev/null)" ]] && export BANNER="banner"
+[[ -n "$(which figlet 2>/dev/null)" ]] && export BANNER="figlet -f banner"
+[[ -n "$(which toilet 2>/dev/null)" ]] && export BANNER="toilet -f mono9.tlf"
 # setting the temp directory for vim
 [ -z $TEMP ] && export TEMP=/tmp
 export MPDSERVER=buffalo.lan
@@ -26,13 +22,6 @@ export MPDSERVER=buffalo.lan
 # aliases
 alias less='less -r'                          # raw control characters
 alias grep='grep --color'                     # show differences in colour
-
-# Some shortcuts for different directory listings
-alias dir='ls --color=auto --format=vertical'
-alias vdir='ls --color=auto --format=long'
-alias ll='ls -lA'                             # long list
-alias la='ls -A'                              # all but . and ..
-alias l='ls -CF'                              #
 alias gr='grep -HEnri'                        #
 alias rm='gvfs-trash'                         # safe rm
 
@@ -83,7 +72,6 @@ alias hl='highlight --style olive -O xterm256'
 
 alias showtemp='showbanner -t 20 '\''echo "temp: "$(ssh root@buffalo.lan /mnt/sd/bin/readavrstick)°'\'''
 alias showclock='showbanner "date +%T"'
-#alias timer='export ts=$(date +%s);p='\''date -u -d @"$(($(date +%s)-$ts))" +"%H.%M.%S"'\'';showbanner "$p";eval "$p"'
 
  
 # some cygwin related patches
@@ -100,6 +88,12 @@ if [ "$OSTYPE" = "cygwin" ]; then
     COLUMNS=$(tput cols)
     export COLUMNS 
   fi
+  # set PATH so it includes user's private bin if it exists
+  if [ -d "$HOME/bin" ] ; then
+    PATH="$HOME/bin:$PATH"
+  fi
+  # dircolors
+  test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 fi
 
 # generated prompt line
