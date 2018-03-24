@@ -1,6 +1,7 @@
 # Don't wait for job termination notification
 set -o notify
 shopt -s dotglob
+shopt -s histappend
 
 # Ignore some controlling instructions
 export HISTIGNORE="[   ]*:&:bg:fg:exit:ls:la:ll:l:ps:df:vim:vi:man*:info*:exit:dmesg:ifconfig:route:"
@@ -41,7 +42,8 @@ alias cdh='cd ~'
 alias top10='ps aux --sort -rss | head -n11'
 alias traf='netstat -np | grep -v unix'
 alias why='apt-cache rdepends --installed'
-alias exit='history -a;exit'
+alias exit='pwd >~/.lastdir;exit'
+alias cdl='cd "$(cat ~/.lastdir)"'
 
 # git shortcuts
 alias gc='git checkout'
@@ -102,4 +104,4 @@ source ${HOME}/bin/shellprompt.sh
 source ${HOME}/bin/shellfunctions.sh
 # colors
 source ${HOME}/bin/shellcolors.sh
-
+PROMPT_COMMAND="history -a;history -n;$PROMPT_COMMAND"
