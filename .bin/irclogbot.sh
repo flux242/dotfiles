@@ -5,17 +5,16 @@ channel=testchannel
 server=irc.freenode.net
 config=/tmp/irclog
 
+[ "$1" = "-r" ] && outputraw=1 && shift
 [ -n "$1" ] && channel=$1
 [ -n "$2" ] && server=$2
 config="${config}_${nick}_${channel}"
 
-# colorize output if stdout is connected to a terminal
-[ -t 1 ] && {
-  ec='echo -e'; [ -n "$($ec)" ] && ec='echo'
-  WB=$($ec "\033[1m")
-  GREEN=$($ec "\033[1;32m")
-  NORM=$($ec "\033[0m")
-}
+# colorize output.
+ec='echo -e'; [ -n "$($ec)" ] && ec='echo'
+WB=$($ec "\033[1m")
+GR=$($ec "\033[1;32m")
+NC=$($ec "\033[0m")
 
 echo "NICK $nick" > "$config"
 echo "USER $nick +i * :$0" >> "$config"
@@ -31,7 +30,7 @@ do
     *PART*) ;;
     *JOIN*) ;;
     *NICK*) ;;
-    *PRIVMSG*) echo "${MESSAGE}" | sed -nr "s/^:([^!]+).*PRIVMSG[^:]+:(.*)/$WB[$(date '+%R')] $GREEN\1> $NORM\2/p" ;;
+    *PRIVMSG*) if [ -n "$outputraw" ];then echo "${MESSAGE}";else echo "${MESSAGE}" | sed -nr "s/^:([^!]+).*PRIVMSG[^:]+:(.*)/$WB\[$(date '+%Y\/%m\/%d %R')\] $GR\1$NC$WB> $NC\2/p";fi ;;
     *) echo "${MESSAGE}" ;;
   esac
 done 
