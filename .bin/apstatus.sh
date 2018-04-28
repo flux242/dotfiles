@@ -2,7 +2,7 @@
 
 set -o pipefail
 iface=${1:-wlan0}
-r=$(iwconfig "$iface" 2>/dev/null|awk '/ESSID:/{split($0,a,/\"/);print a[2]};
+r=$(/sbin/iwconfig "$iface" 2>/dev/null|awk '/ESSID:/{split($0,a,/\"/);print a[2]};
                         /Frequency:/{split($0,a,/Frequency:/);split(a[2],a,/\ /);print a[1]};
                         /Link\ Quality/ {split($2,a,/=/);print a[2]}')
 [[ $? -ne 0 ]] && exit 1
