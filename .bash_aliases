@@ -104,4 +104,4 @@ source ${HOME}/bin/shellprompt.sh
 source ${HOME}/bin/shellfunctions.sh
 # colors
 source ${HOME}/bin/shellcolors.sh
-PROMPT_COMMAND="history -a;history -n;$PROMPT_COMMAND"
+#PROMPT_COMMAND="history -a;history -n;$PROMPT_COMMAND"
