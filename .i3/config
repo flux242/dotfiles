@@ -214,15 +214,15 @@ exec --no-startup-id ~/bin/dpmsoff &
 # desktop applets
 # compton is started by a pm script because it should
 # not be running on a battery
-exec --no-startup-id sh -c "isonbattery.sh || compton" &
-exec --no-startup-id xfsettingsd --sm-client-disable &
+exec --no-startup-id sh -c "~/bin/isonbattery.sh || compton" &
+exec --no-startup-id sh -c "xfsettingsd --sm-client-disable || mate-settings-daemon" &
 exec --no-startup-id xfce4-volumed &
-exec --no-startup-id xfce4-power-manager &
+exec --no-startup-id sh -c "xfce4-power-manager || mate-power-manager "&
 exec --no-startup-id nm-applet &
 exec --no-startup-id blueman-applet &
 exec --no-startup-id ~/bin/nticon.py &
-exec --no-startup-id /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
-exec --no-startup-id bash -c 'randomwallpaper' &
+exec --no-startup-id sh -c "/usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 || /usr/lib/x86_64-linux-gnu/polkit-mate/polkit-mate-authentication-agent-1" &
+exec --no-startup-id bash -c '~/bin/randomwallpaper' &
 exec --no-startup-id pnmixer &
 exec --no-startup-id xpad &
 exec --no-startup-id sh -c "sleep 3 && xxkb" &

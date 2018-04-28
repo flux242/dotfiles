@@ -20,21 +20,21 @@ while read line; do
   # if button is needed - ${nb#*;}
   # left button -button:1, right - button:3
   case "${nb%%;*}" in
-    name:keyboard) exec xfce4-keyboard-settings & ;;
-    name:disk) exec thunar --class="ThunarHome" & ;;
-    name:cpu) exec xfce4-terminal -e htop -T "TerminalHtop" & ;;
+    name:keyboard) xfce4-keyboard-settings || mate-keyboard-properties & ;;
+    name:disk) thunar --class="ThunarHome" || caja --class="ThunarHome" & ;;
+    name:cpu) x-terminal-emulator -T "TerminalHtop" -e htop & ;;
     name:battery)
       case "${nb#*;}" in
-        button:1) exec xfce4-power-manager -c & ;;
-        button:3) exec xfce4-power-information & ;;
+        button:1) xfce4-power-manager -c ||  mate-power-preferences & ;;
+        button:3) xfce4-power-information || mate-power-statistics & ;;
       esac;;
-    name:wlan) exec $HOME/bin/wifi_connect.sh &>/dev/null &  ;;
+    name:wlan) $HOME/bin/wifi_connect.sh &>/dev/null &  ;;
     name:lan) ;;
-    name:date) exec yad --calendar --title='Calendar selection' &>/dev/null & ;;
+    name:date) yad --calendar --title='Calendar selection' &>/dev/null & ;;
     name:time) ;;
-    name:mail) exec exo-open "https://gmail.com" &>/dev/null & ;;
-    name:logout) exec $HOME/bin/logout.py &>/dev/null & ;;
-    name:display) exec xfce4-display-settings & ;;
+    name:mail) xdg-open "https://gmail.com" &>/dev/null & ;;
+    name:logout) $HOME/bin/logout.py &>/dev/null & ;;
+    name:display) xfce4-display-settings || mate-display-properties  & ;;
     *) logger "conky-i3bar: ${nb%%;*}" ;;
   esac
 done

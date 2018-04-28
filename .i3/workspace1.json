@@ -26,7 +26,6 @@
                     "percent": 0.5,
                     "swallows": [
                        {
-                          "class": "^Xfce4\\-terminal$",
                           "title": "^TerminalTailSyslog$"
                        }
                     ],
@@ -46,7 +45,6 @@
                     "percent": 0.5,
                     "swallows": [
                        {
-                          "class": "^Xfce4\\-terminal$",
                           "title": "^TerminalShownetstat$"
                        }
                     ],
@@ -75,7 +73,6 @@
                     "percent": 1,
                     "swallows": [
                        {
-                          "class": "^Xfce4\\-terminal$",
                           "title": "^TerminalWork$"
                        }
                     ],
