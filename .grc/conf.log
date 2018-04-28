@@ -17,7 +17,7 @@ colours=yellow
 count=stop
 ======
 # this is date
-regexp=^... (\d| )\d \d\d:\d\d:\d\d(\s[\w\d]+?\s)
+regexp=^... (\d| )\d \d\d:\d\d:\d\d(\s[^\s]+?\s)
 colours=green bold, green bold, white bold
 count=once
 ======
