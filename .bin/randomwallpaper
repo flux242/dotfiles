@@ -2,5 +2,7 @@
 
 wpath=${1:-~/wallpapers}
 [[ -d "$wpath" ]] || wpath=/usr/share/xfce4/backdrops/
-\feh --bg-scale "$(find "${wpath}" -iname '*'|shuf|head -n1)"
+[[ -d "$wpath" ]] || wpath=/usr/share/backgrounds/
+#\feh --bg-scale "$(find "${wpath}" -iname '*'|shuf|head -n1)"
+hsetroot -fill "$(find "${wpath}" -iname '*' -a -type 'f'|shuf|head -n1)"
 
