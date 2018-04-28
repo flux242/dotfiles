@@ -1,1 +1,1 @@
-alex     chrome= NOPASSWD: /bin/netstat,/usr/bin/grc
+ALL     ALL=(root) NOPASSWD: /bin/netstat,/usr/bin/grc
