@@ -2,18 +2,18 @@ local settings = {
 
   -- #### FUNCTIONALITY SETTINGS
 
-  --replaces matches on filenames based on extension, put as empty sting to not replace anything
-  --replaces executed in order, if order doesn't matter many rules can be placed inside one rule object
+  --replaces matches on filenames based on extension, put as empty string to not replace anything
+  --replace rules are executed in provided order
+  --replace rule key is the pattern and value is the replace value
   --uses :gsub('pattern', 'replace'), read more http://lua-users.org/wiki/StringLibraryTutorial
   --'all' will match any extension or protocol if it has one
-  --uses json and parses it into a lua table
+  --uses json and parses it into a lua table to be able to support .conf file
   
   filename_replace = "",
 
---[=====[ START OF SAMPLE REPLACE, to use remove start and end line.
+--[=====[ START OF SAMPLE REPLACE, to use remove start and end line
   --Sample replace: replaces underscore to space on all files
   --for mp4 and webm; remove extension, remove brackets and surrounding whitespace, change dot between alphanumeric to space
-  --for http and https remove protocol and possible www. from beginning
   filename_replace = [[
     [
       {
@@ -63,7 +63,7 @@ local settings = {
   linux_over_windows = true,
 
   --path where you want to save playlists. Do not use shortcuts like ~ or $HOME
-  playlist_savepath = "/home/alex/Documents/",
+  playlist_savepath = "/home/anon/Documents/",
 
 
   --show playlist or filename every time a new file is loaded 
@@ -91,23 +91,23 @@ local settings = {
   --####  VISUAL SETTINGS
 
   --prefer to display titles over filenames, sorting will still use filename to stay pure
-  prefer_titles = true,
+  prefer_titles = false,
 
   --osd timeout on inactivity, with high value on this open_toggles is good to be true
   playlist_display_timeout = 5,
 
   --amount of entries to show before slicing. Optimal value depends on font/video size etc.
-  showamount = 7,
+  showamount = 16,
 
   --font size scales by window, if false requires larger font and padding sizes
-  scale_playlist_by_window=false,
+  scale_playlist_by_window=true,
   --playlist ass style overrides inside curly brackets, \keyvalue is one field, extra \ for escape in lua
   --example {\\fnUbuntu\\fs10\\b0\\bord1} equals: font=Ubuntu, size=10, bold=no, border=1
   --read http://docs.aegisub.org/3.2/ASS_Tags/ for reference of tags
   --undeclared tags will use default osd settings
   --these styles will be used for the whole playlist. More specific styling will need to be hacked in
   style_ass_tags = "",
-  --paddings for top left corner
+  --paddings from top left corner
   text_padding_x = 10,
   text_padding_y = 30,
 
@@ -120,37 +120,37 @@ local settings = {
   slice_longfilenames = false,
   slice_longfilenames_amount = 70,
 
-  --Playlist header for info you want. One newline will be added after
+  --Playlist header for info you want
   --%mediatitle or %filename = title or name of playing file
   --%pos = position of playing file
   --%cursor = position of navigation
-  --%plen = playlist lenght
+  --%plen = playlist length
   --%N = newline
   playlist_header = "Playing: %mediatitle%N%NPlaylist - %cursor/%plen",
 
   --playlist display signs, prefix is before filename, and suffix after
   --currently playing file 
-  playing_str_prefix = "▷ ",
+  playing_str_prefix = "▷ - ",
   playing_str_suffix = "",
 
   --cursor is ontop of playing file
-  playing_and_cursor_str_prefix = "▶ ",
+  playing_and_cursor_str_prefix = "▶ - ",
   playing_and_cursor_str_suffix = "",
 
   --cursor file prefix and suffix
-  cursor_str_prefix = "● ",
+  cursor_str_prefix = "● - ",
   cursor_str_suffix ="",
 
   --non cursor file prefix and suffix
-  non_cursor_str_prefix = "○ ",
+  non_cursor_str_prefix = "○ - ",
   non_cursor_str_suffix = "",
 
   --when you select a file
-  cursor_str_selected_prefix = "● ",
+  cursor_str_selected_prefix = "● = ",
   cursor_str_selected_suffix = "",
 
   --when currently playing file is selected
-  playing_str_selected_prefix = "▶ ",
+  playing_str_selected_prefix = "▶ = ",
   playing_str_selected_suffix = "",
 
   --top and bottom if playlist entries are sliced off from display
@@ -430,7 +430,6 @@ end
 function toggle_playlist()
   if settings.open_toggles then
     if playlist_visible then
-      keybindstimer:kill()
       remove_keybinds()
       return
     end
@@ -502,21 +501,15 @@ function jumptofile()
   refresh_globals()
   if plen == 0 then return end
   tag = nil
-  if cursor < pos then
-    for x=1,math.abs(cursor-pos),1 do
-      mp.commandv("playlist-prev", "weak")
-    end
-  elseif cursor>pos then
-    for x=1,math.abs(cursor-pos),1 do
-      mp.commandv("playlist-next", "weak")
-    end
+  if cursor ~= pos then
+    mp.set_property("playlist-pos", cursor)
   else
     if cursor~=plen-1 then
       cursor = cursor + 1
     end
     mp.commandv("playlist-next", "weak")
   end
-  if not settings.show_playlist_on_fileload == 2 then
+  if settings.show_playlist_on_fileload ~= 2 then
     remove_keybinds()
   end
 end
@@ -674,6 +667,7 @@ function add_keybinds()
 end
 
 function remove_keybinds()
+  keybindstimer:kill()
   mp.set_osd_ass(0, 0, "")
   playlist_visible = false
   if settings.dynamic_binds then
