@@ -9,7 +9,7 @@
             "border": "pixel",
             "floating": "auto_off",
             "layout": "splitv",
-            "percent": 0.5,
+            "percent": 0.45,
             "type": "con",
             "nodes": [
                 {
@@ -23,7 +23,7 @@
                        "y": 0
                     },
                     "name": "TerminalTailSyslog",
-                    "percent": 0.5,
+                    "percent": 0.4,
                     "swallows": [
                        {
                           "title": "^TerminalTailSyslog$"
@@ -42,7 +42,7 @@
                        "y": 0
                     },
                     "name": "TerminalShownetstat",
-                    "percent": 0.5,
+                    "percent": 0.6,
                     "swallows": [
                        {
                           "title": "^TerminalShownetstat$"
@@ -56,7 +56,7 @@
             "border": "pixel",
             "floating": "auto_off",
             "layout": "tabbed",
-            "percent": 0.5,
+            "percent": 0.55,
             "type": "con",
             "nodes": [
                 {
