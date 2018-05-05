@@ -1,1 +1,5 @@
-set guioptions "v"
+set guioptions "sv"
+set selection-clipboard clipboard
+#set adjust-open best-fit
+set adjust-open width
+set page-padding 10
