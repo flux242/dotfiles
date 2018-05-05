@@ -24,7 +24,7 @@ export MPDSERVER=buffalo.lan
 alias less='less -r'                          # raw control characters
 alias grep='grep --color'                     # show differences in colour
 alias gr='grep -HEnri'                        #
-alias rm='gvfs-trash'                         # safe rm
+alias rm='gio trash'                          # safe rm
 
 # my shortcuts
 alias abspath='readlink -f'
@@ -57,18 +57,12 @@ alias gd='git diff'
 alias gcm='git commit -m'
 
 #coloring some programs using grc (check /usr/share/grc)
-alias hexdump='grc hexdump'
-alias ps='grc ps -A'
-alias ping='grc ping'
-alias ifconfig='grc /sbin/ifconfig'
-alias mount='grc mount'
-alias df='grc df -Th'
-alias netstat='grc netstat'
-alias gcc='grc gcc'
-alias nmap='grc nmap'
-alias diff='grc -c conf.diff diff'
-alias ls='grc ls -X -hF --color=yes --group-directories-first'
-alias tail='grc tail'
+[[ -s "/etc/grc.bashrc" ]] && source /etc/grc.bashrc
+alias hexdump='colourify hexdump'
+alias ps='colourify  ps -A'
+alias nmap='colourify nmap'
+alias diff='colourify -c conf.diff diff'
+alias ls='colourify ls -X -hF --color=yes --group-directories-first'
 
 alias hl='highlight --style olive -O xterm256'
 
