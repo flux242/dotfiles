@@ -330,8 +330,11 @@ timer() {
 }
 
 # shows a deb package direct dependenies graph
+printdebtree() {
+  debtree $1 -I --condense --no-alternatives --no-provides --no-recommends --no-conflicts | tred | dot -Tsvg
+}
 showdebtree() {
-  debtree $1 -I --condense --no-alternatives --no-provides --no-recommends --no-conflicts | tred | dot -Tsvg | rsvg-view-3 /dev/stdin
+  printdebtree $1 | rsvg-view-3 /dev/stdin
 }
 
 # shows kernel graph
