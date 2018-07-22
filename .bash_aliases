@@ -93,6 +93,8 @@ if [ "$OSTYPE" = "cygwin" ]; then
 fi
 
 # generated prompt line
+#PROMPT_COMMAND="history -a;history -n;$PROMPT_COMMAND"
+PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 source ${HOME}/bin/shellprompt.sh
 # custom functions
 source ${HOME}/bin/shellfunctions.sh
