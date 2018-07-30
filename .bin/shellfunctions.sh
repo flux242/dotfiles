@@ -129,6 +129,11 @@ pb() {
   curl -F "c=@${1:--}" https://ptpb.pw/?u=1 | tee >(putclip)
 }
 pbs() {
+  local $var
+  for var in "$@"; do [ -e "$var" ] && {
+    echo "File exists: $var" >/dev/stderr
+    return 1
+  } done
   local sname=$(scrot "$@" '/tmp/screenshot_$w_$h_%F_%H-%M-%S.png' -e 'echo $f')
   [[ -s "$sname" ]] && pbx "$sname"
 }
