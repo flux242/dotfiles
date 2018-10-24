@@ -57,11 +57,13 @@ alias gd='git diff'
 alias gcm='git commit -m'
 
 #coloring some programs using grc (check /usr/share/grc)
-[[ -s "/etc/grc.bashrc" ]] && source /etc/grc.bashrc
-alias hexdump='colourify hexdump'
-alias ps='colourify  ps -A'
-alias diff='colourify -c conf.diff diff'
-alias ls='colourify ls -X -hF --color=yes --group-directories-first'
+[[ -s "/etc/grc.bashrc" ]] && {
+  source /etc/grc.bashrc
+  alias hexdump='colourify hexdump'
+  alias ps='colourify  ps -A'
+  alias diff='colourify -c conf.diff diff'
+  alias ls='colourify ls -X -hF --color=yes --group-directories-first'
+}
 
 alias hl='highlight --style olive -O xterm256'
 
