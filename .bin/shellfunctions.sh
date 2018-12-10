@@ -129,7 +129,7 @@ pb() {
   curl -F "c=@${1:--}" https://ptpb.pw/?u=1 | tee >(putclip)
 }
 pbs() {
-  local $var
+  local var
   for var in "$@"; do [ -e "$var" ] && {
     echo "File exists: $var" >/dev/stderr
     return 1
@@ -173,7 +173,7 @@ shortenurl() {
   local url=$1
   [[ -z "$url" ]] && url=$(printclip)
   [[ -z "$url" ]] && echo "Nothing to shorten" && return 1
-  wget -q -O - 'http://is.gd/create.php?format=simple&url='"$(urlencode "$url")"|tee >(putclip);echo
+  wget -q -O - 'http://is.gd/create.php?logstats=1&format=simple&url='"$(urlencode "$url")"|tee >(putclip);echo
 }
 expandurl() {
   local url=$1
@@ -214,7 +214,9 @@ showsysteminfo () {
 # monitors the network activity
 shownetstat()
 {
-  watch --color -tn1 sudo grc 'netstat -tuapn|tail -n+3|grep -v "\(systemd-resolv\|cupsd\|FIN_WAIT1\|FIN_WAIT2\|TIME_WAIT\\)"'
+  watch --color -tn1 sudo grc 'netstat -tuapn4|tail -n+3|grep -v "\(systemd-resolv\|FIN_WAIT1\|FIN_WAIT2\|TIME_WAIT\\)"'
+#  watch --color -tn1 sudo grc 'netstat -tuapn|tail -n+3|grep -v "\(systemd-resolv\|cupsd\|FIN_WAIT1\|FIN_WAIT2\|TIME_WAIT\\)"'
+#  watch --color -tn1 sudo grc 'ss -tuapn4|tail -n+2|grep -v "\(systemd-resolv\|cupsd\|FIN_WAIT1\|FIN_WAIT2\|TIME_WAIT\\)"'
 }
 
 # remove last n records from history
