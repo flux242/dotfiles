@@ -27,8 +27,9 @@
 PUBLIC=false
 
 OPTIND=1 #reset index
-while getopts "pd:" opt; do
+while getopts "tpd:" opt; do
   case $opt in
+     t)  echo "TOKEN: $GITOKEN";exit 0 ;;
      p)  PUBLIC=true; ;;
      d)  DESCR="$OPTARG" ;;
      \?) exit 1 ;;
