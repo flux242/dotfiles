@@ -1,0 +1,3 @@
+#!/bin/sh
+
+$(find ~/Applications/ -iname 'sublime_text*')
