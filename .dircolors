@@ -60,6 +60,7 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 # documents {{{1
 *README               38;5;220;1
 *README.rst           38;5;220;1
+*README.md            38;5;220;1
 *LICENSE              38;5;220;1
 *COPYING              38;5;220;1
 *INSTALL              38;5;220;1
@@ -104,6 +105,8 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .djvu                 38;5;141
 .pdf                  38;5;141
 .PDF                  38;5;141
+.mobi                 38;5;141
+.epub                 38;5;141
 # words {{{3
 .docm                 38;5;111;4
 .doc                  38;5;111
@@ -177,6 +180,7 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .ipynb                38;5;41
 # ruby
 .rb                   38;5;41
+.gemspec              38;5;41
 # perl
 .pl                   38;5;208
 .PL                   38;5;160
@@ -193,6 +197,16 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .R                    38;5;49
 # GrADS script
 .gs                   38;5;81
+# Clojure
+.clj                  38;5;41
+.cljs                 38;5;41
+.cljc                 38;5;41
+# Clojure gorilla REPL worksheet
+.cljw                 38;5;41
+# Scala
+.scala                38;5;41
+# Dart
+.dart                 38;5;51
 
 # compiled {{{2
 #
@@ -234,6 +248,9 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .f                    38;5;81
 .for                  38;5;81
 .ftn                  38;5;81
+# Nim
+.nim                  38;5;81
+.nimble               38;5;81
 #   pascal
 .s                    38;5;110
 .S                    38;5;110
@@ -243,6 +260,9 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .swift                38;5;219
 #   ?
 .sx                   38;5;81
+# Vala
+.vala                 38;5;81
+.vapi                 38;5;81
 #   interface file in GHC - https://github.com/trapd00r/LS_COLORS/pull/9
 .hi                   38;5;110
 #   haskell
@@ -256,6 +276,7 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 # orchestration {{{2
 .tf                   38;5;168
 .tfstate              38;5;168
+.tfvars               38;5;168
 # orchestration 2}}}
 # html {{{2
 .css                  38;5;125;1
@@ -296,6 +317,8 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 *Makefile             38;5;155
 *MANIFEST             38;5;243
 *pm_to_blib           38;5;240
+# ruby rake
+.rake                 38;5;155
 # automake
 .am                   38;5;242
 .in                   38;5;242
@@ -316,6 +339,7 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .tif                  38;5;97
 .TIFF                 38;5;97
 .cdr                  38;5;97
+.flif                 38;5;97
 .gif                  38;5;97
 .ico                  38;5;97
 .jpeg                 38;5;97
@@ -325,6 +349,7 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .png                  38;5;97
 .psd                  38;5;97
 .xpm                  38;5;97
+.webp                 38;5;97
 # }}}
 # vector {{{1
 .ai                   38;5;99
@@ -503,6 +528,7 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .pid                  38;5;248
 .state                38;5;248
 *lockfile             38;5;248
+*lock                 38;5;248
 # error logs
 .err                  38;5;160;1
 .error                38;5;160;1
@@ -552,6 +578,7 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .properties           38;5;116
 .sfv                  38;5;116
 .srt                  38;5;116
+.sub                  38;5;116
 .theme                38;5;116
 .torrent              38;5;116
 .urlview              38;5;116
@@ -569,6 +596,7 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .asc                  38;5;192;3
 .enc                  38;5;192;3
 .sig                  38;5;192;3
+.p7s                  38;5;192;3
 # 1}}}
 # emulators {{{1
 .32x                  38;5;213
@@ -609,12 +637,12 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .mm                   38;5;7
 #   perldoc
 .pod                  38;5;7
-#   GIMP brush
+#   GIMP files
 .gbr                  38;5;7
+.scm                  38;5;7
+.xcf                  38;5;7
 # printer spool file
 .spl                  38;5;7
-#   GIMP project file
-.scm                  38;5;7
 # RStudio project file
 .Rproj                38;5;11
 #   Nokia Symbian OS files
@@ -638,7 +666,6 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .plt                  38;5;7
 .pm                   38;5;7
 .rdf                  38;5;7
-.rst                  38;5;7
 .ru                   38;5;7
 .sch                  38;5;7
 .sty                  38;5;7
