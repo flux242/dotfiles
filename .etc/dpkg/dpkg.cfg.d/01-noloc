@@ -2,3 +2,7 @@ path-exclude /usr/share/locale/*
 path-include /usr/share/locale/en*
 path-include /usr/share/locale/de*
 path-include /usr/share/locale/ru*
+
+# lintian stuff is small, but really unnecessary
+path-exclude /usr/share/lintian/*
+path-exclude /usr/share/linda/*
