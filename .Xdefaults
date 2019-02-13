@@ -10,7 +10,7 @@ URxvt.cursorBlink: False
 
 ! Transparency
 URxvt*transparent: True
-URxvt*shading: 25
+URxvt*shading: 20
 
 ! Extensions
 URxvt.perl-ext-common: default,eval
@@ -23,6 +23,12 @@ URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
 URxvt.keysym.Shift-Control-V: eval:paste_clipboard
 URxvt.iso14755: False
 
+! Font antialiasing
+Xft.dpi: 96
+Xft.antialias: true
+Xft.rgba: rgb
+Xft.hinting: true
+Xft.hintstyle: hintslight
 
 ! Fonts
 
@@ -30,8 +36,10 @@ URxvt.iso14755: False
 !URxvt.font: xft:Courier-10
 
 !Inconsolata
-URxvt.font: xft:Inconsolata-10
-URxvt.boldFont: xft:Inconsolata-10
+!URxvt.font: xft:Inconsolata-12
+URxvt.font: xft:Inconsolata:pixelsize=16:minspace=False
+!URxvt.font: xft:Inconsolata:pixelsize=15:minspace=False
+!URxvt.boldFont: xft:Inconsolata-12
 URxvt.letterSpace: -1
 
 !Inconsolata-g
