@@ -3,17 +3,22 @@
 ! General settings
 URxvt.saveLines: 2000
 URxvt.scrollBar: False
+URxvt.scrollBar_right: True
 URxvt.scrollstyle: rxvt
 URxvt.termName: xterm-256color
 URxvt.urgentOnBell: True
 URxvt.cursorBlink: False
 
+!URxvt.scrollstyle: plain
+!URxvt.borderColor:      #f00030
+!URxvt.internalBorder:   1
+
 ! Transparency
-URxvt*transparent: True
-URxvt*shading: 20
+URxvt.transparent: True
+URxvt.shading: 20
 
 ! Extensions
-URxvt.perl-ext-common: default,eval
+URxvt.perl-ext-common: default,eval,matcher
 URxvt.urlLauncher: xdg-open
 URxvt.urlButton: 1
 URxvt.underlineURLs: True
@@ -21,6 +26,12 @@ URxvt.underlineURLs: True
 ! Keybindings
 URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
 URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+URxvt.keysym.Shift-Up: command:\033]720;1\007
+URxvt.keysym.Shift-Down: command:\033]721;1\007
+URxvt.keysym.Shift-Control-Up: eval:scroll_up_pages 1
+URxvt.keysym.Shift-Control-Down: eval:scroll_down_pages 1
+!Rxvt.keysym.Shift-Control-Up: command:\033[5~
+!Rxvt.keysym.Shift-Control-Down: command:\033[6~
 URxvt.iso14755: False
 
 ! Font antialiasing
@@ -37,7 +48,8 @@ Xft.hintstyle: hintslight
 
 !Inconsolata
 !URxvt.font: xft:Inconsolata-12
-URxvt.font: xft:Inconsolata:pixelsize=16:minspace=False
+URxvt.font: xft:DejaVu Sans Mono-10
+!URxvt.font: xft:Inconsolata:pixelsize=16:minspace=False
 !URxvt.font: xft:Inconsolata:pixelsize=15:minspace=False
 !URxvt.boldFont: xft:Inconsolata-12
 URxvt.letterSpace: -1
