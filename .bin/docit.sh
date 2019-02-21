@@ -34,7 +34,9 @@ cat <<HEREDOC
 <meta name="GENERATOR" content="docit.sh script">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>doc-base index</title>
-
+<style>
+  .pointer {cursor: pointer;}
+</style>
 </head>
 <body bgcolor="#c0c0c0">
 <script>
@@ -58,7 +60,7 @@ HEREDOC
 print_table_head()
 {
 cat <<HEREDOC
-<p onclick="toggle_visible('ENTRY')">ENTRY</p>
+<p class="pointer" onclick="toggle_visible('ENTRY')">ENTRY</p>
 <table id="ENTRY" border="0" cellpadding="15" style="display: none">
 HEREDOC
 }
