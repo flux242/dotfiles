@@ -1,6 +1,7 @@
 GRC="$(which grc)"
 if [ "$TERM" != dumb ] && [ -n "$GRC" ]; then
-    alias colourify="$GRC -es --colour=auto"
+    alias colourify="$GRC -es --colour=on"
+    alias sudocolourify="sudo $GRC -es --colour=on"
 
     alias as='colourify as'
     alias blkid='colourify blkid'
@@ -34,7 +35,7 @@ if [ "$TERM" != dumb ] && [ -n "$GRC" ]; then
     alias make='colourify make'
     alias mount='colourify mount'
     alias mtr='colourify mtr'
-    alias netstat='colourify netstat'
+    alias netstat='sudocolourify netstat'
     alias nmap='colourify nmap'
     alias ping='colourify ping'
     alias ps='colourify ps'
@@ -45,9 +46,11 @@ if [ "$TERM" != dumb ] && [ -n "$GRC" ]; then
     alias stat='colourify stat'
     alias sysctl='colourify sysctl'
     alias tail='colourify tail'
+    alias tcpdump='sudocolourify tcpdump -l'
     alias tune2f='colourify tune2f'
     alias traceroute6='colourify traceroute6'
     alias traceroute='colourify traceroute'
+    alias uptime='colourify uptime'
     alias vmstat='colourify vmstat'
 fi
 
