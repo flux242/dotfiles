@@ -1,4 +1,5 @@
 #!/bin/sh
 
-#$(find ~/Applications/ -iname 'welle.io*')
-$(find ~/Applications/ -iname 'welle.io*' -exec sh -c '[ -x "{}" ] && echo "{}"' \;)
+export APP_NAME="welle.io"
+start_appimage.sh
+

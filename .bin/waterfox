@@ -1,5 +1,5 @@
 #!/bin/sh
 
-export APP_NAME="libreoffice"
+export APP_NAME="waterfox"
 start_appimage.sh
 
