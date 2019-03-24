@@ -9,8 +9,8 @@ if [ -n "$appbin" ]; then
     profilename="${HOME}/.config/firejail/${APP_NAME}.profile"
     [ -s "$profilename" ] || profilename="/etc/firejail/${APP_NAME}.profile"
     [ -s "$profilename" ] || profilename='/etc/firejail/default.profile'
-echo "pname: $profilename"
-    firejail --appimage --private=~/Applications/privatehome/"$APP_NAME" --profile="$profilename" "$appbin"
+#    firejail --appimage --private=~/Applications/privatehome/"$APP_NAME" --profile="$profilename" "$appbin"
+    firejail --appimage  --profile="$profilename" "$appbin"
   else
     "$appbin"
   fi
