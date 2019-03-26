@@ -30,6 +30,7 @@ alias rm='gio trash'                          # safe rm
 alias abspath='readlink -f'
 alias feh='feh -g 800x600 -d -.'
 alias ne='stdbuf -oL sed "s,\x1B\[[0-9;]*[a-zA-Z],,g"'
+alias nocr='stdbuf -oL sed "s,\x0D,,g"'
 alias c='printf "\33[2J"'
 alias sss='bc64=( {a..z} {A..Z} {0..9} + / = );c;while true; do echo -ne "\033[$((1+RANDOM%LINES));$((1+RANDOM%COLUMNS))H\033[$((RANDOM%2));3$((RANDOM%8))m${bc64[$((RANDOM%${#bc64[@]}))]}"; sleep 0.1 ; done'
 alias p4='unset PWD; p4 '
