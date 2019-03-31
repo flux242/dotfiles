@@ -1,6 +1,7 @@
 # Local Address:Port
-regexp=\s((?:\d+\.){3}\d+|\*|::1?|[\w\d\-\_\.]+):(\S+)\s+\s((?:\d+\.){3}\d+|\*|::1?|[\w\d\-\_\.]+):(\S+)
-colours=default,bright_green,bright_red,cyan,magenta
+#regexp=((?:\d+\.){3}\d+|\*|::1?|[\w\d\-\_\.]+):(\S+)\s+\s((?:\d+\.){3}\d+|\*|::1?|[\w\d\-\_\.]+):(\S+)
+regexp=((?:\d+\.){3}\d+|\[[^\]]+\]):(\d+)\s+((?:\d+\.){3}\d+|\[[^\]]+\]|\*):(\d+|\*)\s+(\S*)
+colours=default,bright_green,bright_red,cyan,magenta,yellow
 =======
 # ipx hostname
 regexp=^IPX.*[\dABCDEF]+:[\dABCDEF]+
@@ -68,8 +69,8 @@ regexp=UNKNOWN
 colours=blink bold red
 =======
 # status
-regexp=\[.*\]
-colours=green
+#regexp=\[.*\]
+#colours=green
 =======
 # path
 regexp=(\@)[\dabcdef]+
