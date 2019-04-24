@@ -192,6 +192,11 @@ showbattery() {
   fi
 }
 
+# shows battery full statistics
+showbatteryfull() {
+  upower -i $(upower -e | grep BAT)
+}
+
 # shows cpu temperature
 showcputemp() {
   awk -v t="$(cat /sys/class/thermal/thermal_zone0/temp)" 'BEGIN{print t/1000}'
