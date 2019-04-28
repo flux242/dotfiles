@@ -282,12 +282,12 @@ getart() {
     local link imagelink ext imagepath
     link="www.google.com/search?q=$(urlencode "$mpccurrent")\&tbm=isch"
 #    imagelinks=$(wget -e robots=off --user-agent "$useragent" -qO - "$link" | sed 's/</\n</g' | grep '<a href.*\(png\|jpg\|jpeg\)' | sed 's/.*imgurl=\([^&]*\)\&.*/\1/')
-    imagelinks=$(wget -e robots=off --user-agent "$useragent" -qO - "$link" | sed 's/</\n</g' | grep "ou\":\"http" | sed -nr 's/.*ou\":\"([^"]+).*/\1/p')
+    imagelinks=$(timeout 10s wget -e robots=off --user-agent "$useragent" -o /dev/null -qO - "$link" | sed 's/</\n</g' | grep "ou\":\"http" | sed -nr 's/.*ou\":\"([^"]+).*/\1/p')
     for imagelink in $imagelinks; do
       imagelink=$(echo "$imagelink" | sed -nr 's/(.*\.(jpg|jpeg|png)).*/\1/p')
       ext=$(echo "$imagelink" | sed -nr 's/.*(\.(jpg|jpeg|png)).*/\1/p')
       imagepath="${ARTDIR}/${mpccurrent}${ext}"
-      wget --max-redirect 0 -qO "$imagepath" "${imagelink}"
+      timeout 10s wget --max-redirect 0 -o /dev/null -qO "$imagepath" "${imagelink}"
       [[ -s "$imagepath" ]] && break
       rm "$imagepath" # remove zero length file
     done
