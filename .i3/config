@@ -129,6 +129,7 @@ bindsym $mod+Shift+e exec ~/bin/logout.py
 bindsym XF86PowerOff exec ~/bin/logout.py
 bindsym $mod+Shift+w exec ~/bin/wifi_connect.sh
 bindsym $mod+Shift+v exec ~/bin/vpn_connect.sh
+bindsym $mod+Shift+p exec ~/bin/mpdplaylist.sh
 # toggle normal and pixel border width
 bindsym $mod+Ctrl+space exec ~/.i3/toggle_border.sh
 # adjust xfce4 terminal transpacency
