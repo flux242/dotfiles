@@ -1,0 +1,3 @@
+#net none
+apparmor
+ignore shell none
