@@ -10,9 +10,9 @@ if [ -n "$appbin" ]; then
     [ -s "$profilename" ] || profilename="/etc/firejail/${APP_NAME}.profile"
     [ -s "$profilename" ] || profilename='/etc/firejail/default.profile'
     if [ "$PRIVATE_HOME" = "yes" ]; then
-      firejail --appimage --private=~/Applications/privatehome/"$APP_NAME" --profile="$profilename" "$appbin"
+      firejail --appimage --private=~/Applications/privatehome/"$APP_NAME" --profile="$profilename" "$appbin" $APP_ARGS
     else
-      firejail --appimage  --profile="$profilename" "$appbin"
+      firejail --appimage  --profile="$profilename" "$appbin" $APP_ARGS
     fi
   else
     "$appbin"
