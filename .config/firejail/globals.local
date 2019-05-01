@@ -1,3 +1,8 @@
+# this file will only work with the default firejail
+# profiles in /etc/firejail if /etc/firejail/globals.local
+# file exits and includes this one like:
+# include ${HOME}/.config/firejail/globals.local
+
 #net none
 apparmor
 ignore shell none
