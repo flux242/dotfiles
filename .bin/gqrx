@@ -1,5 +1,6 @@
 #!/bin/sh
 
 export APP_NAME="gqrx"
+export PRIVATE_HOME="yes"
 start_appimage.sh
 
