@@ -156,11 +156,13 @@ cmdfu() {
 
 # url escape / unescape
 urlencode() {
+  # needs liburi-perl to be installed
   local url="$1"
   [[ -z "$url" ]] && url=$(cat -)
   perl -MURI::Escape -e 'print uri_escape($ARGV[0]);' "$url"
 }
 urldecode() {
+  # needs liburi-perl to be installed
   local url="$1"
   [[ -z "$url" ]] && url=$(cat -)
   perl -MURI::Escape -e 'print uri_unescape($ARGV[0]);' "$url"
