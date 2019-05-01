@@ -1,3 +1,8 @@
 #!/bin/sh
 
-$(find ~/Applications/ -iname 'iridium_browser*')
+export APP_NAME="iridium"
+export APP_ARGS="--no-sandbox"
+#export APP_ARGS="--disable-setuid-sandbox"
+export PRIVATE_HOME="yes"
+start_appimage.sh
+
