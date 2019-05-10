@@ -282,7 +282,8 @@ filetype *.torrent ktorrent %f &
 fileviewer *.torrent dumptorrent -v %c
 
 " FuseZipMount
-filetype *.zip,*.jar,*.war,*.ear,*.oxt,*.apkg
+"filetype *.zip,*.jar,*.war,*.ear,*.oxt,*.apkg
+filetype *.war,*.ear,*.oxt,*.apkg
        \ {Mount with fuse-zip}
        \ FUSE_MOUNT|fuse-zip %SOURCE_FILE %DESTINATION_DIR,
        \ {View contents}
@@ -292,7 +293,7 @@ filetype *.zip,*.jar,*.war,*.ear,*.oxt,*.apkg
 fileviewer *.zip,*.jar,*.war,*.ear,*.oxt zip -sf %c
 
 " ArchiveMount
-filetype *.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz,*.tar.xz,*.txz,*.iso,*.deb,*.apk
+filetype *.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz,*.tar.xz,*.txz,*.xz,*.iso,*.deb,*.apk,*.zip,*.jar
        \ {Mount with archivemount}
        \ FUSE_MOUNT|archivemount %SOURCE_FILE %DESTINATION_DIR,
 fileviewer *.tgz,*.tar.gz tar -tzf %c
@@ -345,7 +346,7 @@ filextype */
 
 
 "highlight --style olive -O xterm256
-fileviewer *.[ch],*.[ch]pp,*.md,*.js,
+fileviewer *.[ch],*.[ch]pp,*.md,*.js,*.json,
            \Makefile,Makefile.*,*.patch,*.diff,
            \*.html,*.htm,*.css,*.xml
            \ highlight -O xterm256 -s olive %c
