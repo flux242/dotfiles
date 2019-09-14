@@ -125,6 +125,8 @@ inoremap  <C-l>  <ESC>o
 "inoremap  (      ()<ESC>i
 " Yank to the end of the line
 map       Y      y$
+" quick exit
+map Q :qa<CR>
 
 " ctags
 set tags=./tags,tags,$PROJDIR/tags
