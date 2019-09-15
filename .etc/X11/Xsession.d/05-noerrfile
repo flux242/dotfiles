@@ -1,0 +1,11 @@
+# Redirect all errors to /dev/null instead of $ERRFILE
+# (~/.xsession-errors by default), to avoid filling up users home
+# directory with error messages.  Allow the user to disable this by
+# creating ~/.xsession-errors-enable
+
+if [ ! -f "$HOME/.xsession-errors-enable" ] ; then
+  # Report the change to the log file before switching
+  echo "info: Redirecting xsession messages to /dev/null."
+  echo "info: touch '$HOME/.xsession-errors-enable' to disable this."
+  exec >> /dev/null 2>&1
+fi
