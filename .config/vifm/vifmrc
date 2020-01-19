@@ -134,7 +134,7 @@ mark h ~/
 
 command! df df -h %m 2> /dev/null
 command! diff vim -d %f %F
-command! zip zip -r %f.zip %f
+command! zip zip -r %c.zip %f
 command! run !! ./%f
 command! make !!make %a
 command! mkcd :mkdir %a | cd %a
@@ -190,7 +190,7 @@ filextype *.djvu
 " Audio
 filetype *.wav,*.mp3,*.flac,*.m4a,*.wma,*.ape,*.ac3,*.og[agx],*.spx,*.opus
        \ {Play using ffplay}
-       \ ffplay -nodisp %c,
+       \ ffplay -nodisp -autoexit %c,
        \ {Play using MPlayer}
        \ mplayer %f,
 " fileviewer *.mp3 mp3info
@@ -239,8 +239,9 @@ filextype *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
         \ {View in shotwell}
         \ shotwell,
 fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
-         \ imgpreview -s %c,
+         \ img2sixel -w $((%pw*8)) %c %pd,
          \ convert -identify %f -verbose /dev/null
+"         \ img2sixel -S -w $((%pw*8)) -h auto %c %pd,
 
 " OpenRaster
 filextype *.ora
@@ -328,6 +329,12 @@ filetype *.7z
        \ FUSE_MOUNT|fuse-7z %SOURCE_FILE %DESTINATION_DIR,
 fileviewer *.7z 7z l %c
 
+" AppImage fuse mount
+filetype *.AppImage
+       \ {Mount with squashfuse}
+       \ FUSE_MOUNT|/home/alex/bin/mountappimage.sh %SOURCE_FILE %DESTINATION_DIR,
+
+
 " Office files
 filextype *.odt,*.doc,*.docx,*.xls,*.xlsx,*.odp,*.pptx libreoffice %f &
 fileviewer *.doc catdoc %c
@@ -346,14 +353,15 @@ filextype */
 
 
 "highlight --style olive -O xterm256
-fileviewer *.[ch],*.[ch]pp,*.md,*.js,*.json,
+fileviewer *.[ch],*.[ch]pp,*.md,*.js,*.json,*.java,
            \Makefile,Makefile.*,*.patch,*.diff,
-           \*.html,*.htm,*.css,*.xml
+           \*.html,*.htm,*.css,*.xml,*.py,*.pl,*.hex
            \ highlight -O xterm256 -s olive %c
 
 fileviewer *.sh,.bash*,.dircolors,.profile highlight -O xterm256 -s olive --syntax bash %c
 fileviewer .vimrc,*.vim highlight -O xterm256 -s olive --syntax bash %c
 fileviewer *.conf,*.ini,*.desktop highlight -O xterm256 -s olive --syntax conf %c
+fileviewer *.gpx,*.kml highlight -O xterm256 -s olive --syntax xml %c
            
 " Syntax highlighting in preview
 "
@@ -461,6 +469,9 @@ nnoremap <f6> :move<cr>
 nnoremap <f7> :mkdir<space>
 nnoremap <f8> :delete<cr>
 
+" Go home
+nnoremap H :cd<cr>
+
 " ------------------------------------------------------------------------------
 
 " Various customization examples
@@ -550,3 +561,18 @@ set findprg='find %s %a -print ,
             \ -prune'
 
 nnoremap <f2> :rename<cr>
+
+" To remember commands
+" gv - restore selection
+
+"   (      go to previous group.  Groups are defined by primary sorting key.  For name and iname members of each group
+"          have same first letter, for all other sorting keys vifm uses size, uid, ...
+"   )      go to next group.  See ( key description above.
+"   {      similar  to ( key, but always considers whether entry is file or directory and thus speeds up navigation to
+"          closest previous entry of the opposite type.
+"   }      same as {, but in forward direction
+
+" b  - interpret content of the menu as list of paths and use it to create custom view in place of previously active
+"      pane.  See "Custom views" section below.
+" B - same as above, but creates unsorted view.
+

@@ -5,5 +5,5 @@ wpath=${1:-~/wallpapers}
 [[ -d "$wpath" ]] || wpath=/usr/share/backgrounds/
 randomfile="$(find "${wpath}" -iname '*'|shuf|head -n1)"
 [[ -n "$(which feh)" ]] && \feh --bg-scale "$randomfile"
-[[ -n "$(which hsetroot)" ]] && hsetroot -fill "$randomfile"
+[[ -n "$(which hsetroot)" ]] && hsetroot -fill "$randomfile" -blur 25
 

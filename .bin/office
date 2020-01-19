@@ -1,5 +1,6 @@
 #!/bin/sh
 
+export PRIVATE_HOME="yes"
 export APP_NAME="libreoffice"
 start_appimage.sh
 
