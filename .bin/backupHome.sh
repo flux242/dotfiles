@@ -3,21 +3,25 @@
 homeDir=$HOME
 destDir=~/media/nas/Alex/backup
 archName="$(whoami).$(hostname)"
+destHost='flux@dns325.lan'
+destDir="/mnt/nas/Alex/backup/$(hostname)"
 
 # files or directories to exclude
 printExcludes()
 {
-awk '{printf("--exclude '\''%s'\'' ",$1)}'  <<EOEXCL
+awk '{printf("--exclude='\''%s'\'' ",$1)}'  <<EOEXCL
+Android
+.AndroidStudio3.5
+.android
+.bin
 .gvfs
 .qt
 .adobe
-ssmtp
 .aptitude
 .dbus
 .gconf
 .eagle
-.encfs
-.davfs2
+.gradle
 .macromedia
 .gnome
 .java
@@ -25,32 +29,42 @@ ssmtp
 .links2
 .pulse*
 .smbcredentials
+.ssh
 .thumbnails
 .vimrc
+.vim
 .Xauthority
 .xchm
 .xsession-errors
+.local/share/vifm
+.local/share/Trash
 Books
-Downloads
 games
 Music
 Videos
 Pictures
 VirtualBox*
 bin
-.bin
 dotfiles
 media
-projects/drm_nightly
 projects/linux_insiders
-projects/.git
+.git
 projects/fres*
 projects/electro*
 projects/openw*
+ssmtp
+STM32Cube
+tags
 EOEXCL
 }
 
 ~/bin/cleanHome.sh || exit 1
+
+
+echo "rsync -arv --delete --no-links $(printExcludes) $homeDir $destHost:$destDir"
+eval "rsync -arv --delete --no-links $(printExcludes) $homeDir "$destHost:$destDir""
+exit 0
+
 
 # creating an archive
 if [ -d "$destDir" ]; then
