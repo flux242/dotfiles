@@ -16,7 +16,7 @@ vacuumFirefox()
   local counterAfter=0
   local fileSizeBefore fileSizeAfter
 
-  for i in "$HOME"/.mozilla/firefox/*/*.sqlite; do
+  for i in "$HOME"/Applications/privatehome/waterfox/.waterfox/*/*.sqlite; do
     fileSizeBefore=$(wc -c < "$i")
     counterBefore=$((counterBefore + fileSizeBefore))
     sqlite3 "$i" vacuum
@@ -46,6 +46,17 @@ xargs -d \\n -I {} bash -c "shopt -s dotglob;echo 'Cleaning $HOME/{}';eval '/bin
 .mozilla/firefox/*/storage/*
 .mozilla/firefox/*/adblockplus/patterns-backup*
 .mozilla/firefox/*/weave/logs/
+Applications/privatehome/*/.cache/*
+Applications/privatehome/waterfox/.waterfox/*/Cache/*
+Applications/privatehome/waterfox/.waterfox/*/minidumps
+Applications/privatehome/waterfox/.waterfox/*/datareporting
+Applications/privatehome/waterfox/.waterfox/*/saved-telemetry-pings
+Applications/privatehome/waterfox/.waterfox/*/healthreport*
+Applications/privatehome/waterfox/.waterfox/Crash\ Reports/
+Applications/privatehome/waterfox/.waterfox/*/crashes
+Applications/privatehome/waterfox/.waterfox/*/storage/*
+Applications/privatehome/waterfox/.waterfox/*/adblockplus/patterns-backup*
+Applications/privatehome/waterfox/.waterfox/*/weave/logs/*
 .davfs2/cache/*
 .config/sublime-text-3/Cache/*
 EOLIST
