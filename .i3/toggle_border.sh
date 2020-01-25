@@ -4,6 +4,6 @@ border=$(i3-msg -t get_tree |awk -F"id\":" -v id=$(xprop -root|awk '/_NET_ACTIVE
 if [ "$border" = "pixel" ]; then
   i3-msg border normal
 else
-  i3-msg border pixel 2
+  i3-msg border pixel 3
 fi
 

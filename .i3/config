@@ -178,8 +178,8 @@ bar {
 
 #colourclass               border    bckgrnd    text
 client.focused             #1793D0   #1793D0    #FFFFFF
-client.focused_inactive    #000000   #333333    #FFFFFF
-client.unfocused           #000000   #333333    #FFFFFF
+client.focused_inactive    #00000000   #33333300    #FFFFFF
+client.unfocused           #00000000   #00000000    #FFFFFF
 client.urgent              #FF0000   #FF0000    #FF0000
 
 # keyboard
@@ -187,7 +187,8 @@ client.urgent              #FF0000   #FF0000    #FF0000
 #exec --no-startup-id setxkbmap -layout us,ru -option 'grp:alt_shift_toggle' -model chromebook
 
 # Windows settings
-new_window pixel 2
+default_border pixel 3
+#new_window pixel 2
 for_window [class="^Psi-plus$"] floating enable, move container to workspace 2
 for_window [title="^TerminalHtop$"] floating enable
 for_window [class="^ThunarHome$"] floating enable

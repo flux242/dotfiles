@@ -25,7 +25,7 @@
                     "nodes": [
                         {
                             "border": "pixel",
-                            "current_border_width": 2,
+                            "current_border_width": 3,
                             "floating": "auto_off",
                             "geometry": {
                                "height": 410,
@@ -44,7 +44,7 @@
                         },
                         {
                             "border": "pixel",
-                            "current_border_width": 2,
+                            "current_border_width": 3,
                             "floating": "auto_off",
                             "geometry": {
                                "height": 410,
@@ -65,7 +65,7 @@
                 },
                 {
                     "border": "pixel",
-                    "current_border_width": 2,
+                    "current_border_width": 3,
                     "floating": "auto_off",
                     "geometry": {
                        "height": 410,
@@ -93,7 +93,7 @@
             "nodes": [
                 {
                     "border": "pixel",
-                    "current_border_width": 2,
+                    "current_border_width": 3,
                     "floating": "auto_off",
                     "geometry": {
                        "height": 410,
