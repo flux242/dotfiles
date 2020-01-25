@@ -135,6 +135,7 @@ bindsym $mod+Ctrl+space exec ~/.i3/toggle_border.sh
 # adjust xfce4 terminal transpacency
 bindsym Ctrl+F8 exec ~/bin/setterminaltransparency.sh down
 bindsym Ctrl+F9 exec ~/bin/setterminaltransparency.sh up
+bindsym Ctrl+Shift+space exec ~/bin/toggleterminalscrollbar.sh
 bindsym $mod+g exec ~/.i3/load_layout.sh
 
 # volume control
