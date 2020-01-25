@@ -1,0 +1,23 @@
+Description="Intel hex format highlighting"
+
+Keywords={
+
+  { Id=3,
+    Regex=[[^.(..).*]],
+  },
+  { Id=2,
+    Regex=[[^...(....).*]],
+  },
+  { Id=1,
+    Regex=[[^.*(..)$]],
+  },
+  { Id=3,
+    Regex=[[^.......(..).*$]],
+  },
+  { Id=0,
+    Regex=[[^.........(.*)..$]],
+  },
+}
+
+IgnoreCase=false
+
