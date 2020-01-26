@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export APP_NAME="franz"
+export PRIVATE_HOME="yes"
+start_appimage.sh
+
