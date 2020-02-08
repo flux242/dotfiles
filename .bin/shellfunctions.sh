@@ -409,3 +409,8 @@ show_wifi_clients() {
 ascii() {
   for i in {0..255};do p="  $i";echo -e "${p: -3} $(printf '%02X' $i) \\0$(($i/64*100+$i%64/8*10+$i%8))";done|cat -t|column -c120
 }
+
+dusort() {
+  \du -sh $@ | sort -h | grcat conf.du
+}
+
