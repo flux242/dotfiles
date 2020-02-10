@@ -1,0 +1,205 @@
+#!/usr/bin/env bash
+#
+# Siddharth Dushantha 2020
+#
+# Dependencies: sxiv, imagemagick, xdotool, fzf
+#
+# Original code: https://github.com/sdushantha/fontpreview 
+
+# Use mktemp to create temporary files that won't
+# collide with any other application's tmp files.
+FONTPREVIEW_DIR="$(mktemp -d --tmpdir fontpreview_dir_XXXXXXXX)"
+PIDFILE="$(mktemp --tmpdir="$FONTPREVIEW_DIR" fontpreview_XXXXXXXX.pid)"
+FONT_PREVIEW="$(mktemp --tmpdir="$FONTPREVIEW_DIR" fontpreview_XXXXXXXX.png)"
+TERMWIN_IDFILE="$(mktemp --tmpdir="$FONTPREVIEW_DIR" fontpreview_XXXXXXXX.termpid)"
+VERSION=1.0.2
+
+# Default values
+SEARCH_PROMPT="❯ "
+SIZE=532x365
+POSITION="+0+0"
+FONT_SIZE=38
+BG_COLOR="#ffffff"
+FG_COLOR="#000000"
+PREVIEW_TEXT="ABCDEFGHIJKLM\nNOPQRSTUVWXYZ\nabcdefghijklm\nnopqrstuvwxyz\n1234567890\n!@$\%(){}[]"
+
+show_help() {
+    echo "usage: fontpreview [-h] [--size \"px\"] [--position \"+x+y\"] [--search-prompt SEARCH_PROMPT]"
+    echo "                   [--font-size \"FONT_SIZE\"] [--bg-color \"BG_COLOR\"] [--fg-color \"FG_COLOR\"]"
+    echo "                   [--preview-text \"PREVIEW_TEXT\"] [--version]"
+    echo " "
+    echo "┌─┐┌─┐┌┐┌┌┬┐┌─┐┬─┐┌─┐┬  ┬┬┌─┐┬ ┬"
+    echo "├┤ │ ││││ │ ├─┘├┬┘├┤ └┐┌┘│├┤ │││"
+    echo "└  └─┘┘└┘ ┴ ┴  ┴└─└─┘ └┘ ┴└─┘└┴┘"
+    echo "Very customizable and minimal font previewer written in bash"
+    echo " "
+    echo "optional arguments:"
+    echo "   -h, --help            show this help message and exit"
+    echo "   --size                size of the font preview window"
+    echo "   --position            the position where the font preview window should be displayed"
+    echo "   --search-prompt       input prompt of fuzzy searcher"
+    echo "   --font-size           font size"
+    echo "   --bg-color            background color of the font preview window"
+    echo "   --fg-color            foreground color of the font preview window"
+    echo "   --preview-text        preview text that should be displayed in the font preview window"
+    echo "   --version             show the version of kunst you are using"
+}
+
+pre_exit() {
+    # Get the proccess ID of this script and kill it.
+    # We are dumping the output of kill to /dev/null
+    # because if the user quits sxiv before they
+    # exit this script, an error will be shown
+    # from kill and we dont want that
+    kill -9 "$(cat "$PIDFILE" 2>/dev/null)" &> /dev/null
+
+    # Delete tempfiles, so we don't leave useless files behind.
+    rm -rf "$FONTPREVIEW_DIR"
+}
+
+generate_preview(){
+    # Credits: https://bit.ly/2UvLVhM
+    convert -size $SIZE xc:"$BG_COLOR" \
+        -gravity center \
+        -pointsize $FONT_SIZE \
+        -font "$1" \
+        -fill "$FG_COLOR" \
+        -annotate +0+0 "$PREVIEW_TEXT" \
+        -flatten "$FONT_PREVIEW"
+}
+
+main(){
+    # Checkig if needed dependencies are installed
+#    dependencies=(xdotool sxiv convert fzf)
+    dependencies=(xdotool sxiv convert yad)
+    for dependency in "${dependencies[@]}"; do
+        type -p "$dependency" &>/dev/null || {
+            echo "error: Could not find '${dependency}', is it installed?" >&2
+            exit 1
+        }
+    done
+
+    # Checking for enviornment variables which the user might have set.
+    # This config file for fontpreview is pretty much the bashrc, zshrc, etc
+    # Majority of the variables in fontpreview can changed using the enviornment variables
+    # and this makes fontpreview very customizable
+    [[ $FONTPREVIEW_SEARCH_PROMPT != "" ]] && SEARCH_PROMPT=$FONTPREVIEW_SEARCH_PROMPT
+    [[ $FONTPREVIEW_SIZE != "" ]] && SIZE=$FONTPREVIEW_SIZE
+    [[ $FONTPREVIEW_POSITION != "" ]] && POSITION=$FONTPREVIEW_POSITION
+    [[ $FONTPREVIEW_FONT_SIZE != "" ]] && FONT_SIZE=$FONTPREVIEW_FONT_SIZE
+    [[ $FONTPREVIEW_BG_COLOR != "" ]] && BG_COLOR=$FONTPREVIEW_BG_COLOR
+    [[ $FONTPREVIEW_FG_COLOR != "" ]] && FG_COLOR=$FONTPREVIEW_FG_COLOR
+    [[ $FONTPREVIEW_PREVIEW_TEXT != "" ]] && PREVIEW_TEXT=$FONTPREVIEW_PREVIEW_TEXT
+
+    # Save the window ID of the terminal window fontpreview is executed in.
+    # This is so that when we open up sxiv, we can change the focus back to
+    # the terminal window, so that the user can search for the fonts without
+    # having to manualy change the focus back to the terminal.
+    xdotool getactivewindow > "$TERMWIN_IDFILE"
+
+    # Flag to run some commands only once in the loop
+    FIRST_RUN=true
+
+    while true; do
+        # List out all the fonts which imagemagick is able to find, extract
+        # the font names and then pass them to fzf
+#        font=$(convert -list font | awk -F: '/^[ ]*Font: /{print substr($NF,2)}' | fzf --prompt="$SEARCH_PROMPT")
+        font=$(convert -list font | awk -F: '/^[ ]*Font: /{print substr($NF,2)}' | (yad --entry --title "Select font" --entry-text $(cat -)))
+
+        # Exit if nothing is returned by fzf, which also means that the user
+        # has pressed [ESCAPE]
+        [[ -z $font ]] && return
+
+        generate_preview "$font"
+
+        if [ $FIRST_RUN == true ]; then
+            FIRST_RUN=false
+
+            # Display the font preview using sxiv
+            #sxiv -g "$SIZE$POSITION" "$FONT_PREVIEW" -N "fontpreview" -b &
+            sxiv -N "fontpreview" -b -g "$SIZE$POSITION" "$FONT_PREVIEW" &
+
+            # Change focus from sxiv, back to the terminal window
+            # so that user can continue to search for fonts without
+            # having to manually change focus back to the terminal window
+            xdotool windowfocus "$(cat "$TERMWIN_IDFILE")"
+
+            # Save the process ID so that we can kill
+            # sxiv when the user exits the script
+            echo $! >"$PIDFILE"
+
+	# Check for crashes of sxvi   
+	elif [ -f $PIDFILE ] ; then
+	    PID=$(cat $PIDFILE)
+	    ls -1 /proc/$PID >&2
+	    if  [ ! -e /proc/$PID ] ; then
+		echo "Restart sxvi - You maybe using a obsolete version. " >&2
+		# Display the font preview using sxiv
+		sxiv -g "$SIZE$POSITION" "$FONT_PREVIEW" -N "fontpreview" -b &
+		
+		# Change focus from sxiv, back to the terminal window
+		# so that user can continue to search for fonts without
+		# having to manually change focus back to the terminal window
+		xdotool windowfocus "$(cat "$TERMWIN_IDFILE")"
+		
+		# Save the process ID so that we can kill
+		# sxiv when the user exits the script
+		echo $! >"$PIDFILE"
+	    fi
+
+	fi
+    done
+}
+
+# Disable CTRL-Z because if we allowed this key press,
+# then the script would exit but, sxiv would still be
+# running
+trap "" SIGTSTP
+
+trap pre_exit EXIT
+
+# Parse the arguments
+options=$(getopt -o h --long position:,size:,version,search-prompt:,font-size:,bg-color:,fg-color:,preview-text:,help -- "$@")
+eval set -- "$options"
+
+while true; do
+    case "$1" in 
+        --size)
+            shift;
+            FONTPREVIEW_SIZE=$2
+            ;;
+        --position)
+            shift;
+            FONTPREVIEW_POSITION=$2
+            ;;
+        -h|--help)
+            show_help
+            exit
+            ;;
+        --version)
+            echo $VERSION
+            exit
+            ;;
+        --search-prompt)
+            FONTPREVIEW_SEARCH_PROMPT=$2
+            ;;
+        --font-size)
+            FONTPREVIEW_FONT_SIZE=$2
+            ;;
+        --bg-color)
+            FONTPREVIEW_BG_COLOR=$2
+            ;;
+        --fg-color)
+            FONTPREVIEW_FG_COLOR=$2
+            ;;
+        --preview-text)
+            FONTPREVIEW_PREVIEW_TEXT=$2
+            ;;
+        --)
+            shift
+            break
+            ;;
+    esac
+    shift
+done
+main
