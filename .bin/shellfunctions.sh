@@ -49,28 +49,39 @@ function ? {
 }
 
 # crypting functions
-# perl oneliner is to enable encrypt|decrypt combos
+# perl oneliner is to enable encrypt|decrypt combos or any other pipe
+# combination where multiple programs ask for a pass at the same time
 encrypt() {
+  local iter="$ITER"
+  [[ -n "$ITER" ]] || iter="20242"
+
   if [ -t 0 ]; then
     # interactive
     local fname="$1"
     shift
-    openssl aes-256-cbc -salt -in "$fname" -out "${fname}.enc" "$@"
+    openssl aes-256-cbc -iter "$iter" -salt -in "$fname" -out "${fname}.enc" "$@"
+    # gpg encryption example
+    # gpg --output encrypted.data --symmetric --cipher-algo AES256 un_encrypted.data
   else
     # piped
     perl -e 'use IO::Select; $ready=IO::Select->new(STDIN)->can_read();'
-    openssl aes-256-cbc -salt "$@"
+    openssl aes-256-cbc -iter "$iter" -salt "$@"
   fi
 }
 decrypt() {
+  local iter="$ITER"
+  [[ -n "$ITER" ]] || iter="20242"
+
   if [ -t 0 ]; then
     # interactive
     local fname="$1"
     shift
-    openssl aes-256-cbc -d -in "$fname" -out "${fname%\.*}" "$@"
+    openssl aes-256-cbc -d -iter "$iter" -in "$fname" -out "${fname%\.*}" "$@"
+    # gpg decryption example
+    # gpg --output un_encrypted.data --decrypt encrypted.data
   else
     perl -e 'use IO::Select; $ready=IO::Select->new(STDIN)->can_read();'
-    openssl aes-256-cbc -d "$@"
+    openssl aes-256-cbc -d -iter "$iter" "$@"
   fi
 }
 
@@ -414,3 +425,16 @@ dusort() {
   \du -sh $@ | sort -h | grcat conf.du
 }
 
+#list servicesd
+listd() {
+  echo -e ${RED}${BOLD}" --> SYSTEM LEVEL <--"${NC}
+  find /etc/systemd/system -mindepth 1 -type d | sed '/getty.target/d' | xargs ls -gG --color
+  [[ $(find $HOME/.config/systemd/user -mindepth 1 -type d | wc -l) -eq 0 ]] || {
+    echo -e ${RED}${BOLD}" --> USER LEVEL <--"${NC}
+    find $HOME/.config/systemd/user -mindepth 1 -type d | xargs ls -gG --color
+  }
+}
+
+grabpage() {
+  wget --no-clobber -e robots=off --recursive --convert-links  --html-extension --page-requisites --no-parent "$1"
+}
