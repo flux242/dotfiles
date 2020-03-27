@@ -186,7 +186,9 @@ filextype *.djvu
         \ zathura %f,
         \ {View in apvlv}
         \ apvlv %f,
-
+" Chm
+filextype *.chm xchm %f
+ 
 " Audio
 filetype *.wav,*.mp3,*.flac,*.m4a,*.wma,*.ape,*.ac3,*.og[agx],*.spx,*.opus
        \ {Play using ffplay}
@@ -305,7 +307,7 @@ fileviewer *.tar tar -tf %c
 " Rar2FsMount and rar archives
 filetype *.rar
        \ {Mount with rar2fs}
-       \ FUSE_MOUNT|rar2fs %SOURCE_FILE %DESTINATION_DIR,
+       \ FUSE_MOUNT|rar2fs --iob-size=64 %SOURCE_FILE %DESTINATION_DIR,
 fileviewer *.rar unrar v %c
 
 " IsoMount
@@ -353,7 +355,7 @@ filextype */
 
 
 "highlight --style olive -O xterm256
-fileviewer *.[ch],*.[ch]pp,*.md,*.js,*.json,*.java,
+fileviewer *.[ch],*.[ch]pp,*.md,*.markdown,*.js,*.json,*.java,
            \Makefile,Makefile.*,*.patch,*.diff,
            \*.html,*.htm,*.css,*.xml,*.py,*.pl,*.hex
            \ highlight -O xterm256 -s olive %c
