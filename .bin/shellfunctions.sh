@@ -382,7 +382,8 @@ qrcode() {
   [[ -e "$text" ]] && text=$(cat "$text")
   [[ -z "$text" ]] && [[ ! -t 0 ]] && text=$(cat -)
   [[ -z "$text" ]] && text=$(printclip)
-  echo "$text" | curl -F-=\<- qrenco.de
+  wget -q -O- qrenco.de/$(urlencode "$text")
+#  echo "$text" | curl -F-=\<- qrenco.de
 }
 
 # shows connected stationss in hotspot mode
