@@ -113,8 +113,15 @@ while getopts "ha:p:f:s:g:P:" opt; do
 done
 shift $((OPTIND-1)) 
  
+# Due to a bug in the hardware sample rate should be in the following range 
+# 225001 - 300000 Hz
+# 900001 - 3200000 Hz
+# and sample loss is to be expected for rates > 2400000
+# https://github.com/merbanan/rtl_sdr_r820t/commit/003bd51167d9680e9721c7296323fdffe4be5a09
+
 [ ! "$frequency" -eq 0 ] || show_error_exit "Wrong frequency"
 [ ! "$samplerate" -eq 0 ] || show_error_exit "Wrong sample rate"
+(("$f" > 225000 && "$f" <= 300000)) || (("$f" > 900000 && "$f" <= 2400000)) || show_error_exit "Wrong sample rate"
 
 (set_frequency $frequency;
  set_sample_rate $samplerate;
