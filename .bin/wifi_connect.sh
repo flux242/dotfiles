@@ -5,7 +5,7 @@
   exit 1
 }
 
-nmcli device wifi rescan
+#nmcli device wifi rescan
 
 IFS=$'\n'
 nmout=$(nmcli -m multiline -t -f ssid,bssid,freq,signal,security dev wifi)
