@@ -227,7 +227,7 @@ showsysteminfo () {
   echo -ne "${LIGHTRED}TEMPER:$NC\t";echo "$(showcputemp)"
   echo -ne "${LIGHTRED}BATTRY:$NC\t";echo "$(showbattery)"
   echo -ne "${LIGHTRED}PACKGS:$NC\t";dpkg -l | grep -E '^ii|^hi' | wc -l
-  echo -ne "${LIGHTRED}  DISK:$NC";df -h | grep -e"/dev/sd" -e"/mnt/" | awk '{print "\t"$0}'
+  echo -ne "${LIGHTRED}  DISK:$NC";\df -h | grep -e"/dev/sd" -e"/mnt/" | awk '{print "\t"$0}'
 }
 
 # monitors the network activity
@@ -237,7 +237,7 @@ shownetstat()
 #  watch --color -tn1 sudo grc 'netstat -tuapn|tail -n+3|grep -v "\(systemd-resolv\|cupsd\|FIN_WAIT1\|FIN_WAIT2\|TIME_WAIT\\)"'
 #  watch --color -tn1 sudo grc 'ss -tuapn4|tail -n+2|grep -v "\(systemd-resolv\|cupsd\|FIN_WAIT1\|FIN_WAIT2\|TIME_WAIT\\)"'
 #  watch --color -tn1 sudo grc 'ss -tuapn4|tail -n+2|grep -v "\(systemd-resolv\|FIN_WAIT1\|FIN_WAIT2\|TIME_WAIT\\)"'
-watch --color -tn1 sudo grc 'ss -tuapn | awk '\''{if(NR>1){if(0==match($0,/systemd-resolv|FIN-WAIT-1|FIN-WAIT-2|TIME-WAIT|LAST-ACK|SYN-SENT/)){gsub(/\s+/," ");gsub(/users\:\(\(|\)\)/,"");;print}}}'\'
+watch --color -tn1 sudo grc --colour=on 'ss -tuapn | awk '\''{if(NR>1){if(0==match($0,/systemd-resolv|FIN-WAIT-1|FIN-WAIT-2|TIME-WAIT|LAST-ACK|SYN-SENT/)){gsub(/\s+/," ");gsub(/users:\(\(|\)\)/,"");;print}}}'\'
 }
 
 # remove last n records from history
