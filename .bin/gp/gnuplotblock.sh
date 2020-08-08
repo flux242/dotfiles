@@ -49,6 +49,7 @@ blocks=0          # blocks counter
  echo "set xrange [$xrange]"
  echo "set yrange [$yrange]"
  echo "set zrange [$zrange]"
+ echo "set cbrange [$zrange]"
  echo "set ticslevel 0"
  echo "set hidden3d"
 # uncomment to remove axis, border and ticks
