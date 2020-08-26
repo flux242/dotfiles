@@ -241,7 +241,7 @@ filextype *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
         \ {View in shotwell}
         \ shotwell,
 fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
-         \ img2sixel -w $((%pw*8)) %c %pd,
+"         \ img2sixel -w $((%pw*8)) %c %pd,
          \ convert -identify %f -verbose /dev/null
 "         \ img2sixel -S -w $((%pw*8)) -h auto %c %pd,
 
@@ -286,7 +286,7 @@ fileviewer *.torrent dumptorrent -v %c
 
 " FuseZipMount
 "filetype *.zip,*.jar,*.war,*.ear,*.oxt,*.apkg
-filetype *.war,*.ear,*.oxt,*.apkg
+filetype *.zip,*.war,*.ear,*.oxt,*.apkg
        \ {Mount with fuse-zip}
        \ FUSE_MOUNT|fuse-zip %SOURCE_FILE %DESTINATION_DIR,
        \ {View contents}
@@ -296,7 +296,8 @@ filetype *.war,*.ear,*.oxt,*.apkg
 fileviewer *.zip,*.jar,*.war,*.ear,*.oxt zip -sf %c
 
 " ArchiveMount
-filetype *.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz,*.tar.xz,*.txz,*.xz,*.iso,*.deb,*.apk,*.zip,*.jar
+filetype *.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz,*.tar.xz,*.txz,
+         \*.xz,*.iso,*.deb,*.apk,*.jar,*.oxz
        \ {Mount with archivemount}
        \ FUSE_MOUNT|archivemount %SOURCE_FILE %DESTINATION_DIR,
 fileviewer *.tgz,*.tar.gz tar -tzf %c
@@ -498,20 +499,23 @@ nnoremap H :cd<cr>
 set classify=' :dir:/, :exe:, :link:'
 " various file names
 set classify+=' ::../::'
-"set classify+=' ::*.sh::, ::*.[hc]pp::, ::*.[hc]::,© ::/^copying|license$/::, ::.git/,,*.git/::,
+set classify+=' ::*.cs::, ::*.py::, ::*.js::, ::*.sh::, ::*.[hc]pp::, ::*.[hc]::,© ::/^copying|license$/::, ::.git/,,*.git/::'
 set classify+=' ::*.epub,,*.fb2,,*.djvu::, ::*.pdf::'
 " archives
-set classify+=' ::*.7z,,*.ace,,*.arj,,*.bz2,,*.cpio,,*.deb,,*.dz,,*.gz,,*.jar,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.rz,,*.tar,,*.taz,,*.tb2,,*.tbz,,*.tbz2,,*.tgz,,*.tlz,,*.trz,,*.txz,,*.tz,,*.tz2,,*.xz,,*.z,,*.zip,,*.zoo::'
+set classify+=' ::*.7z,,*.ace,,*.arj,,*.bz2,,*.cpio,,*.deb,,*.dz,,*.gz,,*.jar,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.rz,,*.tar,,*.taz,,*.tb2,,*.tbz,,*.tbz2,,*.tgz,,*.tlz,,*.trz,,*.txz,,*.tz,,*.tz2,,*.xz,,*.z,,*.zip,,*.zoo::'
+"set classify+=' ::*.7z,,*.ace,,*.arj,,*.bz2,,*.cpio,,*.deb,,*.dz,,*.gz,,*.jar,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.rz,,*.tar,,*.taz,,*.tb2,,*.tbz,,*.tbz2,,*.tgz,,*.tlz,,*.trz,,*.txz,,*.tz,,*.tz2,,*.xz,,*.z,,*.zip,,*.zoo::'
 " images
-set classify+=' ::*.bmp,,*.gif,,*.jpeg,,*.jpg,,*.ico,,*.png,,*.ppm,,*.svg,,*.svgz,,*.tga,,*.tif,,*.tiff,,*.xbm,,*.xcf,,*.xpm,,*.xspf,,*.xwd::'
+"set classify+=' ::*.bmp,,*.gif,,*.jpeg,,*.jpg,,*.ico,,*.png,,*.ppm,,*.svg,,*.svgz,,*.tga,,*.tif,,*.tiff,,*.xbm,,*.xcf,,*.xpm,,*.xspf,,*.xwd::'
+set classify+=' ::*.bmp,,*.gif,,*.jpeg,,*.jpg,,*.ico,,*.png,,*.ppm,,*.svg,,*.svgz,,*.tga,,*.tif,,*.tiff,,*.xbm,,*.xcf,,*.xpm,,*.xspf,,*.xwd::'
+
 " audio
-set classify+=' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m4a,,*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::'
+set classify+=' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m4a,,*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::'
 " media
 set classify+=' ::*.avi,,*.ts,,*.axv,,*.divx,,*.m2v,,*.m4p,,*.m4v,,.mka,,*.mkv,,*.mov,,*.mp4,,*.flv,,*.mp4v,,*.mpeg,,*.mpg,,*.nuv,,*.ogv,,*.pbm,,*.pgm,,*.qt,,*.vob,,*.wmv,,*.xvid::'
 " office files
-"set classify+=' ::*.doc,,*.docx::, ::*.xls,,*.xls[mx]::, ::*.pptx,,*.ppt::'
+set classify+=' ::*.doc,,*.docx::, ::*.xls,,*.xls[mx]::, ::*.pptx,,*.ppt::'
 set classify+=' :reg:'
-set classify+=' ::*.iso::'
+set classify+=' ::*.iso::'
 
 " hide side borders
 set tuioptions-=s
@@ -531,6 +535,16 @@ if !has('win')
     let $RIGHTS = '%[%u:%g%]'
 endif
 
+highlight User1 ctermbg=gray90
+highlight User2 ctermbg=blue ctermfg=231 cterm=bold
+highlight User3 ctermbg=blue ctermfg=gray90
+highlight User4 ctermbg=gray90 ctermfg=blue
+
+highlight User1 ctermbg=gray
+highlight User2 ctermbg=blue ctermfg=231 cterm=italic
+highlight User3 ctermbg=blue ctermfg=gray
+highlight User4 ctermbg= ctermfg=blue
+
 let $VIFMRC_HAS_RICH_FONT = ''
 if $VIFMRC_HAS_RICH_FONT
     let &statusline = ''
@@ -549,6 +563,20 @@ if $VIFMRC_HAS_RICH_FONT
     let &statusline .= ' %5E '         " human readable cumulative file size
     let &statusline .= '%4*%2*'       " right separator
     let &statusline .= ' %d '          " file modification date and time
+
+" let &statusline  = "%1*"         " initial color
+" let &statusline .= " %-26t "     " file name
+" let &statusline .= "%3*%2*"     " left separator
+" let &statusline .= "%="          " fill the whole status line
+" let &statusline .= "%3*%1*"     " right separator
+" let &statusline .= " %A "        " file attributes
+" let &statusline .= "%4*%2*"     " right separator
+" let &statusline .= " %7u:%-7g "  " user and group owners of the file
+" let &statusline .= "%3*%1*"     " right separator
+" let &statusline .= " %-5s "      " human readable file size
+" let &statusline .= "%4*%2*"     " right separator
+" let &statusline .= " %d "        " file modification date and time
+
 else
     let &statusline = ' '
     if $SL_PREFIX != ''
