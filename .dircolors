@@ -88,6 +88,7 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .bib                  38;5;178
 .json                 38;5;178
 .jsonl                38;5;178
+.ndjson               38;5;178
 .msg                  38;5;178
 .pgn                  38;5;178
 .rss                  38;5;178
@@ -98,6 +99,11 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .yml                  38;5;178
 .RData                38;5;178
 .rdata                38;5;178
+.xsd                  38;5;178
+.dtd                  38;5;178
+.sgml                 38;5;178
+.rng                  38;5;178
+.rnc                  38;5;178
 # }}}
 # binary {{{2
 .cbr                  38;5;141
@@ -112,8 +118,6 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .docm                 38;5;111;4
 .doc                  38;5;111
 .docx                 38;5;111
-.eps                  38;5;111
-.ps                   38;5;111
 .odb                  38;5;111
 .odt                  38;5;111
 .rtf                  38;5;111
@@ -173,6 +177,8 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .sublime-keymap       1
 .sublime-settings     1
 .sublime-snippet      1
+.sublime-project      1
+.sublime-workspace    1
 .tmTheme              1
 .user-ca-bundle       1
 # eclipse
@@ -195,6 +201,7 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .sh                   38;5;172
 .zsh                  38;5;172
 .vim                  38;5;172
+.kak                  38;5;172
 
 # interpreted {{{2
 .ahk                  38;5;41
@@ -310,6 +317,10 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .lagda.rst            38;5;81
 .lagda.md             38;5;81
 .agdai                38;5;110
+#   Zig
+.zig                  38;5;81
+# V
+.v                    38;5;81
 
 # binaries {{{2
 # compiled apps for interpreted languages
@@ -337,7 +348,6 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .java                 38;5;074;1
 .js                   38;5;074;1
 .mjs                  38;5;074;1
-.jsm                  38;5;074;1
 .jsm                  38;5;074;1
 .jsp                  38;5;074;1
 # }}}
@@ -460,7 +470,6 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .fcm                  38;5;137;1
 .m4a                  38;5;137;1
 .mid                  38;5;137;1
-.midi                 38;5;137;1
 .mod                  38;5;137;1
 .mp3                  38;5;137;1
 .mp4a                 38;5;137;1
@@ -547,7 +556,6 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .part                 38;5;239
   # }}}
 # partition images {{{2
-.dmg                  38;5;124
 .iso                  38;5;124
 .bin                  38;5;124
 .nrg                  38;5;124
@@ -678,9 +686,6 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .p12                  38;5;192;3
 .pem                  38;5;192;3
 .pgp                  38;5;192;3
-.asc                  38;5;192;3
-.enc                  38;5;192;3
-.sig                  38;5;192;3
 .p7s                  38;5;192;3
 *id_dsa                38;5;192;3
 *id_rsa                38;5;192;3
@@ -738,8 +743,6 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .pcb                  38;5;7
 #   groff (rendering app for texinfo)
 .mm                   38;5;7
-#   perldoc
-.pod                  38;5;7
 #   GIMP files
 .gbr                  38;5;7
 .scm                  38;5;7
@@ -774,7 +777,6 @@ STICKY_OTHER_WRITABLE 48;5;235;38;5;139;3
 .sch                  38;5;7
 .sty                  38;5;7
 .sug                  38;5;7
-.t                    38;5;7
 .tdy                  38;5;7
 .tfm                  38;5;7
 .tfnt                 38;5;7
