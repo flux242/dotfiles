@@ -19,7 +19,7 @@ set vicmd=vim
 " standard utilities like `cp`.  While using `cp` and alike is a more universal
 " solution, it's also much slower and doesn't support progress measuring.
 
-" set syscalls
+set syscalls
 
 " Trash Directory
 " The default is to move files that are deleted with dd or :d to
@@ -358,7 +358,7 @@ filextype */
 "highlight --style olive -O xterm256
 fileviewer *.[ch],*.[ch]pp,*.md,*.markdown,*.js,*.json,*.java,
            \Makefile,Makefile.*,*.patch,*.diff,
-           \*.html,*.htm,*.css,*.xml,*.py,*.pl,*.hex
+           \*.html,*.htm,*.css,*.xml,*.py,*.pl,*.hex,*.cs
            \ highlight -O xterm256 -s olive %c
 
 fileviewer *.sh,.bash*,.dircolors,.profile highlight -O xterm256 -s olive --syntax bash %c
@@ -495,26 +495,35 @@ nnoremap H :cd<cr>
 " Classification
 
 " file types
-"set classify=' :dir:/, :exe:, :reg:, :link:'
 set classify=' :dir:/, :exe:, :link:'
 " various file names
 set classify+=' ::../::'
-set classify+=' ::*.cs::, ::*.py::, ::*.js::, ::*.sh::, ::*.[hc]pp::, ::*.[hc]::,© ::/^copying|license$/::, ::.git/,,*.git/::'
-set classify+=' ::*.epub,,*.fb2,,*.djvu::, ::*.pdf::'
+set classify+=' ::*.go::, ::*.java::, ::*.scala::, ::*.rb::, ::*.php::, ::*.coffee::, ::*.json::, ::*.lua::, ::*.diff::, ::*.cs::, ::*.js::'
+set classify+=' ::*.sh,,*.awk,,*.sed,,*.pl,,*.less::'
+set classify+=' ::*.[hc]pp,,*.cc,,*.cxx::, ::*.[hc]::'
+set classify+=' ::*.htm,,*.html,,*.xml,,*.sgml::, ::*.css::'
+set classify+=' ::*.py,,*.pyc,,*.pyo,,*.pyd::'
+set classify+=' ::*.conf,,*.ini,,*.yml::'
+set classify+=' ::*.sln,,*.suo::'
+set classify+=' ::*.twig::'
+set classify+=' ::*.db,,*.sqlite::'
+set classify+='© ::/^copying|license$/::'
+set classify+=' ::.git/,,*.git/::'
+set classify+=' ::*.epub,,*.fb2,,*.djvu,,*.pdf,,*.chm::'
+set classify+=' ::*.md,,*.markdown::'
 " archives
-set classify+=' ::*.7z,,*.ace,,*.arj,,*.bz2,,*.cpio,,*.deb,,*.dz,,*.gz,,*.jar,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.rz,,*.tar,,*.taz,,*.tb2,,*.tbz,,*.tbz2,,*.tgz,,*.tlz,,*.trz,,*.txz,,*.tz,,*.tz2,,*.xz,,*.z,,*.zip,,*.zoo::'
-"set classify+=' ::*.7z,,*.ace,,*.arj,,*.bz2,,*.cpio,,*.deb,,*.dz,,*.gz,,*.jar,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.rz,,*.tar,,*.taz,,*.tb2,,*.tbz,,*.tbz2,,*.tgz,,*.tlz,,*.trz,,*.txz,,*.tz,,*.tz2,,*.xz,,*.z,,*.zip,,*.zoo::'
+set classify+=' ::*.7z,,*.ace,,*.arj,,*.apk,,*.bz2,,*.cpio,,*.deb,,*.dz,,*.gz,,*.jar,,*.lzh,,*.lzma,,*.rar,,*.rpm,,*.rz,,*.tar,,*.taz,,*.tb2,,*.tbz,,*.tbz2,,*.tgz,,*.tlz,,*.trz,,*.txz,,*.tz,,*.tz2,,*.xz,,*.z,,*.Z,,*.zip,,*.zoo::'
 " images
 "set classify+=' ::*.bmp,,*.gif,,*.jpeg,,*.jpg,,*.ico,,*.png,,*.ppm,,*.svg,,*.svgz,,*.tga,,*.tif,,*.tiff,,*.xbm,,*.xcf,,*.xpm,,*.xspf,,*.xwd::'
-set classify+=' ::*.bmp,,*.gif,,*.jpeg,,*.jpg,,*.ico,,*.png,,*.ppm,,*.svg,,*.svgz,,*.tga,,*.tif,,*.tiff,,*.xbm,,*.xcf,,*.xpm,,*.xspf,,*.xwd::'
+set classify+=' ::*.bmp,,*.gif,,*.jpeg,,*.jpg,,*.ico,,*.png,,*.ppm,,*.svg,,*.svgz,,*.tga,,*.tif,,*.tiff,,*.xbm,,*.xcf,,*.xpm,,*.xspf,,*.xwd::'
 
 " audio
-set classify+=' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m4a,,*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::'
+set classify+=' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m3u,,*.m4a,,*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::'
 " media
 set classify+=' ::*.avi,,*.ts,,*.axv,,*.divx,,*.m2v,,*.m4p,,*.m4v,,.mka,,*.mkv,,*.mov,,*.mp4,,*.flv,,*.mp4v,,*.mpeg,,*.mpg,,*.nuv,,*.ogv,,*.pbm,,*.pgm,,*.qt,,*.vob,,*.wmv,,*.xvid::'
 " office files
 set classify+=' ::*.doc,,*.docx::, ::*.xls,,*.xls[mx]::, ::*.pptx,,*.ppt::'
-set classify+=' :reg:'
+set classify+=' :reg:'
 set classify+=' ::*.iso::'
 
 " hide side borders
@@ -526,6 +535,7 @@ endif
 
 " change appearance of middle border
 " set fillchars=vborder:·
+set fillchars=vborder:▕
 
 
 " custom status line look
@@ -535,48 +545,33 @@ if !has('win')
     let $RIGHTS = '%[%u:%g%]'
 endif
 
-highlight User1 ctermbg=gray90
-highlight User2 ctermbg=blue ctermfg=231 cterm=bold
-highlight User3 ctermbg=blue ctermfg=gray90
-highlight User4 ctermbg=gray90 ctermfg=blue
+highlight Border cterm=none ctermfg=81 ctermbg=none
+highlight TopLine cterm=none ctermfg=black ctermbg=81
 
-highlight User1 ctermbg=gray
-highlight User2 ctermbg=blue ctermfg=231 cterm=italic
-highlight User3 ctermbg=blue ctermfg=gray
-highlight User4 ctermbg= ctermfg=blue
+highlight User1 ctermbg=81
+highlight User2 ctermbg=25 ctermfg=81 cterm=bold
+highlight User3 ctermbg=25 ctermfg=81
+highlight User4 ctermbg=81 ctermfg=25
 
-let $VIFMRC_HAS_RICH_FONT = ''
+let $VIFMRC_HAS_RICH_FONT = 'yes'
 if $VIFMRC_HAS_RICH_FONT
     let &statusline = ''
     if $SL_PREFIX != ''
         let &statusline = '%2*'.$SL_PREFIX.'%4*'
     endif
-    let &statusline .= '%1*'           " left separator
+    let &statusline .= '%2*'           " left separator
     let &statusline .= ' %t '          " file name
-    let &statusline .= ''             " left separator
+"    let &statusline .= '%1*'             " left separator
+    let &statusline .= '%4*%1*'             " left separator
     let &statusline .= '%='            " fill the whole status line
     let &statusline .= ''             " right separator
     let &statusline .= ' %A '          " file attributes
     let &statusline .= '%4*%2*'       " right separator
     let &statusline .= ' '.$RIGHTS.' ' " user and group owners of the file
     let &statusline .= '%3*%1*'       " right separator
-    let &statusline .= ' %5E '         " human readable cumulative file size
+    let &statusline .= ' %d '         " human readable cumulative file size
     let &statusline .= '%4*%2*'       " right separator
-    let &statusline .= ' %d '          " file modification date and time
-
-" let &statusline  = "%1*"         " initial color
-" let &statusline .= " %-26t "     " file name
-" let &statusline .= "%3*%2*"     " left separator
-" let &statusline .= "%="          " fill the whole status line
-" let &statusline .= "%3*%1*"     " right separator
-" let &statusline .= " %A "        " file attributes
-" let &statusline .= "%4*%2*"     " right separator
-" let &statusline .= " %7u:%-7g "  " user and group owners of the file
-" let &statusline .= "%3*%1*"     " right separator
-" let &statusline .= " %-5s "      " human readable file size
-" let &statusline .= "%4*%2*"     " right separator
-" let &statusline .= " %d "        " file modification date and time
-
+    let &statusline .= ' %5E '          " file modification date and time
 else
     let &statusline = ' '
     if $SL_PREFIX != ''
