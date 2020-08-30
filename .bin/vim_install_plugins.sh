@@ -9,3 +9,4 @@ git clone --depth=1 https://github.com/plasticboy/vim-markdown.git ~/.vim/bundle
 git clone --depth=1 https://github.com/edkolev/promptline.vim ~/.vim/bundle/promptline.vim
 git clone --depth=1 https://github.com/skywind3000/asyncrun.vim.git ~/.vim/bundle/asyncrun.vim
 #git clone --depth=1 https://github.com/ludovicchabant/vim-gutentags.git ~/.vim/bundle/vim-gutentags.git
+git clone --depth=1 https://github.com/cj/vim-webdevicons.git ~/.vim/bundle/vim-webdevicons
