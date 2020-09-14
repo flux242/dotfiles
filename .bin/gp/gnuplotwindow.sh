@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
 
-terminal="qt"     # terminal type (x11,wxt,qt,pdfcairo,pngcairo,..)
-output=
-output_ext=
+# Example:
+# nc -luk 6666 | jq --unbuffered -c 'select(.id==129)|.temperature_C' | \
+#  GNUPLOT_TERM='sixelgd animate' ~/bin/gp/gnuplotwindow.sh 6000 "10:25" "Outside temperature;2;red"
+
+terminal="${GNUPLOT_TERM:-qt}"     # terminal type (x11,wxt,qt,pdfcairo,pngcairo,..)
+output="${GNUPLOT_OUT}"
+output_ext="${GNUPLOT_EXT}"
 winsize=${1:-60}   # number of samples to show
 yrange=${2:-0:100} # min:max values of displayed y range.
                    # ":" for +/- infinity. Default "0:100"
@@ -41,7 +45,7 @@ samples=0          # samples counter
     }
     echo "set term $terminal noraise"
     [[ -n "$output" ]] && {
-      echo "set output ${output}.$samples.${output_ext}"
+      echo "set output "\""${output}.$samples.${output_ext}"\"
     }
     echo "set yrange [$yrange]"
     echo "set xrange [${samples}:$((samples+${#a[@]}-1))]"

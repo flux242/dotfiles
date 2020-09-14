@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 # Usage example: 
+#
 # bin/gp/clock.sh|bin/gp/gnuplotblock.sh ":;5:11" ";points pointtype 5 pointsize 5;blue;xy"
+# ~/bin/gp/clock.sh|GNUPLOT_TERM='sixelgd animate transparent size 770,220' ~/bin/gp/gnuplotblock.sh "7:;5:11" ";points pointtype 5 pointsize 5;white;xy"
 
 dx=1
 dy=1

@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
 # Usage example: 
+#
 # ./clock2.sh|bin/gp/gnuplotblock.sh ":;0:12" ";points pointtype 7 pointsize 5;blue;xy"
+# ~/bin/gp/clock2.sh|GNUPLOT_TERM='sixelgd animate transparent size 1045,255' ~/bin/gp/gnuplotblock.sh "-1:;0:12" ";points pointtype 7 pointsize 3;white;xy"
+
 dx=1
 dy=1
 lpd=10 # lines per digit

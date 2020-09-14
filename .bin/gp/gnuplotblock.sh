@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-terminal="qt"      # terminal type (x11,wxt,qt)
+terminal="${GNUPLOT_TERM:-qt}"     # terminal type (x11,wxt,qt,pdfcairo,pngcairo,..)
 range=${1:-:;:;:}  # min:max values of displayed ranges.
                    # ":" for +/- infinity. Default ":;:;:"
 shift              # the rest are the titles
