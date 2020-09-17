@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export APP_NAME="gimp"
+export PRIVATE_HOME="yes"
+start_appimage.sh
+
