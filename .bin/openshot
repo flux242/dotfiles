@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export PRIVATE_HOME="yes"
+export APP_NAME="openshot"
+start_appimage.sh
+
