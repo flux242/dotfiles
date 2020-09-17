@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 Use byzanz to create a GIF screencast of a specific window.
 
@@ -21,12 +21,14 @@ def byzanz_window(filename, duration=10, delay=1, is_cursor=False,
     winid = check_output('xdotool selectwindow'.split()).strip()
 
     wininfo = check_output(['xwininfo', '-id', winid])
+    wininfo = str(wininfo)
     x = int(re.search(r'Absolute upper-left X:\s*(\d+)', wininfo).group(1))
     y = int(re.search(r'Absolute upper-left Y:\s*(\d+)', wininfo).group(1))
     width = int(re.search(r'Width:\s*(\d+)', wininfo).group(1))
     height = int(re.search(r'Height:\s*(\d+)', wininfo).group(1))
     
     xprop = check_output(['xprop', '-id', winid])
+    xprop = str(xprop)
     match = re.search(r'_NET_FRAME_EXTENTS\(CARDINAL\) = (\d+), (\d+), (\d+), (\d+)', xprop)
     if match != None:
       left, right, top, bottom = map(int, match.groups())
@@ -34,7 +36,7 @@ def byzanz_window(filename, duration=10, delay=1, is_cursor=False,
       left, right, top, bottom = (0,0,0,0)
     
     print("Press enter when you are ready to capture.")
-    raw_input()
+    input()
     
     check_call(['xdotool', 'windowactivate', winid])
     
