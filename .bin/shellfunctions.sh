@@ -439,3 +439,32 @@ listd() {
 grabpage() {
   wget --no-clobber -e robots=off --recursive --convert-links  --html-extension --page-requisites --no-parent "$1"
 }
+
+imgur() {
+  # This function reads imgur client id from the IMGUR_ID var or from the keyring
+  #   python3 -c 'import keyring; print(keyring.get_password("imgur","'"$USER"'"))'
+  # One could put the imgur client id into the keyring using the following command:
+  #   python3 -c 'import keyring; keyring.set_password("imgur","'"$USER"'", "MY_CLIENT_ID")'
+  # where MY_CLIENT_ID is the token string obtained from https://api.imgur.com/oauth2/addclient
+
+  clientid=${IMGUR_ID}
+  [ -n "$clientid" ] || clientid=$(python3 -c 'import keyring; print(keyring.get_password("imgur","'"$USER"'"))')
+  [ -n "$clientid" ] || printf "No imgur client id specified. Get one using https://api.imgur.com/oauth2/addclient\n"
+  img="$1"
+  [ -e "$img" ] || {
+    img=$(mktemp '/tmp/imgur-XXXXXX.png')
+    scrot -s "$@" $img >/dev/null 2>&1 || exit
+    is_scrshot_created=1
+    printf "Upload the screenshot [y/n]? "; read LINE; [ "y" = "$LINE" ] || exit
+  }
+  res=$(curl -sH "Authorization: Client-ID $clientid" -F "image=@$img" "https://api.imgur.com/3/upload")
+
+  echo $res | grep -qo '"status":200' && link=$(echo $res | sed -e 's/.*"link":"\([^"]*\).*/\1/' -e 's/\\//g')
+  if test -n "$link"; then
+    printf $link | tee /dev/stderr | xclip -i -sel c; printf "\n"
+  else
+    echo "$res" > "/dev/stderr"
+  fi
+
+  [ -n "$is_scrshot_created" ] && rm "$img"
+}
