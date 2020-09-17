@@ -1,6 +1,7 @@
 # Local Address:Port
 #regexp=((?:\d+\.){3}\d+|\*|::1?|[\w\d\-\_\.]+):(\S+)\s+\s((?:\d+\.){3}\d+|\*|::1?|[\w\d\-\_\.]+):(\S+)
-regexp=((?:\d+\.){3}\d+|\*|\[[^\]]+\]|\[[^\]]+\]%[^:]+):(\d+)\s+((?:\d+\.){3}\d+|\[[^\]]+\]|\*):(\d+|\*)\s+[^\"]+(.[^\"]*.)\S*
+#regexp=((?:\d+\.){3}\d+|\*|\[[^\]]+\]|\[[^\]]+\]%[^:]+):(\d+)\s+((?:\d+\.){3}\d+|\[[^\]]+\]|\*):(\d+|\*)\s+[^\"]+(.[^\"]*.)\S*
+regexp=\s((?:\d+\.){3}\d+(?:%[^:]+)?|\[[^\]]+\](?:%[^:]+)?|\*):(\S+)\s+\s((?:\d+\.){3}\d+|\*|[\w\d\-\_\.]+|\[[^\]]+\]):(\S+)[^\"]+(.[^\"]*.)\S*
 colours=default,bright_green,bright_red,cyan,magenta,yellow
 =======
 # ipx hostname
@@ -24,11 +25,11 @@ regexp=UNCONN
 colours=dark red
 =======
 # status
-regexp=FIN-WAIT[^\s]*
+regexp=FIN_WAIT-\d
 colours=red
 =======
 # status
-regexp=SYN-[^\s]*
+regexp=SYN-(SENT|RECV)
 colours=bold red
 =======
 # status
@@ -36,16 +37,16 @@ regexp=LISTEN(ING)?
 colours=bold blue
 =======
 # status
-regexp=TIME-WAIT
+regexp=TIME_WAIT
 colours=bold red
 =======
 # status
-regexp=CLOS(E(-WAIT)?|ING)
+regexp=CLOS(E(_WAIT)?|ING)
 colours=red
 skip=yes
 =======
 # status
-regexp=LAST-ACK
+regexp=LAST_ACK
 colours=red
 =======
 # status
