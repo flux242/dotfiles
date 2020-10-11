@@ -1,10 +1,23 @@
 #!/usr/bin/env bash
 
-state=$(awk '/TouchpadOff/ { print $3 }' <(synclient -l))
+id=$(xinput list | awk '/Touchpad/{print gensub(/id=/, "", "g", $6)}')
 
-case "$state" in
-  0) synclient touchpadoff=1;notify-send "Touchpad Alert" "Touchpad is toggled off" -i dialog-information ;; 
-  1) synclient touchpadoff=0;notify-send "Touchpad Alert" "Touchpad is toggled on" -i dialog-information ;;
-  *) exit 1 ;;
-esac
+[ -n "$id" ] && {
+  state=$(xinput list-props $id | awk '/Device Enabled/{print $4}')
+  case "$state" in
+    1) xinput disable $id;notify-send "Touchpad Alert" "Touchpad is toggled off" -i dialog-information ;; 
+    0) xinput enable $id;notify-send "Touchpad Alert" "Touchpad is toggled on" -i dialog-information ;;
+    *) exit 1 ;;
+  esac
+}
+
+# the code below is for synaptic (xserver-xorg-input-syaptics package). Synaptic is replaced with
+# the libinput so the code is not workging any longre and only kept for historical reasons
+#state=$(awk '/TouchpadOff/ { print $3 }' <(synclient -l))
+#
+#case "$state" in
+# 0) synclient touchpadoff=1;notify-send "Touchpad Alert" "Touchpad is toggled off" -i dialog-information ;; 
+# 1) synclient touchpadoff=0;notify-send "Touchpad Alert" "Touchpad is toggled on" -i dialog-information ;;
+# *) exit 1 ;;
+#esac
 
