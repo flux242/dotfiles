@@ -1,2 +1,3 @@
 bind -f browser h browser-up
 bind -f browser l win-activate 
+colorscheme night
