@@ -2,7 +2,8 @@
 
 [ -n "$APP_NAME" ] || exit 1
 
-appbin=$(find ~/Applications/ -iname "$APP_NAME"'*' -exec sh -c '[ -x "{}" -a ! -d "{}" ] && echo "{}"' \;)
+appbin=$(find ~/Applications/ -maxdepth 1 -iname "$APP_NAME"'*' -exec sh -c '[ -x "{}" -a ! -d "{}" ] && echo "{}"' \;)
+
 if [ -n "$appbin" ]; then
   if [ -n "$(which firejail)" ]; then
     profilename="${HOME}/.config/firejail/${APP_NAME}.profile"
