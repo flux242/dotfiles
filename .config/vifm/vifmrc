@@ -241,9 +241,8 @@ filextype *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
         \ {View in shotwell}
         \ shotwell,
 fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
-"         \ img2sixel -w $((%pw*8)) %c %pd,
+         \ img2sixel -S -w $((%pw*9)) %c %pd %pc clear,
          \ convert -identify %f -verbose /dev/null
-"         \ img2sixel -S -w $((%pw*8)) -h auto %c %pd,
 
 " OpenRaster
 filextype *.ora
@@ -297,7 +296,7 @@ fileviewer *.zip,*.jar,*.war,*.ear,*.oxt zip -sf %c
 
 " ArchiveMount
 filetype *.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz,*.tar.xz,*.txz,
-         \*.xz,*.iso,*.deb,*.apk,*.jar,*.oxz
+         \*.xz,*.iso,*.deb,*.apk,*.jar,*.oxz,*.epub
        \ {Mount with archivemount}
        \ FUSE_MOUNT|archivemount %SOURCE_FILE %DESTINATION_DIR,
 fileviewer *.tgz,*.tar.gz tar -tzf %c
@@ -499,7 +498,8 @@ set classify=' :dir:/, :exe:, :link:'
 " various file names
 set classify+=' ::../::'
 set classify+=' ::*.go::, ::*.java::, ::*.scala::, ::*.rb::, ::*.php::, ::*.coffee::, ::*.json::, ::*.lua::, ::*.diff::, ::*.cs::, ::*.js::'
-set classify+=' ::*.sh,,*.awk,,*.sed,,*.pl,,*.less::'
+set classify+=' ::*.sh,,*.awk,,*.sed,,*.less::'
+set classify+=' ::*.pl::'
 set classify+=' ::*.[hc]pp,,*.cc,,*.cxx::, ::*.[hc]::'
 set classify+=' ::*.htm,,*.html,,*.xml,,*.sgml::, ::*.css::'
 set classify+=' ::*.py,,*.pyc,,*.pyo,,*.pyd::'
