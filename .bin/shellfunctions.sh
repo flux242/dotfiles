@@ -226,6 +226,7 @@ showsysteminfo () {
   echo -ne "${LIGHTRED} USERS:$NC\t";w -h | awk '{print $1}'|uniq|awk '{users=users$1" "}END{print users}'
   echo -ne "${LIGHTRED}TEMPER:$NC\t";echo "$(showcputemp)"
   echo -ne "${LIGHTRED}BATTRY:$NC\t";echo "$(showbattery)"
+  echo -ne "${LIGHTRED}DISPLY:$NC\t";echo "$(xdpyinfo | awk '/dimensions:/{print $2}')"
   echo -ne "${LIGHTRED}PACKGS:$NC\t";dpkg -l | grep -E '^ii|^hi' | wc -l
   echo -ne "${LIGHTRED}  DISK:$NC";\df -h | grep -e"/dev/sd" -e"/mnt/" | awk '{print "\t"$0}'
 }
