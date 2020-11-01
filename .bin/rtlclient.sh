@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # A simple bash rtl_tcp client
 # Written by Alexander K
 #
@@ -11,6 +11,8 @@
 #        awk -v n=5 'BEGIN{m=int(n/2)+1}{if(1==i){for(j=1;j<n;++j){a[j]=a[j+1]}a[n]=$1}else{for(j=1;j<=n;++j){a[j]=$1};i=1}asort(a,b);print(b[m]);fflush()}'|\
 #        bin/gp/syncpipe.pl 60 0 | bin/gp/gnuplotwindow.sh "$((24*60))" ":" "Outside temperature")
 
+# RTL_CLIENT_CONTROL_FILE is defined in the defaults.conf but I'm not sourcing it here
+[ -n "$RTL_CLIENT_CONTROL_FILE" ] || RTL_CLIENT_CONTROL_FILE='/tmp/rtlclient.control.txt'
 
 SET_FREQUENCY=1
 SET_SAMPLE_RATE=2
@@ -123,8 +125,18 @@ shift $((OPTIND-1))
 [ ! "$samplerate" -eq 0 ] || show_error_exit "Wrong sample rate"
 (("$f" > 225000 && "$f" <= 300000)) || (("$f" > 900000 && "$f" <= 2400000)) || show_error_exit "Wrong sample rate"
 
-(set_frequency $frequency;
- set_sample_rate $samplerate;
- set_gain $gain;
- set_ppm $ppm) | nc $address $port 
+echo "freq $frequency" > "$RTL_CLIENT_CONTROL_FILE"
+echo "srate $samplerate" >> "$RTL_CLIENT_CONTROL_FILE"
+echo "gain $gain" >> "$RTL_CLIENT_CONTROL_FILE"
+echo "ppm $ppm" >> "$RTL_CLIENT_CONTROL_FILE"
 
+tail -f "$RTL_CLIENT_CONTROL_FILE" | while read LINE
+do
+  case "$LINE" in
+    freq*) set_frequency "${LINE#freq }" ;;
+    srate*) set_sample_rate "${LINE#srate }" ;;
+    gain*) set_gain "${LINE#gain }" ;;
+    ppm*) set_ppm "${LINE#ppm }" ;;
+    *) ;;
+  esac
+done | nc $address $port
