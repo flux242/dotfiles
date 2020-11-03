@@ -363,7 +363,16 @@ printdebtree() {
   debtree $1 -I --condense --no-alternatives --no-provides --no-recommends --no-conflicts | tred | dot -Tsvg
 }
 showdebtree() {
-  printdebtree $1 | rsvg-view-3 /dev/stdin
+  # rsvg-view-3 is not shipped any longer. The librsvg2-bin package
+  # still has rsvg-convert utility.
+  # TODO zathura is hardcoded
+  # we could register any pdf viewer like this:
+  # xdg-mime default org.pwmt.zathura.desktop application/pdf
+  # and then query the info
+  # xdg-mime query default application/pdf
+  # then the desktop file needs to found and parsed to get the app name
+  # printdebtree $1 | rsvg-view-3 /dev/stdin
+  printdebtree $1 | rsvg-convert -u -f pdf | zathura -
 }
 
 # shows kernel graph
