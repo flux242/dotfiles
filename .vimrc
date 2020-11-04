@@ -210,12 +210,13 @@ hi Statement     ctermfg=Brown cterm=bold
 "hi Constant      ctermfg=64
 "hi Constant      term=underline ctermfg=9 guifg=#ffa0a0
 hi Constant      term=underline ctermfg=15 guifg=#ffa0a0
-hi link          Number Constant
+hi! link          Number Constant
 hi StorageClass  ctermfg=Red guifg=Red gui=bold
 hi Search        term=reverse ctermbg=Yellow ctermfg=Black guibg=Yellow guifg=Black
 hi MoreThen80    ctermbg=236 guibg=lightcyan
 hi Directory     ctermfg=DarkBlue cterm=bold
 hi Visual        ctermfg=0 ctermbg=7
+hi! link         SignColumn LineNr
 
 " change statusline color depending on the mode
 autocmd InsertEnter * hi StatusLine ctermbg=52
