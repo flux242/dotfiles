@@ -1,28 +1,35 @@
 #!/usr/bin/env bash
 
+# this script requires python3-notify2 lib to be installed first
+
 # $1 - icon_name, $2 - volume, $3 - id
 print_cmd()
 {
 cat <<HEREDOC
-import pynotify
-pynotify.init("volume_notif.py")
-notif=pynotify.Notification("Volume", "", "$1")
+import notify2
+notify2.init("volume_notify.py")
+notif=notify2.Notification("Volume", "", "$1")
 notif.set_hint_int32("value",$2)
-notif.set_property("id", $3)
+notif.id = $3
 notif.show()
-print notif.get_property("id")
+print(notif.id)
 HEREDOC
 }
 
 step=5
-card=1
+card=0
 id_file="/tmp/notify_volume.id"
 
-icon_high="/usr/share/icons/elementary-xfce/notifications/48/audio-volume-high.png"
-icon_low="/usr/share/icons/elementary-xfce/notifications/48/audio-volume-low.png"
-icon_medium="/usr/share/icons/elementary-xfce/notifications/48/audio-volume-medium.png"
-icon_muted="/usr/share/icons/elementary-xfce/notifications/48/audio-volume-muted.png"
-icon_off="/usr/share/icons/elementary-xfce/notifications/48/audio-volume-off.png"
+#icon_high="/usr/share/icons/elementary-xfce/notifications/48/audio-volume-high.png"
+#icon_low="/usr/share/icons/elementary-xfce/notifications/48/audio-volume-low.png"
+#icon_medium="/usr/share/icons/elementary-xfce/notifications/48/audio-volume-medium.png"
+#icon_muted="/usr/share/icons/elementary-xfce/notifications/48/audio-volume-muted.png"
+#icon_off="/usr/share/icons/elementary-xfce/notifications/48/audio-volume-off.png"
+icon_high="audio-volume-high"
+icon_low="audio-volume-low"
+icon_medium="audio-volume-medium"
+icon_muted="audio-volume-muted"
+icon_off="audio-volume-off"
 
 case $1 in 
   up)
@@ -59,7 +66,7 @@ if [[ $muted == "off" ]]; then
 fi
 id=$(cat $id_file 2>/dev/null);id=${id:-0}
 #echo $id
-idn=$(python -c "$(print_cmd "$icon" "$volume" "$id")")
+idn=$(python3 -c "$(print_cmd "$icon" "$volume" "$id")")
 (("$idn" != "$id")) && echo "$idn" > "$id_file"
 exit 0
 
