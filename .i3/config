@@ -20,7 +20,7 @@ set $mod Mod1
 # chose a FreeType font, such as:
 # font pango:DejaVu Sans Mono 9
 # font pango:Monospace 9
-font pango:Monospace 10,Icons 10 
+font pango:Monospace 12,Icons 12
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -139,9 +139,9 @@ bindsym Ctrl+Shift+space exec ~/bin/toggleterminalscrollbar.sh
 bindsym $mod+g exec ~/.i3/load_layout.sh
 
 # volume control
-#bindsym XF86AudioLowerVolume exec /home/alex/bin/volume_notify.sh down
-#bindsym XF86AudioRaiseVolume exec /home/alex/bin/volume_notify.sh up
-#bindsym XF86AudioMute        exec /home/alex/bin/volume_notify.sh toggle
+bindsym XF86AudioLowerVolume exec /home/alex/bin/volume_notify_pa.sh down
+bindsym XF86AudioRaiseVolume exec /home/alex/bin/volume_notify_pa.sh up
+bindsym XF86AudioMute        exec /home/alex/bin/volume_notify_pa.sh toggle
 
 # brightness control
 #bindsym XF86MonBrightnessDown exec xbacklight -steps 1 -time 0 -dec 5
@@ -187,7 +187,7 @@ client.urgent              #FF0000   #FF0000    #FF0000
 #exec --no-startup-id setxkbmap -layout us,ru -option 'grp:alt_shift_toggle' -model chromebook
 
 # Windows settings
-default_border pixel 3
+default_border pixel 4
 #new_window pixel 2
 for_window [class="^Psi-plus$"] floating enable, move container to workspace 2
 for_window [title="^TerminalHtop$"] floating enable
@@ -219,7 +219,7 @@ exec --no-startup-id ~/bin/dpmsoff &
 # not be running on a battery
 exec --no-startup-id sh -c "~/bin/isonbattery.sh || compton" &
 exec --no-startup-id sh -c "xfsettingsd --sm-client-disable || mate-settings-daemon" &
-exec --no-startup-id xfce4-volumed &
+#exec --no-startup-id xfce4-volumed &
 exec --no-startup-id sh -c "xfce4-power-manager || mate-power-manager "&
 exec --no-startup-id nm-applet &
 exec --no-startup-id blueman-applet &
@@ -230,3 +230,6 @@ exec --no-startup-id pnmixer &
 exec --no-startup-id xpad &
 exec --no-startup-id sh -c "sleep 3 && xxkb" &
 exec --no-startup-id thunar --daemon &
+
+# gaps
+#exec --no-startup-id i3-msg gaps inner all set 8

@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# this script is depricated because pulseaudio should be
+# used instead of the amixer. Use volume_notify_pa.sh instead
+
 # this script requires python3-notify2 lib to be installed first
 
 # $1 - icon_name, $2 - volume, $3 - id
