@@ -218,6 +218,7 @@ showcputemp() {
 # system info
 showsysteminfo () {
   echo -ne "${LIGHTRED}   CPU:$NC";sed -nr  's/model name[^:*]: (.*)/\t\1/p' /proc/cpuinfo
+  echo -ne "${LIGHTRED}   GPU:$NC\t";glxinfo -l | sed -nr 's/.*Device\:\ |.*Video\ memory\:\ (.*)/\1/p' | awk '{printf("%s ",$0)}END{printf("\n")}'
   echo -ne "${LIGHTRED}MEMORY:$NC\t";awk '/MemTotal/{mt=$2};/MemFree/{mf=$2};/MemAvail/{ma=$2}END{print "Total: "mt" | Free: "mf" | Available: "ma" (kB)"}' /proc/meminfo
   echo -ne "${LIGHTRED}    OS:$NC\t";lsb_release -cds|awk '{printf("%s ", $0)}';echo
   echo -ne "${LIGHTRED}KERNEL:$NC\t";uname -a | awk '{ print $3 }'
@@ -228,7 +229,7 @@ showsysteminfo () {
   echo -ne "${LIGHTRED}BATTRY:$NC\t";echo "$(showbattery)"
   echo -ne "${LIGHTRED}DISPLY:$NC\t";echo "$(xdpyinfo | awk '/dimensions:/{print $2}')"
   echo -ne "${LIGHTRED}PACKGS:$NC\t";dpkg -l | grep -E '^ii|^hi' | wc -l
-  echo -ne "${LIGHTRED}  DISK:$NC";\df -h | grep -e"/dev/sd" -e"/mnt/" | awk '{print "\t"$0}'
+  echo -ne "${LIGHTRED}  DISK:$NC";df -h | awk '/\/dev\/sd|\/mnt\//{print "\t"$0}'
 }
 
 # monitors the network activity
@@ -433,7 +434,8 @@ ascii() {
 }
 
 dusort() {
-  \du -sh $@ | sort -h | grcat conf.du
+#  IFS='\n' \du -sh "$@" | sort -h | grcat conf.du
+  \du -sh "$@" | sort -h | grcat conf.du
 }
 
 #list servicesd
