@@ -199,9 +199,9 @@ expandurl() {
 showbattery() {
   local dir=/sys/class/power_supply/BAT0/
   if [[ -e "$dir"/charge_now ]]; then
-    echo "$(<"$dir"/status) $(( $(<"$dir"/charge_now) * 100 / $(<"$dir"/charge_full) ))%"
+    echo "$(<"$dir"/status) $(( $(<"$dir"/charge_now) * 100 / $(<"$dir"/charge_full) ))% Capacity $(<"$dir"/capacity)%"
   elif [[ -e "$dir"/energy_now ]]; then
-    echo "$(<"$dir"/status) $(( $(<"$dir"/energy_now) * 100 / $(<"$dir"/energy_full) ))%"
+    echo "$(<"$dir"/status) $(( $(<"$dir"/energy_now) * 100 / $(<"$dir"/energy_full) ))% Capacity $(<"$dir"/capacity)%"
   fi
 }
 
@@ -217,19 +217,24 @@ showcputemp() {
 
 # system info
 showsysteminfo () {
-  echo -ne "${LIGHTRED}   CPU:$NC";sed -nr  's/model name[^:*]: (.*)/\t\1/p' /proc/cpuinfo
-  echo -ne "${LIGHTRED}   GPU:$NC\t";glxinfo -l | sed -nr 's/.*Device\:\ |.*Video\ memory\:\ (.*)/\1/p' | awk '{printf("%s ",$0)}END{printf("\n")}'
-  echo -ne "${LIGHTRED}MEMORY:$NC\t";awk '/MemTotal/{mt=$2};/MemFree/{mf=$2};/MemAvail/{ma=$2}END{print "Total: "mt" | Free: "mf" | Available: "ma" (kB)"}' /proc/meminfo
-  echo -ne "${LIGHTRED}    OS:$NC\t";lsb_release -cds|awk '{printf("%s ", $0)}';echo
-  echo -ne "${LIGHTRED}KERNEL:$NC\t";uname -a | awk '{ print $3 }'
-  echo -ne "${LIGHTRED}  ARCH:$NC\t";uname -m
-  echo -ne "${LIGHTRED}UPTIME:$NC\t";uptime -p
-  echo -ne "${LIGHTRED} USERS:$NC\t";w -h | awk '{print $1}'|uniq|awk '{users=users$1" "}END{print users}'
-  echo -ne "${LIGHTRED}TEMPER:$NC\t";echo "$(showcputemp)"
-  echo -ne "${LIGHTRED}BATTRY:$NC\t";echo "$(showbattery)"
-  echo -ne "${LIGHTRED}DISPLY:$NC\t";echo "$(xdpyinfo | awk '/dimensions:/{print $2}')"
-  echo -ne "${LIGHTRED}PACKGS:$NC\t";dpkg -l | grep -E '^ii|^hi' | wc -l
-  echo -ne "${LIGHTRED}  DISK:$NC";df -h | awk '/\/dev\/sd|\/mnt\//{print "\t"$0}'
+  echo -ne "${LIGHTRED}PRODUCT$NC\t";cat /sys/class/dmi/id/product_name
+  echo -ne "${LIGHTRED} VENDOR$NC\t";cat /sys/class/dmi/id/sys_vendor | tr -c '[[:print:]]' ' ';printf "\n"
+#  echo -ne "${LIGHTRED}   BIOS$NC\t";cat /sys/class/dmi/id/bios_version
+  echo -ne "${LIGHTRED}    CPU$NC";sed -nr  's/model name[^:*]: (.*)/\t\1/p' /proc/cpuinfo
+  echo -ne "${LIGHTRED}    GPU$NC\t";glxinfo -l | sed -nr 's/.*Device\:\ |.*Video\ memory\:\ (.*)/\1/p' | awk '{printf("%s ",$0)}END{printf("\n")}'
+  echo -ne "${LIGHTRED}NETWORK$NC\t";lspci | awk '/Network controller/{$1="";$2="";$3="";print}'|sed -nr "s/^\s*(.*)/\1/p"
+  echo -ne "${LIGHTRED} MEMORY$NC\t";awk '/MemTotal/{mt=$2};/MemFree/{mf=$2};/MemAvail/{ma=$2}END{print "Total: "mt" | Free: "mf" | Available: "ma" (kB)"}' /proc/meminfo
+  echo -ne "${LIGHTRED}     OS$NC\t";lsb_release -cds|awk '{printf("%s ", $0)}';echo
+  echo -ne "${LIGHTRED} KERNEL$NC\t";uname -a | awk '{ print $3 }'
+  echo -ne "${LIGHTRED}   ARCH$NC\t";uname -m
+  echo -ne "${LIGHTRED} UPTIME$NC\t";uptime -p
+  echo -ne "${LIGHTRED}  USERS$NC\t";w -h | awk '{print $1}'|uniq|awk '{users=users$1" "}END{print users}'
+  echo -ne "${LIGHTRED} TEMPER$NC\t";echo "$(showcputemp)"
+  echo -ne "${LIGHTRED}BATTERY$NC\t";echo "$(showbattery)"
+  echo -ne "${LIGHTRED}DISPLAY$NC\t";echo "$(xdpyinfo | awk '/dimensions:/{print $2}')"
+  echo -ne "${LIGHTRED}PACKGES$NC\t";dpkg -l | grep -E '^ii|^hi' | wc -l
+#  echo -ne "${LIGHTRED}   DISK$NC";df -h | awk '/\/dev\/sd|\/mnt\//{print "\t"$0}'
+  echo -ne "${LIGHTRED}   DISK$NC";lsblk -I8 -o +FSTYPE -o NAME,SIZE,FSTYPE,LABEL,MOUNTPOINT | tail -n+2 | awk '{print "\t"$0}'
 }
 
 # monitors the network activity
