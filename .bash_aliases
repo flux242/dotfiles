@@ -4,7 +4,7 @@ shopt -s dotglob
 shopt -s histappend
 
 # Ignore some controlling instructions
-export HISTIGNORE="[   ]*:&:bg:fg:exit:ls:la:ll:l:ps:df:vim:vi:man*:info*:exit:dmesg:ifconfig:route:"
+export HISTIGNORE="[   ]*:&:bg:fg:exit:ls:la:ll:l:ps:df:vim:vi:man*:info*:exit:dmesg:ifconfig:route:gs:gd:gl:cd"
 export HISTSIZE=-1     # unlimited
 export HISTFILESIZE=-1 # unlimited
 export HISTFILE=~/.bash_eternal_history
