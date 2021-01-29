@@ -23,5 +23,5 @@ ynumb=$( awk -v min=$ymin -v max=$ymax -v step=$step 'BEGIN{if(min<0){min=-min};
          print ""
        }
        fflush();arg+=argstep}'| \
-  bin/gp/gnuplotblock.sh "0:$xnumb;0:$ynumb;-0.25:1" \
+  ~/bin/gp/gnuplotblock.sh "0:$xnumb;0:$ynumb;-0.25:1" \
     "sinc(sqrt(x*x+y*y));l lw 1 palette;;3db;$((xnumb+1));$((ynumb+1))"
