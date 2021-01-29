@@ -224,11 +224,10 @@ showsysteminfo () {
   echo -ne "${LIGHTRED}    GPU$NC\t";glxinfo -l | sed -nr 's/.*Device\:\ |.*Video\ memory\:\ (.*)/\1/p' | awk '{printf("%s ",$0)}END{printf("\n")}'
   echo -ne "${LIGHTRED}NETWORK$NC\t";lspci | awk '/Network controller/{$1="";$2="";$3="";print}'|sed -nr "s/^\s*(.*)/\1/p"
   echo -ne "${LIGHTRED} MEMORY$NC\t";awk '/MemTotal/{mt=$2};/MemFree/{mf=$2};/MemAvail/{ma=$2}END{print "Total: "mt" | Free: "mf" | Available: "ma" (kB)"}' /proc/meminfo
-  echo -ne "${LIGHTRED}     OS$NC\t";lsb_release -cds|awk '{printf("%s ", $0)}';echo
+  echo -ne "${LIGHTRED}     OS$NC\t";lsb_release -cds|awk '{printf("%s ", $0)}';uname -m
   echo -ne "${LIGHTRED} KERNEL$NC\t";uname -a | awk '{ print $3 }'
-  echo -ne "${LIGHTRED}   ARCH$NC\t";uname -m
   echo -ne "${LIGHTRED} UPTIME$NC\t";uptime -p
-  echo -ne "${LIGHTRED}  USERS$NC\t";w -h | awk '{print $1}'|uniq|awk '{users=users$1" "}END{print users}'
+#  echo -ne "${LIGHTRED}  USERS$NC\t";w -h | awk '{print $1}'|uniq|awk '{users=users$1" "}END{print users}'
   echo -ne "${LIGHTRED} TEMPER$NC\t";echo "$(showcputemp)"
   echo -ne "${LIGHTRED}BATTERY$NC\t";echo "$(showbattery)"
   echo -ne "${LIGHTRED}DISPLAY$NC\t";echo "$(xdpyinfo | awk '/dimensions:/{print $2}')"
@@ -484,4 +483,14 @@ imgur() {
   fi
 
   [ -n "$is_scrshot_created" ] && rm "$img"
+}
+
+# empty user trash
+emptytrash() {
+  local flist=$(gio list trash://);
+  [[ ! $flist =~ ^$ ]] && {
+    printf "$flist\n\n"
+    read -p "Empty trash [y|n]:" -n1 -r
+    [[ $REPLY =~ ^[Yy]$ ]] && gio trash --empty;echo
+  }
 }
