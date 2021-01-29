@@ -9,3 +9,6 @@ path-exclude /usr/share/linda/*
 
 # no doc-base
 path-exclude /usr/share/doc-base/*
+
+# no apport BS
+path-exclude /usr/share/apport/package-hooks/*
