@@ -241,7 +241,7 @@ filextype *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
         \ {View in shotwell}
         \ shotwell,
 fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
-         \ img2sixel -S -w $((%pw*9)) %c %pd %pc clear,
+         \ img2sixel -S -w $((%pw*11)) %c %pd %pc clear,
          \ convert -identify %f -verbose /dev/null
 
 " OpenRaster
@@ -537,6 +537,8 @@ endif
 " set fillchars=vborder:·
 set fillchars=vborder:▕
 
+" clears the sixel picture preview correctly
+"set previewoptions=hardgraphicsclear
 
 " custom status line look
 
