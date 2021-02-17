@@ -62,6 +62,6 @@ for pic in "$PIC_DIR"/*.jpg; do
         unset border; unset tics;unset key; \
         set size ratio -1; \
         set view map; \
-        splot '$i' binary filetype=auto with rgbimage;"
+        splot '$pic' binary filetype=auto with rgbimage;"
   sleep $delay
 done | gnuplot -
