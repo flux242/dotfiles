@@ -228,7 +228,7 @@ showsysteminfo () {
   echo -ne "${LIGHTRED} KERNEL$NC\t";uname -a | awk '{ print $3 }'
   echo -ne "${LIGHTRED} UPTIME$NC\t";uptime -p
 #  echo -ne "${LIGHTRED}  USERS$NC\t";w -h | awk '{print $1}'|uniq|awk '{users=users$1" "}END{print users}'
-  echo -ne "${LIGHTRED} TEMPER$NC\t";echo "$(showcputemp)"
+  echo -ne "${LIGHTRED} TEMPER$NC\t";echo "$(showcputemp)°"
   echo -ne "${LIGHTRED}BATTERY$NC\t";echo "$(showbattery)"
   echo -ne "${LIGHTRED}DISPLAY$NC\t";echo "$(xdpyinfo | awk '/dimensions:/{print $2}')"
   echo -ne "${LIGHTRED}PACKGES$NC\t";dpkg -l | grep -E '^ii|^hi' | wc -l
@@ -493,4 +493,8 @@ emptytrash() {
     read -p "Empty trash [y|n]:" -n1 -r
     [[ $REPLY =~ ^[Yy]$ ]] && gio trash --empty;echo
   }
+}
+
+lstrash() {
+  gio list trash://
 }
