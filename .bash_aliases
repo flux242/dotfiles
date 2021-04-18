@@ -45,6 +45,7 @@ alias traf='netstat -np | grep -v unix'
 alias why='apt-cache rdepends --installed'
 alias exit='pwd >~/.lastdir;exit'
 alias cdl='cd "$(cat ~/.lastdir)"'
+alias tb='nc termbin.com 9999'
 
 # git shortcuts
 alias gc='git checkout'
