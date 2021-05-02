@@ -13,14 +13,14 @@
 
 imgur() {
   clientid=${IMGUR_ID}
-  [ -n "$clientid" ] || clientid=$(python3 -c 'import keyring; print(keyring.get_password("imgur","'"$USER"'"))')
-  [ -n "$clientid" ] || printf "No imgur client id specified. Get one using https://api.imgur.com/oauth2/addclient\n"
+  [ -n "$clientid" ] || clientid=$(python3 -c 'import keyring; p = keyring.get_password("imgur","'"$USER"'"); print() if p == None else print(p)')
+  [ -n "$clientid" ] || printf "No imgur client id specified. Get one using https://api.imgur.com/oauth2/addclient\n" && return
   img="$1"
   [ -e "$img" ] || {
     img=$(mktemp '/tmp/imgur-XXXXXX.png')
-    scrot -s "$@" $img >/dev/null 2>&1 || exit
+    scrot -s "$@" $img >/dev/null 2>&1 || return
     is_scrshot_created=1
-    printf "Upload the screenshot [y/n]? "; read LINE; [ "y" = "$LINE" ] || exit
+    printf "Upload the screenshot [y/n]? "; read LINE; [ "y" = "$LINE" ] || return
   }
   res=$(curl -sH "Authorization: Client-ID $clientid" -F "image=@$img" "https://api.imgur.com/3/upload")
 
