@@ -102,6 +102,9 @@ set incsearch
 set scrolloff=4
 
 " Don't do too many requests to slow file systems
+set slowfs+=~/media/nas
+set slowfs+=~/media/test
+set slowfs+=~/media/dns325media
 
 if !has('win')
     set slowfs=curlftpfs
@@ -233,7 +236,7 @@ filetype *.[1-8] man ./%c
 fileviewer *.[1-8] man ./%c | col -b
 
 " Images
-filextype *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
+filextype *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp
         \ {View in sxiv}
         \ sxiv -a %f,
         \ {View in gpicview}
@@ -311,7 +314,7 @@ filetype *.rar
 fileviewer *.rar unrar v %c
 
 " IsoMount
-"filetype *.iso
+"filetype *.iso,*.bin
 "       \ {Mount with fuseiso}
 "       \ FUSE_MOUNT|fuseiso %SOURCE_FILE %DESTINATION_DIR,
 
@@ -538,7 +541,7 @@ endif
 set fillchars=vborder:▕
 
 " clears the sixel picture preview correctly
-"set previewoptions=hardgraphicsclear
+set previewoptions=hardgraphicsclear
 
 " custom status line look
 
