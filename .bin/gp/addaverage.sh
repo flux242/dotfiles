@@ -20,6 +20,9 @@ BEGIN {
     print $0 " " sum/avs;
     fflush()
   }
+  else {
+    print "";
+  }
 }' -
 
 
