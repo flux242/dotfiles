@@ -500,3 +500,28 @@ emptytrash() {
 lstrash() {
   gio list trash://
 }
+
+# converts hex color string (like #FFAABB) to a terminal
+# color index and also shows the color in the terminal
+function colorfromhex() {
+  [ -n "$1" ] || return 1
+  hex=$1
+  if [[ $1 == "#"* ]]; then
+    hex=$(echo $1 | awk '{print substr($0,2)}')
+  fi
+  r=$(printf '0x%0.2s' "$hex")
+  g=$(printf '0x%0.2s' "${hex#??}")
+  b=$(printf '0x%0.2s' "${hex#????}")
+
+  color=$(printf "%03d" "$(((r<75?0:(r-35)/40)*6*6+(g<75?0:(g-35)/40)*6+(b<75?0:(b-35)/40)+16))")
+
+  echo -en "\e[38;5;${color}m ${color}\t\e[0m"
+  echo -en "\e[48;5;${color}m ${color}\e[0m\n"
+}
+
+# shows image GPS information
+function showgpsimage()
+{
+  [ -n "$1" ] || return 1
+  identify -verbose $1 | awk 'function cf(i){split(i,a,"/");if(length(a)==2){return a[1]/a[2]}else{return a[1]}}/GPS/{if($1~/GPSLatitude:|GPSLongitude:/){s=$0;gsub(/,/,"",$0);printf("%s  (%f)\n", s, $2+cf($3)/60+cf($4)/3600)}else{print}}'
+}
