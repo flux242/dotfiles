@@ -535,7 +535,19 @@ function showgpsimagelink()
 
   coords=$(identify -verbose "$1" |awk '/GPSLatitude|GPSLongitude/{if(NF==2){printf(", %s\n", $2)}else {printf("%s", $0)}}' | awk 'function cf(i){split(i,a,"/");if(length(a)==2){return a[1]/a[2]}else{return a[1]}}{s=$0;gsub(/,/,"",$0);if(NF==5){printf("%d°%d\x27%0.1f\"%s+",cf($2),cf($3),cf($4),$5)} }'|sed s/.$//)
   [ -n "$coords" ] && {
-    printf "%s\n" "https://google.com/maps/place/${coords}"
+    echo "https://google.com/maps/place/${coords}"
+  }
+}
+
+# creates yandex maps link to the GPS coords from a picture
+function showgpsimagelinkyandex()
+{
+  [ -n "$1" ] || return 1
+  [ -n "$(which identify)" ] || return 2
+
+  coords=$(identify -verbose "$1" |awk '/GPSLatitude|GPSLongitude/{if(NF==2){printf(", %s\n", $2)}else {printf("%s", $0)}}' | sort -r | awk 'function cf(i){split(i,a,"/");if(length(a)==2){return a[1]/a[2]}else{return a[1]}}{s=$0;gsub(/,/,"",$0);if(NF==5){if($5 ~ /[^NE]/){printf("-")}printf("%f,",$2+cf($3)/60+cf($4)/3600)}}'|sed s/.$//)
+  [ -n "$coords" ] && {
+    echo "https://yandex.ru/maps/?ll=${coords}&mode=whatshere&whatshere[point]=${coords}&whatshere%5Bzoom%5D=13&z=13"
   }
 }
 
