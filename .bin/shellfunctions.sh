@@ -523,5 +523,19 @@ function colorfromhex() {
 function showgpsimage()
 {
   [ -n "$1" ] || return 1
-  identify -verbose $1 | awk 'function cf(i){split(i,a,"/");if(length(a)==2){return a[1]/a[2]}else{return a[1]}}/GPS/{if($1~/GPSLatitude:|GPSLongitude:/){s=$0;gsub(/,/,"",$0);printf("%s  (%f)\n", s, $2+cf($3)/60+cf($4)/3600)}else{print}}'
+  [ -n "$(which identify)" ] || return 2
+  identify -verbose "$1" | awk 'function cf(i){split(i,a,"/");if(length(a)==2){return a[1]/a[2]}else{return a[1]}}/GPS/{if($1~/GPSLatitude:|GPSLongitude:/){s=$0;gsub(/,/,"",$0);printf("%s  (%f)\n", s, $2+cf($3)/60+cf($4)/3600)}else{print}}'
 }
+
+# creates google maps link to the GPS coords from a picture
+function showgpsimagelink()
+{
+  [ -n "$1" ] || return 1
+  [ -n "$(which identify)" ] || return 2
+
+  coords=$(identify -verbose "$1" |awk '/GPSLatitude|GPSLongitude/{if(NF==2){printf(", %s\n", $2)}else {printf("%s", $0)}}' | awk 'function cf(i){split(i,a,"/");if(length(a)==2){return a[1]/a[2]}else{return a[1]}}{s=$0;gsub(/,/,"",$0);if(NF==5){printf("%d°%d\x27%0.1f\"%s+",cf($2),cf($3),cf($4),$5)} }'|sed s/.$//)
+  [ -n "$coords" ] && {
+    printf "%s\n" "https://google.com/maps/place/${coords}"
+  }
+}
+
