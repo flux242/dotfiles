@@ -1,0 +1,3 @@
+# Pass all AC adapter events to a dedicated handler script
+event=ac_adapter*
+action=/etc/acpi/ac_adapter_handler.sh %e
