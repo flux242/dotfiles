@@ -12,7 +12,6 @@ case "$2" in
                pid=$(/usr/bin/pgrep 'xfsettingsd') # pid of some process that is always started
                user=$(/usr/bin/awk 'BEGIN{RS="\x00";FS="="}/(USER)/{print $2}' "/proc/$pid/environ")
                export $(/usr/bin/awk 'BEGIN{RS="\x00"}/(DISPLAY|HOME)/{print $0}' "/proc/$pid/environ")
-	       cat /proc/$pid/environ > /tmp/acpi-$user-$pid.txt
 #               su $user -c '/usr/bin/compton -b'
                sudo -u $user /usr/bin/compton -b
            }
