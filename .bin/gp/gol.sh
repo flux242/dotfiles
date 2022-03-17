@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
 
+# Usage Examples:
+#
+# ~/bin/gp/gol.sh 150 150 62|bin/gp/gnuplotblock.sh "0:149;0:149" ";points pointtype 7 pointsize 1;blue;xy"
+#
+# ~/bin/gp/gol.sh 400 200 2>/dev/null|GNUPLOT_TERM='sixelgd animate transparent size 2000,1200' ~/bin/gp/gnuplotblock.sh "0:399;0:199" ";points pointtype 7 pointsize 1;white;xy" 
+
+
 N=${1:-50}      # number of columns
 M=${2:-50}      # number of rows
 fill=${3:-60}   # initial array fill factor in percent or 's1' for ship
