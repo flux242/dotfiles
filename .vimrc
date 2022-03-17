@@ -189,7 +189,7 @@ colorscheme eclipse
 
 "hi clear Normal
 hi clear Special
-"hi clear StatusLine
+hi clear StatusLine
 hi clear Comment
 hi clear Statement
 hi clear Number
@@ -198,6 +198,7 @@ hi clear StorageClass
 
 "hi Normal        cterm=NONE ctermfg=16 ctermbg=254 guifg=Black guibg=LightGray
 "hi StatusLine    cterm=bold ctermbg=darkblue ctermfg=yellow guibg=blue guifg=Yellow gui=bold
+hi StatusLine    term=bold,reverse cterm=bold ctermfg=12 ctermbg=15 guifg=#ffffff guibg=#4570aa
 "hi Cursor        cterm=reverse guibg=Brown
 hi LineNr        ctermfg=DarkGray cterm=reverse guifg=Blue guibg=Gray
 hi CursorLine    term=underline ctermbg=black guibg=gray
