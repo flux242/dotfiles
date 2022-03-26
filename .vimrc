@@ -420,6 +420,7 @@ call NERDTreeHighlightFile('zip', '40', 'none', 'none', '#00d700', '#151515')
 " AsyncRun aliases
 "command! -bang -nargs=* -complete=file Make call asyncrun#run('<bang>', '', 'make <f-args>') | cwindow 10
 command! -bang -nargs=* -complete=file Make call asyncrun#run('<bang>', '', 'make <f-args>')
+command! -bang -nargs=* -complete=file Grep call asyncrun#run('<bang>', '', 'grep -HEnri --exclude={*.o,*.obj,*~,*.pyc,.git/**,tags,cscope*} <f-args>')
 
 " Functions
 "
