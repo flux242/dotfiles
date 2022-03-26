@@ -154,6 +154,11 @@ set foldmethod=syntax
 set foldlevelstart=20
 let g:xml_syntax_folding=1
 
+" grep
+set wildignore=*.o,*.obj,*~,*.pyc,.git/**,tags,cscope*
+let &grepprg='grep -HEnri --exclude={' . &wildignore . '} $*'
+"let &grepprg='grep -HEnri --exclude=' . shellescape(&wildignore) . ' $*'
+
 " vim -b : edit binary using xxd-format!
 augroup Binary
   au!
@@ -199,6 +204,7 @@ hi clear StorageClass
 "hi Normal        cterm=NONE ctermfg=16 ctermbg=254 guifg=Black guibg=LightGray
 "hi StatusLine    cterm=bold ctermbg=darkblue ctermfg=yellow guibg=blue guifg=Yellow gui=bold
 hi StatusLine    term=bold,reverse cterm=bold ctermfg=12 ctermbg=15 guifg=#ffffff guibg=#4570aa
+hi StatusLineNC  ctermfg=12 ctermbg=242
 "hi Cursor        cterm=reverse guibg=Brown
 hi LineNr        ctermfg=DarkGray cterm=reverse guifg=Blue guibg=Gray
 hi CursorLine    term=underline ctermbg=black guibg=gray
