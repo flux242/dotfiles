@@ -551,3 +551,7 @@ function showgpsimagelinkyandex()
   }
 }
 
+function sun()
+{
+  wget https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_0171.jpg -O- | img2sixel
+}
