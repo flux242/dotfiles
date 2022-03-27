@@ -2,7 +2,7 @@
 
 nick="blb$$"
 channel=testchannel
-server=irc.freenode.net
+server=irc.libera.chat
 config=/tmp/irclog
 
 [ "$1" = "-r" ] && outputraw=1 && shift
@@ -14,10 +14,12 @@ config="${config}_${nick}_${channel}"
 ec='echo -e'; [ -n "$($ec)" ] && ec='echo'
 WB=$($ec "\033[1m")
 GR=$($ec "\033[1;32m")
+LR=$($ec "\033[1;31m")
 NC=$($ec "\033[0m")
 
 echo "NICK $nick" > "$config"
 echo "USER $nick +i * :$0" >> "$config"
+echo "CAP REQ :echo-message" >> "$config"
 echo "JOIN #$channel" >> "$config"
 
 trap 'rm -f $config;exit 0' INT TERM EXIT
@@ -30,7 +32,7 @@ do
     *PART*) ;;
     *JOIN*) ;;
     *NICK*) ;;
-    *PRIVMSG*) if [ -n "$outputraw" ];then echo "${MESSAGE}";else echo "${MESSAGE}" | sed -nr "s/^:([^!]+).*PRIVMSG[^:]+:(.*)/$WB\[$(date '+%Y\/%m\/%d %R')\] $GR\1$NC$WB> $NC\2/p";fi ;;
+    *PRIVMSG*) if [ -n "$outputraw" ];then echo "${MESSAGE}";else echo "${MESSAGE}" | sed -nr "s/^:([^!]+).*PRIVMSG([^:]+):(.*)/$WB\[$(date '+%Y\/%m\/%d %R')\]$LR\2$GR\1$NC$WB> $NC\3/p";fi ;;
     *) echo "${MESSAGE}" ;;
   esac
 done 
