@@ -367,6 +367,7 @@ fileviewer *.sh,.bash*,.dircolors,.profile highlight -O xterm256 -s olive --synt
 fileviewer .vimrc,*.vim highlight -O xterm256 -s olive --syntax bash %c
 fileviewer *.conf,*.ini,*.desktop highlight -O xterm256 -s olive --syntax conf %c
 fileviewer *.gpx,*.kml highlight -O xterm256 -s olive --syntax xml %c
+fileviewer CmakeLists.txt highlight -O xterm256 -s olive --syntax cmake %c
            
 " Syntax highlighting in preview
 "
