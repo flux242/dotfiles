@@ -233,7 +233,7 @@ showsysteminfo () {
   echo -ne "${LIGHTRED}DISPLAY$NC\t";echo "$(xdpyinfo | awk '/dimensions:/{print $2}')"
   echo -ne "${LIGHTRED}PACKGES$NC\t";dpkg -l | grep -E '^ii|^hi' | wc -l
 #  echo -ne "${LIGHTRED}   DISK$NC";df -h | awk '/\/dev\/sd|\/mnt\//{print "\t"$0}'
-  echo -ne "${LIGHTRED}   DISK$NC";lsblk -I8 -o +FSTYPE -o NAME,SIZE,FSTYPE,LABEL,MOUNTPOINT | tail -n+2 | awk '{print "\t"$0}'
+  echo -ne "${LIGHTRED}   DISK$NC";lsblk -I8,259 -o +FSTYPE -o NAME,SIZE,FSTYPE,LABEL,MOUNTPOINT | tail -n+2 | awk '{print "\t"$0}'
 }
 
 # monitors the network activity
