@@ -3,6 +3,7 @@
 nick="blb$$"
 channel=testchannel
 server=irc.libera.chat
+port=6667
 config=/tmp/irclog
 
 [ "$1" = "-r" ] && outputraw=1 && shift
@@ -18,13 +19,13 @@ LR=$($ec "\033[1;31m")
 NC=$($ec "\033[0m")
 
 echo "NICK $nick" > "$config"
-echo "USER $nick +i * :$0" >> "$config"
+echo "USER $nick +i * :$(basename $0)" >> "$config"
 echo "CAP REQ :echo-message" >> "$config"
 echo "JOIN #$channel" >> "$config"
 
 trap 'rm -f $config;exit 0' INT TERM EXIT
 
-tail -f "$config" | nc "$server" 6667 | while read MESSAGE
+tail -f "$config" | nc "$server" "$port" | while read MESSAGE
 do
   case "$MESSAGE" in
     PING*) echo "PONG${MESSAGE#PING}" >> "$config" ;;
