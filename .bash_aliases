@@ -17,7 +17,7 @@ export BANNER="echo"
 [[ -n "$(which toilet 2>/dev/null)" ]] && export BANNER="toilet -f mono9.tlf"
 # setting the temp directory for vim
 [ -z $TEMP ] && export TEMP=/tmp
-export MPDSERVER=buffalo.lan
+export MPDSERVER=dir860.lan
 
 
 # aliases
@@ -46,6 +46,8 @@ alias why='apt-cache rdepends --installed'
 alias exit='pwd >~/.lastdir;exit'
 alias cdl='cd "$(cat ~/.lastdir)"'
 alias tb='nc termbin.com 9999'
+alias smile='printf "$(awk  '\''BEGIN{c=127;while(c++<191){printf("\xf0\x9f\x98\\%s",sprintf("%o",c));}}'\'')"'
+alias pseudo='printf "$(awk  '\''BEGIN{c=127;while(c++<191){printf("\xe2\x96\\%s",sprintf("%o",c));}}'\'')"'
 
 # git shortcuts
 alias gc='git checkout'
@@ -57,6 +59,7 @@ alias gl='git log'
 alias gb='git branch'
 alias gd='git diff'
 alias gcm='git commit -m'
+alias glb='git log --graph --simplify-by-decoration --pretty=format:'%d' --all'
 
 #coloring some programs using grc (check /usr/share/grc)
 [[ -s "/etc/grc.bashrc" ]] && {
