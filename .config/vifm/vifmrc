@@ -339,6 +339,10 @@ filetype *.AppImage
        \ {Mount with squashfuse}
        \ FUSE_MOUNT|/home/alex/bin/mountappimage.sh %SOURCE_FILE %DESTINATION_DIR,
 
+" squashfs fuse mount
+filetype *.AppImage
+       \ {Mount with squashfuse}
+       \ FUSE_MOUNT|squashfuse %SOURCE_FILE %DESTINATION_DIR,
 
 " Office files
 filextype *.odt,*.doc,*.docx,*.xls,*.xlsx,*.odp,*.pptx libreoffice %f &
@@ -360,7 +364,7 @@ filextype */
 "highlight --style olive -O xterm256
 fileviewer *.[ch],*.[ch]pp,*.md,*.markdown,*.js,*.json,*.java,
            \Makefile,Makefile.*,*.patch,*.diff,
-           \*.html,*.htm,*.css,*.xml,*.py,*.pl,*.hex,*.cs
+           \*.html,*.htm,*.css,*.xml,*.py,*.pl,*.hex,*.cs,*.lua
            \ highlight -O xterm256 -s olive %c
 
 fileviewer *.sh,.bash*,.dircolors,.profile highlight -O xterm256 -s olive --syntax bash %c
