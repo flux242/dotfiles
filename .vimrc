@@ -155,8 +155,8 @@ set foldlevelstart=20
 let g:xml_syntax_folding=1
 
 " grep
-set wildignore=*.o,*.obj,*~,*.pyc,.git/**,tags,cscope*
-let &grepprg='grep -HEnri --exclude={' . &wildignore . '} $*'
+set wildignore=*.o,*.obj,*~,*.pyc,.git/**,tags,cscope*,.cproject,CMake*
+let &grepprg='grep -HEnri --exclude={' . &wildignore . '} --exclude-dir={' . &wildignore . '} $*'
 "let &grepprg='grep -HEnri --exclude=' . shellescape(&wildignore) . ' $*'
 
 " vim -b : edit binary using xxd-format!
@@ -420,7 +420,7 @@ call NERDTreeHighlightFile('zip', '40', 'none', 'none', '#00d700', '#151515')
 " AsyncRun aliases
 "command! -bang -nargs=* -complete=file Make call asyncrun#run('<bang>', '', 'make <f-args>') | cwindow 10
 command! -bang -nargs=* -complete=file Make call asyncrun#run('<bang>', '', 'make <f-args>')
-command! -bang -nargs=* -complete=file Grep call asyncrun#run('<bang>', '', 'grep -HEnri --exclude={*.o,*.obj,*~,*.pyc,.git/**,tags,cscope*} <f-args>')
+command! -bang -nargs=* -complete=file Grep call asyncrun#run('<bang>', '', 'grep -HEnri --exclude={*.o,*.obj,*~,*.pyc,.git/**,tags,cscope*,.cproject,CMake*} --exclude-dir={CMakeFiles} <f-args>')
 
 " Functions
 "
