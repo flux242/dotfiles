@@ -128,6 +128,8 @@ function init_biker()
   b[94]=" 229.65326000  -261.56693000"
 }
 
+# Can"t remember why did I create this function instead of
+# simply calling length() operator on the array?
 function get_array_length(arr,    len,i)
 {
   len = 0;
@@ -197,7 +199,8 @@ BEGIN {
   scale_x = scale_arr[1];
   scale_y = scale_arr[2];
   init_biker()
-  len = get_array_length(b);
+#  len = get_array_length(b);
+  len = length(b);
   scale_array(b, len, 1, -1);
   calc_array_bbox(b, len, bbox);
 #  print bbox[0]";"bbox[1]";"bbox[2]";"bbox[3] > "/dev/stderr";
