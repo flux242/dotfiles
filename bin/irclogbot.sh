@@ -25,7 +25,7 @@ echo "JOIN #$channel" >> "$config"
 
 trap 'rm -f $config;exit 0' INT TERM EXIT
 
-tail -f "$config" | nc "$server" "$port" | while read MESSAGE
+tail -f "$config" | nc "$server" "$port" | while read -r MESSAGE
 do
   case "$MESSAGE" in
     PING*) echo "PONG${MESSAGE#PING}" >> "$config" ;;

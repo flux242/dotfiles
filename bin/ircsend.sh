@@ -17,9 +17,10 @@ while read -erp "$channel> " message; do
     case "$message" in
       /nick*) nick="${message#* }"; echo "${message:1}" >> "$1" ;;
       /ident*) nickpass="${message#* }"; echo "PRIVMSG NickServ :IDENTIFY $nickpass" >> "$1" ;;
-      /join*) channel="${message#* }"; echo "${message:1}" >> "$1" ;;
+      /join*) grep -qoP '\s+\K(#[^\s]+)$' <<< "$message" && channel="${message#* }" && echo "${message:1}" >> "$1" ;;
       /whoami*) echo "whois $nick" >> "$1" ;;
       /msg*) msg="${message#* }";name="${msg%% *}";rest="${msg#* }";echo "PRIVMSG $name :$rest" >> "$1" ;;
+      /me*) printf "PRIVMSG $channel :\x01ACTION ${message#* }\x01\n" >> "$1" ;;
       /*) echo "${message:1}" >> "$1" ;;
        *) echo "PRIVMSG $channel :$message" >> "$1" ;;
     esac
