@@ -553,5 +553,56 @@ function showgpsimagelinkyandex()
 
 function sun()
 {
-  wget https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_0171.jpg -O- | img2sixel
+  # Image size is hardcoded in the URL as 512
+  # Possible sizes: 170 256 512 1024 2048 3072 4096
+  #
+  # From the sun's surface on out, the wavelengths SDO observes, measured in Angstroms, are:
+  #
+  #  4500: Showing the sun's surface or photosphere.
+  #  1700: Shows surface of the sun, as well as a layer of the sun's atmosphere called the chromosphere, which lies just above the photosphere and is where the temperature begins rising.
+  #  1600: Shows a mixture between the upper photosphere and what's called the transition region, a region between the chromosphere and the upper most layer of the sun's atmosphere called the corona. The transition region is where the temperature rapidly rises.
+  #   304: This light is emitted from the chromosphere and transition region.
+  #   171: This wavelength shows the sun's atmosphere, or corona, when it's quiet. It also shows giant magnetic arcs known as coronal loops.
+  #   193: Shows a slightly hotter region of the corona, and also the much hotter material of a solar flare.
+  #   211: This wavelength shows hotter, magnetically active regions in the sun's corona.
+  #   335: This wavelength also shows hotter, magnetically active regions in the corona.
+  #    94: This highlights regions of the corona during a solar flare.
+  #   131: The hottest material in a flare.
+
+  if [[ -z "$(which img2sixel)" ]];then
+    printf "img2sixel is missing\n"
+    printf "sudo apt install libsixel-bin\n"
+    return 2
+  fi
+  local swla;local wla;local i
+  wla[94]="0094";wla[131]="0131";wla[171]="0171";
+  wla[193]="0193";wla[211]="0211";wla[304]="0304";
+  wla[335]="0335";wla[1600]="1600";wla[1700]="1700";
+  wla[4500]="4500"
+
+  [[ -n "$1" ]] || set -- 171 # wavelength to use if no parameters
+
+  if [[ "all" = "$1" ]]; then
+    for i in "${!wla[@]}";do [[ "$i" -gt 0 ]] && swla=(${swla[@]} "$i");done
+  else
+    while [[ -n "$1" ]]; do
+      if [[ -n "${wla[$1]}" ]]; then
+        swla=(${swla[@]} "$1")
+      else
+        unset swla
+        break
+      fi
+      shift
+    done
+  fi
+
+  [[ "${#swla[@]}" -gt 0 ]] || {
+    printf "Usage: '${FUNCNAME[0]} [all|wavelength1 wavelength2 ..]' where possible wavelenghs are:\n"
+    for i in "${!wla[@]}"; do printf "%s " "$i"; done
+    printf "\n"
+    return 1
+  }
+  for i in "${swla[@]}";do
+    wget -qO- "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_${wla[$i]}.jpg" | img2sixel
+  done
 }
