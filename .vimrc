@@ -159,6 +159,12 @@ set wildignore=*.o,*.obj,*~,*.pyc,.git/**,tags,cscope*,.cproject,CMake*
 let &grepprg='grep -HEnri --exclude={' . &wildignore . '} --exclude-dir={' . &wildignore . '} $*'
 "let &grepprg='grep -HEnri --exclude=' . shellescape(&wildignore) . ' $*'
 
+" fill chars
+"set fillchars+=vert:\│
+"set fillchars=vert:\┃
+set fillchars=vert:▕
+set fillchars+=fold:-
+
 " vim -b : edit binary using xxd-format!
 augroup Binary
   au!
@@ -204,7 +210,9 @@ hi clear StorageClass
 "hi Normal        cterm=NONE ctermfg=16 ctermbg=254 guifg=Black guibg=LightGray
 "hi StatusLine    cterm=bold ctermbg=darkblue ctermfg=yellow guibg=blue guifg=Yellow gui=bold
 hi StatusLine    term=bold,reverse cterm=bold ctermfg=12 ctermbg=15 guifg=#ffffff guibg=#4570aa
-hi StatusLineNC  ctermfg=12 ctermbg=242
+hi StatusLineNC  ctermfg=16 ctermbg=242
+hi VertSplit     ctermfg=81 ctermbg=NONE
+"hi StatusLineNC  ctermbg=242 ctermfg=12
 "hi Cursor        cterm=reverse guibg=Brown
 hi LineNr        ctermfg=DarkGray cterm=reverse guifg=Blue guibg=Gray
 hi CursorLine    term=underline ctermbg=black guibg=gray
@@ -241,8 +249,10 @@ let g:airline_left_sep = ''
 let g:airline_right_sep = ''
 "let g:airline_left_sep = ''
 "let g:airline_right_sep = ''
-let g:airline_symbols.linenr = '␤'
-let g:airline_symbols.maxlinenr = '☰'
+"let g:airline_symbols.linenr = '␤'
+let g:airline_symbols.linenr = ''
+"let g:airline_symbols.maxlinenr = '☰'
+let g:airline_symbols.maxlinenr = ''
 let g:airline_symbols.branch = '⎇'
 let g:airline_symbols.paste = 'ρ'
 let g:airline_symbols.spell = 'Ꞩ'
