@@ -340,7 +340,7 @@ filetype *.AppImage
        \ FUSE_MOUNT|/home/alex/bin/mountappimage.sh %SOURCE_FILE %DESTINATION_DIR,
 
 " squashfs fuse mount
-filetype *.AppImage
+filetype *.squashfs
        \ {Mount with squashfuse}
        \ FUSE_MOUNT|squashfuse %SOURCE_FILE %DESTINATION_DIR,
 
