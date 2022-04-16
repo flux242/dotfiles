@@ -14,11 +14,15 @@ UUID=b111540e-8fc7-44f7-825f-b8ad61a75a87 /home           ext4    commit=15,noat
 /home/opt /opt  none bind 0 0
 # swap file
 /home/swapfile1 none swap sw 0 0
+/var/log-persistent/apt	/var/log/apt	none	defaults,bind	0	0
+
 # temp on tmpfs
 #tmpfs  /tmp       tmpfs   size=256m,noexec,nodev,nosuid  0 0
 tmpfs  /tmp       tmpfs   defaults,noexec,nodev,nosuid  0 0
 tmpfs  /var/tmp   tmpfs   defaults,noexec,nodev,nosuid   0 0
 tmpfs  /var/log   tmpfs   defaults,noexec,nodev,nosuid   0 0
+tmpfs  /var/crash tmpfs   defaults,noexec,nodev,nosuid   0 0
+
 # external resources
 #https://dav.box.com/dav/  /home/alex/media/box.com        davfs   noauto,user   0   0
 #https://webdav.yandex.ru/ /home/alex/media/yandex.disk    davfs   noauto,user   0   0
