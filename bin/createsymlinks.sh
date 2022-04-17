@@ -17,7 +17,7 @@ createSymbolicLink()
 
 }
 
-links=("bin" ".vim" ".vimrc" ".i3" ".highlight" ".grc" ".nticon.conf" ".dircolors" ".compton.conf" ".config/vifm" ".config/mpv" ".config/neofetch/config.conf")
+links=(".bash_aliases" "bin" ".vim" ".vimrc" ".i3" ".highlight" ".grc" ".nticon.conf" ".dircolors" ".compton.conf" ".config/vifm" ".config/mpv" ".config/neofetch/config.conf")
 
 for link in ${links[@]}; do createSymbolicLink $link; done
 
