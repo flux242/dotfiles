@@ -20,12 +20,11 @@ NC=$($ec "\033[0m")
 
 echo "NICK $nick" > "$config"
 echo "USER $nick +i * :$(basename $0)" >> "$config"
-echo "CAP REQ :echo-message" >> "$config"
 echo "JOIN #$channel" >> "$config"
 
 trap 'rm -f $config;exit 0' INT TERM EXIT
 
-tail -f "$config" | nc "$server" "$port" | while read -r MESSAGE
+tail -f "$config" | nc "$server" "$port" | while read MESSAGE
 do
   case "$MESSAGE" in
     PING*) echo "PONG${MESSAGE#PING}" >> "$config" ;;
