@@ -6,9 +6,7 @@ STEP='5%'
 
 # some sound cards could have different MIN/MAX values 
 # this isn't implemented yet as I can't test it
-MIN_VOLUME=0
-MAX_VOLUME=65536
-
+MIN_VOLUME=0 MAX_VOLUME=65536 
 # file where notification ids are stored
 ID_FILE="/tmp/notify_volume.id"
 
@@ -52,7 +50,7 @@ send_notification() {
 }
 
 get_volume() {
-  local VOLHEX=$(pacmd dump | awk '/^set-sink-volume/{printf("%s", $3)}')
+  local VOLHEX=$(pacmd dump | grep -oP "set-sink-volume\s${SINK}\s\K.+")
   [ -n "$VOLHEX" ] || {
     echo "$MIN_VOLUME"
     return
@@ -62,7 +60,7 @@ get_volume() {
 
 # returns 'yes' or 'no'
 get_muted() {
-    MUTED=$(pacmd dump | awk '/set-sink-mute/{print $3}')
+    local MUTED=$(pacmd dump | grep -oP "set-sink-mute\s${SINK}\s\K.+")
     printf "%s" "$MUTED" 
 }
 
@@ -83,11 +81,9 @@ case $1 in
       ;;
   down)
       pactl set-sink-volume  "$SINK" "-$STEP"
-      [ "$(get_volume)" -le $MIN_VOLUME ] && pactl set-sink-volume  "$SINK" "$MIN_VOLUME"        
       ;;
   toggle)
-      MUTED=$(pacmd dump | awk '/set-sink-mute/{print $3}')
-      if [ "yes" = "$MUTED" ]; then
+      if [ "yes" = "$(get_muted)" ]; then
         pactl set-sink-mute "$SINK" 0
       else
         pactl set-sink-mute "$SINK" 1
