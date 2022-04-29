@@ -63,6 +63,7 @@ if exists("+cursorline")
 endif
 " Set current window height
 set winheight=100
+set winminheight=0
 " Indent
 set cin
 " Show numbers
