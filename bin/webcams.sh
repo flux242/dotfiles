@@ -11,7 +11,9 @@ if [[ -n "$1" ]]; then
   if [[ "${sizes[@]}" =~ "$1" ]]; then
     SIZE=$1
   else
-    echo "Size $1 is not supported" > /dev/stderr
+    echo "Size $1 is not supported. Supported sizes are:" > /dev/stderr
+    for i in "${sizes[@]}"; do printf "%s " $i; done > /dev/stderr
+    printf "\n"
     exit 1
   fi
 fi
