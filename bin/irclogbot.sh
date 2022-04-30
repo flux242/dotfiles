@@ -1,14 +1,22 @@
 #!/bin/sh 
 
-nick="blb$$"
-channel=testchannel
+rc()
+{
+  local RANDOM
+  RANDOM=$(od -A n -t d -N 1 /dev/urandom)
+  printf \\$(printf "%o\n" $((97+RANDOM%26)))
+}
+#nick="blb$$"
+nick="$(rc;rc;rc;rc;rc;rc)"
+#nick="blb$$"
+channel=mytestchannel
 server=irc.libera.chat
 port=6667
 config=/tmp/irclog
 
 [ "$1" = "-r" ] && outputraw=1 && shift
-[ -n "$1" ] && channel=$1
-[ -n "$2" ] && server=$2
+[ -n "$2" ] && channel=$2
+[ -n "$1" ] && server=$1
 config="${config}_${nick}_${channel}"
 
 # colorize output.
