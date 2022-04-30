@@ -27,10 +27,13 @@ while read -erp "$channel> " message; do
       /nick*) nick="${message#* }"; echo "${message:1}" >> "$1" ;;
       /ident*) nickpass="${message#* }"; echo "PRIVMSG NickServ :IDENTIFY $nickpass" >> "$1" ;;
       /join*) grep -qoP '\s+\K(#[^\s]+)$' <<< "$message" && channel="${message##* }" && sed -i "/$channel/d" "$channelsfile" && echo "$channel" >> "$channelsfile" && echo "${message:1}" >> "$1" ;;
-      /part*) grep -qoP '\s+\K(#[^\s]+)$' <<< "$message" && channel="${message##* }" && sed -i "/$channel/d" "$channelsfile" && echo "${message:1}" >> "$1" ;; 
+      /part*) grep -qoP '\s+\K(#[^\s]+)$' <<< "$message" && chan="${message##* }" && sed -i "/$chan/d" "$channelsfile" && echo "${message:1}" >> "$1" ;;
       /whoami*) echo "whois $nick" >> "$1" ;;
       /msg*) msg="${message#* }";name="${msg%% *}";rest="${msg#* }";echo "PRIVMSG $name :$rest" >> "$1" ;;
       /me*) printf "PRIVMSG $channel :\x01ACTION ${message#* }\x01\n" >> "$1" ;;
+      /version*) user="${message#* }";printf "PRIVMSG $user :\x01VERSION ${message#* }\x01\n" >> "$1" ;;
+      /info*) user="${message#* }";printf "PRIVMSG $user :\x01CLIENTINFO ${message#* }\x01\n" >> "$1" ;;
+      /up*) printf "PRIVMSG $channel :${message#* } ☝ ☝ ☝ ☝\n" >> "$1" ;;
       /*) echo "${message:1}" >> "$1" ;;
        *) echo "PRIVMSG $channel :$message" >> "$1" ;;
     esac
