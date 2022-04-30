@@ -399,7 +399,11 @@ qrcode() {
   [[ -e "$text" ]] && text=$(cat "$text")
   [[ -z "$text" ]] && [[ ! -t 0 ]] && text=$(cat -)
   [[ -z "$text" ]] && text=$(printclip)
-  wget -q -O- qrenco.de/$(urlencode "$text")
+  if [[ -n "which qrencode" ]]; then
+     qrencode -t UTF8 "$text"
+  else
+     wget -q -O- qrenco.de/$(urlencode "$text")
+  fi
 #  echo "$text" | curl -F-=\<- qrenco.de
 }
 
