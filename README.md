@@ -12,4 +12,4 @@ $ bin/vim_install_plugins.sh
 ```
 
 ** Inconsolata nerd font is here
-https://github.com/ryanoasis/nerd-fonts/blob/master/patched-fonts/Inconsolata/complete/Inconsolata%20Nerd%20Font%20Complete.otf
+https://github.com/ryanoasis/nerd-fonts/releases/download/2.2.0-RC/InconsolataLGC.zip
