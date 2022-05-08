@@ -34,12 +34,14 @@ import random
 import sys
 PYTHON2 = sys.version_info.major < 3
 locale.setlocale(locale.LC_ALL, '')
-encoding = locale.getpreferredencoding()
+#encoding = locale.getpreferredencoding()
+encoding="UTF-8"
 
 ########################################################################
 # TUNABLES
 
-DROPPING_CHARS = 70
+#DROPPING_CHARS = 70
+DROPPING_CHARS = 100
 MIN_SPEED = 1
 MAX_SPEED = 5
 RANDOM_CLEANUP = 100
@@ -49,9 +51,12 @@ SLEEP_MILLIS = 1.0/FPS
 USE_COLORS = True
 SCREENSAVER_MODE = True
 #MATRIX_CODE_CHARS = "ɀɁɂŧϢϣϤϥϦϧϨϫϬϭϮϯϰϱϢϣϤϥϦϧϨϩϪϫϬϭϮϯϰ߃߄༣༤༥༦༧༩༪༫༬༭༮༯༰༱༲༳༶"
-MATRIX_CODE_CHARS = "𐌰𐌱𐌲𐌳𐌴𐌵𐌶𐌷𐌸𐌹𐌺𐌻𐌼𐌽𐌾𐌿𐍀𐍁𐍂𐍃𐍄𐍅𐍆𐍇𐍈𐍉𐍊"
+#MATRIX_CODE_CHARS = "𐌰𐌱𐌲𐌳𐌴𐌵𐌶𐌷𐌸𐌹𐌺𐌻𐌼𐌽𐌾𐌿𐍀𐍁𐍂𐍃𐍄𐍅𐍆𐍇𐍈𐍉𐍊"
+MATRIX_CODE_CHARS = "😀😁😂😃😄😅😆😇😈😉😊😋😌😍😎😏😐😑😒😓😔😕😖😗😘😙😚😛😜😝😞😟😠😡😢😣😥😦😧😨😩😪😫😭😮😯😰😱😲😳😵😶😷😸😹😺😻😼😽😾😿"
 COLOR_NORMAL = curses.COLOR_GREEN
 COLOR_HIGHLIGHTED = curses.COLOR_CYAN
+CHAR_WIDTH = 2 # how many cells takes a char (x axis)
+#CHAR_WIDTH = 1 # how many cells takes a char (x axis)
 
 ########################################################################
 # CODE
@@ -75,7 +80,7 @@ class FallingChar(object):
     def reset(self, width, min_speed, max_speed):
         """ Here goes the docstring - pylint is happy """
         self.char = random.choice(FallingChar.matrixchr).encode(encoding)
-        self.x = randint(1, width - 1)
+        self.x = randint(0, width - 1)
         self.y = 0
         self.speed = randint(min_speed, max_speed)
         # offset makes sure that chars with same speed don't move all in same frame
@@ -88,19 +93,25 @@ class FallingChar(object):
             # if window was resized and char is out of bounds, reset
             self.out_of_bounds_reset(width, height)
             # make previous char curses.A_NORMAL
-            if USE_COLORS:
-                scr.addstr(self.y, self.x, self.char, curses.color_pair(COLOR_CHAR_NORMAL))
-            else:
-                scr.addstr(self.y, self.x, self.char, curses.A_NORMAL)
+            try:
+                if USE_COLORS:
+                    scr.addstr(self.y, CHAR_WIDTH*self.x, self.char, curses.color_pair(COLOR_CHAR_NORMAL))
+                else:
+                    scr.addstr(self.y, CHAR_WIDTH*self.x, self.char, curses.A_NORMAL)
+            except Exception:
+                pass
 
             # choose new char and draw it A_REVERSE if not out of bounds
             self.char = random.choice(FallingChar.matrixchr).encode(encoding)
             self.y += 1
-            if not self.out_of_bounds_reset(width, height):
-                if USE_COLORS:
-                    scr.addstr(self.y, self.x, self.char, curses.color_pair(COLOR_CHAR_HIGHLIGHT)|curses.A_BOLD)
-                else:
-                    scr.addstr(self.y, self.x, self.char, curses.A_REVERSE)
+            try:
+                if not self.out_of_bounds_reset(width, height):
+                    if USE_COLORS:
+                        scr.addstr(self.y, CHAR_WIDTH*self.x, self.char, curses.color_pair(COLOR_CHAR_HIGHLIGHT)|curses.A_BOLD)
+                    else:
+                        scr.addstr(self.y, CHAR_WIDTH*self.x, self.char, curses.A_REVERSE)
+            except Exception:
+                pass
 
     def out_of_bounds_reset(self, width, height):
         """ Here goes the docstring - pylint is happy """
@@ -138,6 +149,7 @@ def randint(_min, _max):
     else:
         n = r.__next__()
     return (n % (_max - _min)) + _min
+#    return random.randint(_min, _max)
 
 def main():
     """ Here goes the docstring - pylint is happy """
@@ -166,10 +178,16 @@ def main():
         for line in lines:
             line.tick(scr, steps)
         for i in range(RANDOM_CLEANUP):
-            x = randint(0, width-1)
+            x = int(randint(0, width-1)/CHAR_WIDTH)
             y = randint(0, height)
-            if (scr.inch(y, x) & curses.A_BOLD) == 0:
-                scr.addstr(y, x, ' ')
+            if (scr.inch(y, CHAR_WIDTH*x) & curses.A_BOLD) == 0:
+                try:
+                    if CHAR_WIDTH*x >= width-2 or CHAR_WIDTH == 1:
+                      scr.addstr(y, CHAR_WIDTH*x, ' ')
+                    else:
+                      scr.addstr(y, CHAR_WIDTH*x, '  ')
+                except Exception:
+                    pass
         scr.refresh()
         time.sleep(SLEEP_MILLIS)
         if SCREENSAVER_MODE:
