@@ -1,1 +1,1 @@
-alex     chrome= NOPASSWD: /usr/sbin/tcpdump,/usr/bin/grc
+alex     chuwi= NOPASSWD: /usr/sbin/tcpdump,/usr/bin/grc,/usr/bin/dmesg
