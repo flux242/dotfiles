@@ -299,7 +299,7 @@ fileviewer *.zip,*.jar,*.war,*.ear,*.oxt zip -sf %c
 
 " ArchiveMount
 filetype *.tar,*.tar.bz2,*.tbz2,*.tgz,*.tar.gz,*.tar.xz,*.txz,
-         \*.xz,*.iso,*.deb,*.apk,*.jar,*.oxz,*.epub
+         \*.xz,*.iso,*.deb,*.apk,*.ipk,*.jar,*.oxz,*.epub
        \ {Mount with archivemount}
        \ FUSE_MOUNT|archivemount %SOURCE_FILE %DESTINATION_DIR,
 fileviewer *.tgz,*.tar.gz tar -tzf %c
