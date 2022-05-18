@@ -1,8 +1,8 @@
 # Local Address:Port
 #regexp=((?:\d+\.){3}\d+|\*|::1?|[\w\d\-\_\.]+):(\S+)\s+\s((?:\d+\.){3}\d+|\*|::1?|[\w\d\-\_\.]+):(\S+)
 #regexp=((?:\d+\.){3}\d+|\*|\[[^\]]+\]|\[[^\]]+\]%[^:]+):(\d+)\s+((?:\d+\.){3}\d+|\[[^\]]+\]|\*):(\d+|\*)\s+[^\"]+(.[^\"]*.)\S*
-regexp=\s((?:\d+\.){3}\d+(?:%[^:]+)?|\[[^\]]+\](?:%[^:]+)?|\*):(\S+)\s+\s((?:\d+\.){3}\d+|\*|[\w\d\-\_\.]+|\[[^\]]+\]):(\S+)[^\"]+(.[^\"]*.)\S*
-colours=default,bright_green,bright_red,cyan,magenta,yellow
+regexp=((?:\d+\.){3}\d+(?:%[^:]+)?):(\S+)\s+((?:\d+\.){3}\d+):(\S+)\s+[^\"]+(.[^\"]*.)
+colours=default,bright_green,bright_red,cyan,magenta,bright_yellow
 =======
 # ipx hostname
 regexp=^IPX.*[\dABCDEF]+:[\dABCDEF]+
