@@ -612,3 +612,69 @@ HEREDOC
     wget -qO- "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_${wla[$i]}.jpg" | img2sixel
   done
 }
+
+text2morse()
+{
+  local nextchar i mr
+  local dotperiod='0.05'
+  local dashperiod=$(awk -v p=$dotperiod 'BEGIN{print p*3}')
+  declare -A morse
+  declare -A delay
+  morse[0]='-----'
+  morse[1]='.----'
+  morse[2]='..---'
+  morse[3]='...--'
+  morse[4]='....-'
+  morse[5]='.....'
+  morse[6]='-....'
+  morse[7]='--...'
+  morse[8]='---..'
+  morse[9]='----.'
+  morse[A]='.-'
+  morse[B]='-...'
+  morse[C]='-.-.'
+  morse[D]='-..'
+  morse[E]='.'
+  morse[F]='..-.'
+  morse[G]='--.'
+  morse[H]='....'
+  morse[I]='..'
+  morse[J]='.---'
+  morse[K]='-.-'
+  morse[L]='.-..'
+  morse[M]='--'
+  morse[N]='-.'
+  morse[O]='---'
+  morse[P]='.--.'
+  morse[Q]='--.-'
+  morse[R]='.-.'
+  morse[S]='...'
+  morse[T]='-'
+  morse[U]='..-'
+  morse[V]='...-'
+  morse[W]='.--'
+  morse[X]='-..-'
+  morse[Y]='-.--'
+  morse[Z]='--..'
+
+  delay[-]="$dashperiod"
+  delay[.]="$dotperiod"
+
+  while read -n1 CHAR; do
+    nextchar=$(printf "$CHAR" | tr '[:lower:]' '[:upper:]')
+    [[ -n "$nextchar" ]] || continue
+
+    mr="${morse[$nextchar]}"
+    [[ -n "$mr" ]] && {
+      for (( i=0; i<"${#mr}"; i++ )); do
+        play -q -n -c1 synth -n "${delay[${mr:$i:1}]}" sin 500
+        (( i < "${#mr}"-1)) && sleep "${delay[.]}"
+        printf "${mr:$i:1}"
+      done
+      sleep ${delay[-]}
+      printf " "
+    }
+  done
+
+  printf "\n"
+}
