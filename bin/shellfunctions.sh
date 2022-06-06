@@ -555,6 +555,7 @@ function showgpsimagelinkyandex()
   }
 }
 
+# shows current sun
 function sun()
 {
   # Image size is hardcoded in the URL as 512
@@ -613,58 +614,34 @@ HEREDOC
   done
 }
 
+# converts input text into cw text and sound
+# `echo "CW or not CW!" | text2morse` or `text2morse "CW or not CW!"`
 text2morse()
 {
   local nextchar i mr
   local dotperiod='0.05'
   local dashperiod=$(awk -v p=$dotperiod 'BEGIN{print p*3}')
+  local wordperiod=$(awk -v p=$dotperiod 'BEGIN{print p*7}')
   declare -A morse
   declare -A delay
-  morse[0]='-----'
-  morse[1]='.----'
-  morse[2]='..---'
-  morse[3]='...--'
-  morse[4]='....-'
-  morse[5]='.....'
-  morse[6]='-....'
-  morse[7]='--...'
-  morse[8]='---..'
-  morse[9]='----.'
-  morse[A]='.-'
-  morse[B]='-...'
-  morse[C]='-.-.'
-  morse[D]='-..'
-  morse[E]='.'
-  morse[F]='..-.'
-  morse[G]='--.'
-  morse[H]='....'
-  morse[I]='..'
-  morse[J]='.---'
-  morse[K]='-.-'
-  morse[L]='.-..'
-  morse[M]='--'
-  morse[N]='-.'
-  morse[O]='---'
-  morse[P]='.--.'
-  morse[Q]='--.-'
-  morse[R]='.-.'
-  morse[S]='...'
-  morse[T]='-'
-  morse[U]='..-'
-  morse[V]='...-'
-  morse[W]='.--'
-  morse[X]='-..-'
-  morse[Y]='-.--'
-  morse[Z]='--..'
+  morse[0]='-----' morse[1]='.----' morse[2]='..---' morse[3]='...--' morse[4]='....-'
+  morse[5]='.....' morse[6]='-....' morse[7]='--...' morse[8]='---..' morse[9]='----.'
+  morse[A]='.-'    morse[B]='-...'  morse[C]='-.-.'  morse[D]='-..'   morse[E]='.'
+  morse[F]='..-.'  morse[G]='--.'   morse[H]='....'  morse[I]='..'    morse[J]='.---'
+  morse[K]='-.-'   morse[L]='.-..'  morse[M]='--'    morse[N]='-.'    morse[O]='---'
+  morse[P]='.--.'  morse[Q]='--.-'  morse[R]='.-.'   morse[S]='...'   morse[T]='-'
+  morse[U]='..-'   morse[V]='...-'  morse[W]='.--'   morse[X]='-..-'  morse[Y]='-.--' morse[Z]='--..'
+   
+  morse[(]='-.--.' morse[)]='-.--.-' morse[:]='---...' morse[,]='--..--' morse[\@]='.--.-.'
+  morse[=]='-...-' morse[!]='-.-.--' morse[.]='.-.-.-' morse[-]='-....-' morse[+]='.-.-.'
+  morse[&]='.-...' morse[?]='..--..' morse[/]='-..-.'  morse["'"]='.----.' morse["\""]='.-..-.'  
 
   delay[-]="$dashperiod"
   delay[.]="$dotperiod"
 
-  while read -n1 CHAR; do
-    nextchar=$(printf "$CHAR" | tr '[:lower:]' '[:upper:]')
-    [[ -n "$nextchar" ]] || continue
-
-    mr="${morse[$nextchar]}"
+  (read -t0 && cat -; printf "%s" "$@") | while read -N1 nextchar; do
+    [[ "$nextchar" =~ [[:space:]*] ]] && { sleep "$wordperiod"; continue; }
+    mr="${morse[${nextchar^^}]}"
     [[ -n "$mr" ]] && {
       for (( i=0; i<"${#mr}"; i++ )); do
         play -q -n -c1 synth -n "${delay[${mr:$i:1}]}" sin 500
