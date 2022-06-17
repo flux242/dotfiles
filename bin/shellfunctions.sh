@@ -616,10 +616,48 @@ HEREDOC
 
 # converts input text into cw text and sound
 # `echo "CW or not CW!" | text2morse` or `text2morse "CW or not CW!"`
+# parameters: -p float  (dot period in seconds, default 0.05)
+# parameters: -t string (sound type, default triangle, allowed: sine,square,triangle,sawtooth,trapezium,exp)
+# parameters: -f number (sound frequency, default 500)
 text2morse()
 {
-  local nextchar i mr
+  local nextchar i mr opt re
+  local stype='triangle'
   local dotperiod='0.05'
+  local freq=500
+
+  declare -A stypes=(["sine"]=1  ["square"]=1 ["triangle"]=1 ["sawtooth"]=1 ["trapezium"]=1 ["exp"]=1)
+  OPTIND=1 #reset index
+  while getopts "t:p:f:" opt; do
+    case $opt in
+      p)  dotperiod=$OPTARG ;;
+      t)  stype=$OPTARG ;;
+      f)  freq=$OPTARG ;;
+      \?) return 1 ;;
+      :)  echo "Option -$OPTARG requires number of sec as an argument" >&2;return 1 ;;
+    esac
+  done
+  shift $((OPTIND-1));
+
+  re='^[0-9]+([.][0-9]+)?$'
+  [[ $dotperiod =~ $re ]] || {
+    printf "Error: dotperiod is not a number: $dotperiod\n" >&2
+    printf "Default: 0.05\n" >&2
+    return 2
+  }
+  [[ -n "$stype" && -n "${stypes[$stype]}" ]] || {
+    printf "Error: unknown sound type: $stype\n" >&2
+    printf "Allowed values: %s\n" "${!stypes[*]}" >&2
+    printf "Default: triangle\n" >&2
+    return 3
+  }
+  re='^[0-9]+$'
+  [[ $freq =~ $re ]] || {
+    printf "Error: sound frequency is not a number: $freq\n" >&2
+    printf "Default: 500\n" >&2
+    return 4
+  }
+
   local dashperiod=$(awk -v p=$dotperiod 'BEGIN{print p*3}')
   local wordperiod=$(awk -v p=$dotperiod 'BEGIN{print p*7}')
   declare -A morse
@@ -640,11 +678,11 @@ text2morse()
   delay[.]="$dotperiod"
 
   (read -t0 && cat -; printf "%s" "$@") | while read -N1 nextchar; do
-    [[ "$nextchar" =~ [[:space:]*] ]] && { sleep "$wordperiod"; continue; }
+    [[ "$nextchar" =~ [[:space:]+] ]] && { sleep "$wordperiod"; continue; }
     mr="${morse[${nextchar^^}]}"
     [[ -n "$mr" ]] && {
       for (( i=0; i<"${#mr}"; i++ )); do
-        play -q -n -c1 synth -n "${delay[${mr:$i:1}]}" sin 500
+        play -q -n -c1 synth -n "${delay[${mr:$i:1}]}" $stype $freq
         (( i < "${#mr}"-1)) && sleep "${delay[.]}"
         printf "${mr:$i:1}"
       done
