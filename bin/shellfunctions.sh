@@ -6,11 +6,23 @@
 #┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
 
 
+isinstalled()
+{
+  [[ -n "$1" ]] || return 1
+  if [[ "-p" = "$1" ]]; then
+    shift
+    type -P "$1"
+  else
+    type -P "$1" &>/dev/null
+  fi
+  return $?
+}
+
 # use grc if it's installed or execute the command direct
 grc() {
-  if [[ -n "$(which grc)" ]]; then
+  if isinstalled grc; then
     #grc --colour=auto
-    $(which grc) --colour=on "$@"
+    $(isinstalled -p grc) --colour=on "$@"
   else
     "$@"
   fi
@@ -399,7 +411,7 @@ qrcode() {
   [[ -e "$text" ]] && text=$(cat "$text")
   [[ -z "$text" ]] && [[ ! -t 0 ]] && text=$(cat -)
   [[ -z "$text" ]] && text=$(printclip)
-  if [[ -n "which qrencode" ]]; then
+  if isinstalled qrencode; then
      qrencode -t UTF8 "$text"
   else
      wget -q -O- qrenco.de/$(urlencode "$text")
@@ -527,7 +539,7 @@ function colorfromhex() {
 function showgpsimage()
 {
   [ -n "$1" ] || return 1
-  [ -n "$(which identify)" ] || return 2
+  isinstalled identify || return 2
   identify -verbose "$1" | awk 'function cf(i){split(i,a,"/");if(length(a)==2){return a[1]/a[2]}else{return a[1]}}/GPS/{if($1~/GPSLatitude:|GPSLongitude:/){s=$0;gsub(/,/,"",$0);printf("%s  (%f)\n", s, $2+cf($3)/60+cf($4)/3600)}else{print}}'
 }
 
@@ -535,7 +547,7 @@ function showgpsimage()
 function showgpsimagelink()
 {
   [ -n "$1" ] || return 1
-  [ -n "$(which identify)" ] || return 2
+  isinstalled identify || return 2
 
   coords=$(identify -verbose "$1" |awk '/GPSLatitude|GPSLongitude/{if(NF==2){printf(", %s\n", $2)}else {printf("%s", $0)}}' | awk 'function cf(i){split(i,a,"/");if(length(a)==2){return a[1]/a[2]}else{return a[1]}}{s=$0;gsub(/,/,"",$0);if(NF==5){printf("%d°%d\x27%0.1f\"%s+",cf($2),cf($3),cf($4),$5)} }'|sed s/.$//)
   [ -n "$coords" ] && {
@@ -547,7 +559,7 @@ function showgpsimagelink()
 function showgpsimagelinkyandex()
 {
   [ -n "$1" ] || return 1
-  [ -n "$(which identify)" ] || return 2
+  isinstalled identify || return 2
 
   coords=$(identify -verbose "$1" |awk '/GPSLatitude|GPSLongitude/{if(NF==2){printf(", %s\n", $2)}else {printf("%s", $0)}}' | sort -r | awk 'function cf(i){split(i,a,"/");if(length(a)==2){return a[1]/a[2]}else{return a[1]}}{s=$0;gsub(/,/,"",$0);if(NF==5){if($5 ~ /[^NE]/){printf("-")}printf("%f,",$2+cf($3)/60+cf($4)/3600)}}'|sed s/.$//)
   [ -n "$coords" ] && {
@@ -575,11 +587,11 @@ function sun()
      131: The hottest material in a flare.'
 HEREDOC
 )"
-  if [[ -z "$(which img2sixel)" ]];then
+  isinstalled img2sixel || {
     printf "img2sixel is missing\n"
     printf "sudo apt install libsixel-bin\n"
     return 2
-  fi
+  }
   local swla;local wla;local i
   wla[94]="0094";wla[131]="0131";wla[171]="0171";
   wla[193]="0193";wla[211]="0211";wla[304]="0304";
