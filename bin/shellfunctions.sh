@@ -592,20 +592,22 @@ HEREDOC
     printf "sudo apt install libsixel-bin\n"
     return 2
   }
-  local swla;local wla;local i
+  declare -A swla; declare -A wla;
+  local i
   wla[94]="0094";wla[131]="0131";wla[171]="0171";
   wla[193]="0193";wla[211]="0211";wla[304]="0304";
   wla[335]="0335";wla[1600]="1600";wla[1700]="1700";
-  wla[4500]="4500"
+  wla[4500]="4500";wla["HMIIC"]="HMIIC"
 
   [[ -n "$1" ]] || set -- 171 # wavelength to use if no parameters
 
   if [[ "all" = "$1" ]]; then
-    for i in "${!wla[@]}";do [[ "$i" -gt 0 ]] && swla=(${swla[@]} "$i");done
+    for i in "${!wla[@]}";do swla[$i]="$i";done
   else
     while [[ -n "$1" ]]; do
       if [[ -n "${wla[$1]}" ]]; then
-        swla=(${swla[@]} "$1")
+        swla[$1]="$1"
+#        swla=(${swla[@]} "$1")
       else
         unset swla
         break
@@ -616,12 +618,12 @@ HEREDOC
 
   [[ "${#swla[@]}" -gt 0 ]] || {
     printf "Usage: '${FUNCNAME[0]} [all|wavelength1 wavelength2 ..]' where possible wavelenghs are:\n"
-    printf "        ";for i in "${!wla[@]}"; do printf "%s " "$i"; done
+    printf "        ";for i in $(printf "%s\n" ${!wla[@]} | sort -n); do printf "%s " "$i"; done
     printf "\n\n"
     printf "${explanation}\n"
     return 1
   }
-  for i in "${swla[@]}";do
+  for i in $(printf "%s\n" ${!swla[@]} | sort -n);do
     wget -qO- "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_${wla[$i]}.jpg" | img2sixel
   done
 }
