@@ -246,6 +246,9 @@ filextype *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp
 fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
          \ img2sixel -S -w $((%pw*11)) %c %pd %pc clear,
          \ convert -identify %f -verbose /dev/null
+fileviewer *.webp
+         \ convert %c jpg:- | img2sixel -S -w $((%pw*11)) /dev/stdin %pd %pc clear,
+         \ convert -identify %f -verbose /dev/null
 
 " OpenRaster
 filextype *.ora
