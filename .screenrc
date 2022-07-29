@@ -1,0 +1,10 @@
+# deactivate the startup message
+startup_message off
+
+# Sick of full-screen programs like vim remaining in the scrollback buffer
+# after you've closed them? Wouldn't it be great if they'd go away completely
+# just like they do when you're not running screen? Try this:
+altscreen on
+
+# This line makes Detach and Re-attach without losing the regions/windows layout
+layout save default
