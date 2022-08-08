@@ -8,3 +8,7 @@ altscreen on
 
 # This line makes Detach and Re-attach without losing the regions/windows layout
 layout save default
+
+# Set caption to distinguish screen session from a ssh session
+caption always "%{= kc}Screen session on %H (system load: %l)%-28=%{= .m}%D %d.%m.%Y %0c"
+
