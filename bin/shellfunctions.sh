@@ -148,6 +148,7 @@ copy() {
 }
 
 #pb pastebin || Usage: 'command | pb or  pb filename'
+# Note: ptpb.pw is down. Functions are kept as an example
 pb() {
   curl -F "c=@${1:--}" https://ptpb.pw/?u=1 | tee >(putclip)
 }
@@ -402,7 +403,7 @@ lsmod | perl -e 'print "digraph \"lsmod\" {";
                    @_=split/\s+/;
                    print "\"$_[0]\" -> \"$_\"\n" for split/,/,$_[3]
                  }
-                 print "}"' | dot -Tsvg | rsvg-view-3 /dev/stdin
+                 print "}"' | rsvg-convert -u -f pdf | zathura -
 }
 
 # converts text into a qr code
@@ -464,7 +465,7 @@ dusort() {
 listd() {
   echo -e ${RED}${BOLD}" --> SYSTEM LEVEL <--"${NC}
   find /etc/systemd/system -mindepth 1 -type d | sed '/getty.target/d' | xargs ls -gG --color
-  [[ $(find $HOME/.config/systemd/user -mindepth 1 -type d | wc -l) -eq 0 ]] || {
+  [[ $(find $HOME/.config/systemd/user -mindepth 1 -type d 2>/dev/null| wc -l) -eq 0 ]] || {
     echo -e ${RED}${BOLD}" --> USER LEVEL <--"${NC}
     find $HOME/.config/systemd/user -mindepth 1 -type d | xargs ls -gG --color
   }
@@ -472,35 +473,6 @@ listd() {
 
 grabpage() {
   wget --no-clobber -e robots=off --recursive --convert-links  --html-extension --page-requisites --no-parent "$1"
-}
-
-imgur() {
-  # This function reads imgur client id from the IMGUR_ID var or from the keyring
-  #   python3 -c 'import keyring; print(keyring.get_password("imgur","'"$USER"'"))'
-  # One could put the imgur client id into the keyring using the following command:
-  #   python3 -c 'import keyring; keyring.set_password("imgur","'"$USER"'", "MY_CLIENT_ID")'
-  # where MY_CLIENT_ID is the token string obtained from https://api.imgur.com/oauth2/addclient
-
-  clientid=${IMGUR_ID}
-  [ -n "$clientid" ] || clientid=$(python3 -c 'import keyring; print(keyring.get_password("imgur","'"$USER"'"))')
-  [ -n "$clientid" ] || printf "No imgur client id specified. Get one using https://api.imgur.com/oauth2/addclient\n"
-  img="$1"
-  [ -e "$img" ] || {
-    img=$(mktemp '/tmp/imgur-XXXXXX.png')
-    scrot -s "$@" $img >/dev/null 2>&1 || exit
-    is_scrshot_created=1
-    printf "Upload the screenshot [y/n]? "; read LINE; [ "y" = "$LINE" ] || exit
-  }
-  res=$(curl -sH "Authorization: Client-ID $clientid" -F "image=@$img" "https://api.imgur.com/3/upload")
-
-  echo $res | grep -qo '"status":200' && link=$(echo $res | sed -e 's/.*"link":"\([^"]*\).*/\1/' -e 's/\\//g')
-  if test -n "$link"; then
-    printf $link | tee /dev/stderr | xclip -i -sel c; printf "\n"
-  else
-    echo "$res" > "/dev/stderr"
-  fi
-
-  [ -n "$is_scrshot_created" ] && rm "$img"
 }
 
 # empty user trash
@@ -519,6 +491,7 @@ lstrash() {
 
 # converts hex color string (like #FFAABB) to a terminal
 # color index and also shows the color in the terminal
+# Note: if color is prepended with # then it should be quoted
 function colorfromhex() {
   [ -n "$1" ] || return 1
   hex=$1
@@ -567,143 +540,3 @@ function showgpsimagelinkyandex()
   }
 }
 
-# shows current sun
-function sun()
-{
-  # Image size is hardcoded in the URL as 512
-  # Possible sizes: 170 256 512 1024 2048 3072 4096
-  local explanation="$(cat <<HEREDOC
-   From the sun's surface on out, the wavelengths SDO observes, measured in Angstroms, are:
-
-    4500: Showing the sun's surface or photosphere.
-    1700: Shows surface of the sun, as well as a layer of the sun's atmosphere called the chromosphere, which lies just above the photosphere and is where the temperature begins rising.
-    1600: Shows a mixture between the upper photosphere and what's called the transition region, a region between the chromosphere and the upper most layer of the sun's atmosphere called the corona. The transition region is where the temperature rapidly rises.
-     304: This light is emitted from the chromosphere and transition region.
-     171: This wavelength shows the sun's atmosphere, or corona, when it's quiet. It also shows giant magnetic arcs known as coronal loops.
-     193: Shows a slightly hotter region of the corona, and also the much hotter material of a solar flare.
-     211: This wavelength shows hotter, magnetically active regions in the sun's corona.
-     335: This wavelength also shows hotter, magnetically active regions in the corona.
-      94: This highlights regions of the corona during a solar flare.
-     131: The hottest material in a flare.'
-HEREDOC
-)"
-  isinstalled img2sixel || {
-    printf "img2sixel is missing\n"
-    printf "sudo apt install libsixel-bin\n"
-    return 2
-  }
-  declare -A swla; declare -A wla;
-  local i
-  wla[94]="0094";wla[131]="0131";wla[171]="0171";
-  wla[193]="0193";wla[211]="0211";wla[304]="0304";
-  wla[335]="0335";wla[1600]="1600";wla[1700]="1700";
-  wla[4500]="4500";wla["HMIIC"]="HMIIC"
-
-  [[ -n "$1" ]] || set -- 171 # wavelength to use if no parameters
-
-  if [[ "all" = "$1" ]]; then
-    for i in "${!wla[@]}";do swla[$i]="$i";done
-  else
-    while [[ -n "$1" ]]; do
-      if [[ -n "${wla[$1]}" ]]; then
-        swla[$1]="$1"
-#        swla=(${swla[@]} "$1")
-      else
-        unset swla
-        break
-      fi
-      shift
-    done
-  fi
-
-  [[ "${#swla[@]}" -gt 0 ]] || {
-    printf "Usage: '${FUNCNAME[0]} [all|wavelength1 wavelength2 ..]' where possible wavelenghs are:\n"
-    printf "        ";for i in $(printf "%s\n" ${!wla[@]} | sort -n); do printf "%s " "$i"; done
-    printf "\n\n"
-    printf "${explanation}\n"
-    return 1
-  }
-  for i in $(printf "%s\n" ${!swla[@]} | sort -n);do
-    wget -qO- "https://sdo.gsfc.nasa.gov/assets/img/latest/latest_512_${wla[$i]}.jpg" | img2sixel
-  done
-}
-
-# converts input text into cw text and sound
-# `echo "CW or not CW!" | text2morse` or `text2morse "CW or not CW!"`
-# parameters: -p float  (dot period in seconds, default 0.05)
-# parameters: -t string (sound type, default triangle, allowed: sine,square,triangle,sawtooth,trapezium,exp)
-# parameters: -f number (sound frequency, default 500)
-text2morse()
-{
-  local nextchar i mr opt re
-  local stype='triangle'
-  local dotperiod='0.05'
-  local freq=500
-
-  declare -A stypes=(["sine"]=1  ["square"]=1 ["triangle"]=1 ["sawtooth"]=1 ["trapezium"]=1 ["exp"]=1)
-  OPTIND=1 #reset index
-  while getopts "t:p:f:" opt; do
-    case $opt in
-      p)  dotperiod=$OPTARG ;;
-      t)  stype=$OPTARG ;;
-      f)  freq=$OPTARG ;;
-      \?) return 1 ;;
-      :)  echo "Option -$OPTARG requires number of sec as an argument" >&2;return 1 ;;
-    esac
-  done
-  shift $((OPTIND-1));
-
-  re='^[0-9]+([.][0-9]+)?$'
-  [[ $dotperiod =~ $re ]] || {
-    printf "Error: dotperiod is not a number: $dotperiod\n" >&2
-    printf "Default: 0.05\n" >&2
-    return 2
-  }
-  [[ -n "$stype" && -n "${stypes[$stype]}" ]] || {
-    printf "Error: unknown sound type: $stype\n" >&2
-    printf "Allowed values: %s\n" "${!stypes[*]}" >&2
-    printf "Default: triangle\n" >&2
-    return 3
-  }
-  re='^[0-9]+$'
-  [[ $freq =~ $re ]] || {
-    printf "Error: sound frequency is not a number: $freq\n" >&2
-    printf "Default: 500\n" >&2
-    return 4
-  }
-
-  local dashperiod=$(awk -v p=$dotperiod 'BEGIN{print p*3}')
-  local wordperiod=$(awk -v p=$dotperiod 'BEGIN{print p*7}')
-  declare -A morse
-  declare -A delay
-  morse[0]='-----' morse[1]='.----' morse[2]='..---' morse[3]='...--' morse[4]='....-'
-  morse[5]='.....' morse[6]='-....' morse[7]='--...' morse[8]='---..' morse[9]='----.'
-  morse[A]='.-'    morse[B]='-...'  morse[C]='-.-.'  morse[D]='-..'   morse[E]='.'
-  morse[F]='..-.'  morse[G]='--.'   morse[H]='....'  morse[I]='..'    morse[J]='.---'
-  morse[K]='-.-'   morse[L]='.-..'  morse[M]='--'    morse[N]='-.'    morse[O]='---'
-  morse[P]='.--.'  morse[Q]='--.-'  morse[R]='.-.'   morse[S]='...'   morse[T]='-'
-  morse[U]='..-'   morse[V]='...-'  morse[W]='.--'   morse[X]='-..-'  morse[Y]='-.--' morse[Z]='--..'
-   
-  morse[(]='-.--.' morse[)]='-.--.-' morse[:]='---...' morse[,]='--..--' morse[\@]='.--.-.'
-  morse[=]='-...-' morse[!]='-.-.--' morse[.]='.-.-.-' morse[-]='-....-' morse[+]='.-.-.'
-  morse[&]='.-...' morse[?]='..--..' morse[/]='-..-.'  morse["'"]='.----.' morse["\""]='.-..-.'  
-
-  delay[-]="$dashperiod"
-  delay[.]="$dotperiod"
-
-  (read -t0 && cat -; printf "%s" "$@") | while read -N1 nextchar; do
-    [[ "$nextchar" =~ [[:space:]+] ]] && { sleep "$wordperiod"; continue; }
-    mr="${morse[${nextchar^^}]}"
-    [[ -n "$mr" ]] && {
-      for (( i=0; i<"${#mr}"; i++ )); do
-        play -q -n -c1 synth -n "${delay[${mr:$i:1}]}" $stype $freq
-        (( i < "${#mr}"-1)) && sleep "${delay[.]}"
-        printf "${mr:$i:1}"
-      done
-      sleep ${delay[-]}
-      printf " "
-    }
-  done
-
-  printf "\n"
-}
