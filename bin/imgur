@@ -12,26 +12,30 @@
 # Dependencies: scrot, curl
 
 imgur() {
-  clientid=${IMGUR_ID}
+  local is_scrshot_created
+  local do_upload=1
+  local clientid=${IMGUR_ID}
   [ -n "$clientid" ] || clientid=$(python3 -c 'import keyring; p = keyring.get_password("imgur","'"$USER"'"); print() if p == None else print(p)')
-  [ -n "$clientid" ] || printf "No imgur client id specified. Get one using https://api.imgur.com/oauth2/addclient\n" && return
-  img="$1"
+  [ -n "$clientid" ] || { printf "No imgur client id specified. Get one using https://api.imgur.com/oauth2/addclient\n"; return 1; }
+  local img="$1"
   [ -e "$img" ] || {
     img=$(mktemp '/tmp/imgur-XXXXXX.png')
     scrot -s "$@" $img >/dev/null 2>&1 || return
     is_scrshot_created=1
-    printf "Upload the screenshot [y/n]? "; read LINE; [ "y" = "$LINE" ] || return
+    printf "Upload the screenshot [y/n]? "; read LINE; [ "y" = "$LINE" ] || unset do_upload
   }
-  res=$(curl -sH "Authorization: Client-ID $clientid" -F "image=@$img" "https://api.imgur.com/3/upload")
+  [ -n "$do_upload" ] && {
+    res=$(curl -sH "Authorization: Client-ID $clientid" -F "image=@$img" "https://api.imgur.com/3/upload")
 
-  echo $res | grep -qo '"status":200' && link=$(echo $res | sed -e 's/.*"link":"\([^"]*\).*/\1/' -e 's/\\//g')
-  if test -n "$link"; then
-    printf $link | tee /dev/stderr | xclip -i -sel c; printf "\n"
-  else
-    echo "$res" > "/dev/stderr"
-  fi
+    echo $res | grep -qo '"status":200' && link=$(echo $res | sed -e 's/.*"link":"\([^"]*\).*/\1/' -e 's/\\//g')
+    if test -n "$link"; then
+      printf $link | tee /dev/stderr | xclip -i -sel c; printf "\n"
+    else
+      echo "$res" > "/dev/stderr"
+    fi
+  }
 
   [ -n "$is_scrshot_created" ] && rm "$img"
 }
 
-imgur $@
+imgur "$@"
