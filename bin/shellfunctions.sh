@@ -148,9 +148,10 @@ copy() {
 }
 
 #pb pastebin || Usage: 'command | pb or  pb filename'
-# Note: ptpb.pw is down. Functions are kept as an example
+# Note: ptpb.pw is down. 0x0.st is used instead
 pb() {
-  curl -F "c=@${1:--}" https://ptpb.pw/?u=1 | tee >(putclip)
+#  curl -F "c=@${1:--}" https://ptpb.pw/?u=1 | tee >(putclip)
+  curl -F "file=@${1:--}" https://0x0.st | tee >(putclip)
 }
 pbs() {
   local var
@@ -168,7 +169,8 @@ pbsw() {
 pbx() {
   read -rp "Upload screenshot $1? [yN]:"
   [[ "y" = "$REPLY" ]] && {
-    curl -sF "c=@${1:--}" -w "%{redirect_url}" 'https://ptpb.pw/?r=1' -o /dev/stderr | putclip
+    pb "$@"
+#    curl -sF "c=@${1:--}" -w "%{redirect_url}" 'https://ptpb.pw/?r=1' -o /dev/stderr | putclip
   }
 }
 
