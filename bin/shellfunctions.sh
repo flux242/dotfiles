@@ -542,3 +542,9 @@ function showgpsimagelinkyandex()
   }
 }
 
+# adds new user with to the same groups like current user
+function adduserlikecurrent()
+{
+  [ -n "$1" ] || return 1
+  groups alex | xargs -n1 | tail -n+4 | xargs -n1 sudo adduser "$1"
+}
