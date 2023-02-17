@@ -1,0 +1,6 @@
+#!/bin/sh
+logger "xxx: sleep hook is called, param $1"
+case "$1" in
+  suspend) play -q -n synth 0.1 sin 880 ;;
+esac
+
