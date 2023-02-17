@@ -57,7 +57,10 @@ showbanner()
 
 # cli calculator. Usage: ? "sqrt(3)/2 + 4"
 function ? {
-  awk "BEGIN{ pi = 4.0*atan2(1.0,1.0); deg = pi/180.0; print $* }"
+  awk "function asin(x){return atan2(x,sqrt(1-x*x))} 
+       function acos(x){return atan2(sqrt(1-x*x),x)} 
+       function atan(x){return atan2(x,1)}
+       BEGIN{ pi = 4.0*atan2(1.0,1.0); deg = pi/180.0;print $* }"
 }
 
 # crypting functions
