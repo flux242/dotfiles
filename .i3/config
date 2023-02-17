@@ -230,6 +230,7 @@ exec --no-startup-id pnmixer &
 exec --no-startup-id xpad &
 exec --no-startup-id sh -c "sleep 3 && xxkb" &
 exec --no-startup-id thunar --daemon &
+exec --no-startup-id redshift &
 
 # gaps
 #exec --no-startup-id i3-msg gaps inner all set 8
