@@ -1,0 +1,23 @@
+{
+  "build_action": "default",
+  "enable_highlight": true,
+  "enable_pygments": true,
+  "guess_language": false, 
+  //"parser": "markdown",
+  //"enable_uml": true,
+  "enabled_extensions": [
+        "extra",
+  //      "github",
+  //      "default",
+        "codehilite(guess_lang=False,pygments_style=default)"
+  ],
+  /*
+        Sets the JavaScript files to embed in the HTML
+        Set an array of URLs or filepaths to JavaScript files. Absolute filepaths will be loaded
+        into the script tag; others will be set as the `src` attribute. The order of files in the
+        array is the order in which they are embedded.
+  */
+  // "js": ["http://example.com/script.js", "/path/to/script.js"], 
+  "enable_autoreload": false,
+  "image_path_conversion": "relative",
+}    

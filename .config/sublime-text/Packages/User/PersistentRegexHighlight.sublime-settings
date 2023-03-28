@@ -1,0 +1,14 @@
+{
+  "regex": [
+    {
+      "pattern": "TODO",
+      "color_scope": "comment",
+      "ignore_case": false
+    },
+    {
+      "pattern": "\t",
+      "color_scope": "invalid"
+    }
+  ],
+  "on_modify": true,
+}

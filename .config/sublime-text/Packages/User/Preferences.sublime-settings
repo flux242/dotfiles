@@ -1,0 +1,43 @@
+{
+	"added_words":
+	[
+		"gnuplot",
+		"broadcasted",
+		"chipset"
+	],
+	"bold_folder_labels": true,
+	"caret_style": "phase",
+	"color_scheme": "Packages/Color Scheme - Default/Monokai.sublime-color-scheme",
+	"file_exclude_patterns":
+	[
+		".DS_Store",
+		".lib",
+		".log",
+		"suo",
+		".gitignore"
+	],
+	"folder_exclude_patterns":
+	[
+		".git",
+		".bundle",
+		".sass-cache",
+		".svn",
+		".hg"
+	],
+	"font_size": 15,
+	"highlight_line": true,
+	"highlight_modified_tabs": true,
+	"ignored_packages":
+	[
+	],
+	"rulers":
+	[
+		80
+	],
+	"spell_check": true,
+	"tab_size": 2,
+	"theme": "Default.sublime-theme",
+	"translate_tabs_to_spaces": true,
+	"vintage_start_in_command_mode": "true",
+	"hardware_acceleration": "opengl",
+}
