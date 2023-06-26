@@ -491,7 +491,7 @@ emptytrash() {
 }
 
 lstrash() {
-  gio list trash://
+  gio list "$@" trash://
 }
 
 # converts hex color string (like #FFAABB) to a terminal
