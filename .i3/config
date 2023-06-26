@@ -139,9 +139,9 @@ bindsym Ctrl+Shift+space exec ~/bin/toggleterminalscrollbar.sh
 bindsym $mod+g exec ~/.i3/load_layout.sh
 
 # volume control
-bindsym XF86AudioLowerVolume exec /home/alex/bin/volume_notify_pa.sh down
-bindsym XF86AudioRaiseVolume exec /home/alex/bin/volume_notify_pa.sh up
-bindsym XF86AudioMute        exec /home/alex/bin/volume_notify_pa.sh toggle
+#bindsym XF86AudioLowerVolume exec /home/alex/bin/volume_notify_pa.sh down
+#bindsym XF86AudioRaiseVolume exec /home/alex/bin/volume_notify_pa.sh up
+#bindsym XF86AudioMute        exec /home/alex/bin/volume_notify_pa.sh toggle
 
 # brightness control
 #bindsym XF86MonBrightnessDown exec xbacklight -steps 1 -time 0 -dec 5
@@ -217,9 +217,9 @@ exec --no-startup-id ~/bin/dpmsoff &
 # desktop applets
 # compton is started by a pm script because it should
 # not be running on a battery
-exec --no-startup-id sh -c "~/bin/isonbattery.sh || compton" &
+exec --no-startup-id sh -c "~/bin/isonbattery.sh || picom" &
 exec --no-startup-id sh -c "xfsettingsd --sm-client-disable || mate-settings-daemon" &
-#exec --no-startup-id xfce4-volumed &
+exec --no-startup-id xfce4-volumed &
 exec --no-startup-id sh -c "xfce4-power-manager || mate-power-manager "&
 exec --no-startup-id nm-applet &
 exec --no-startup-id blueman-applet &
