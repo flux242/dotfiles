@@ -1,6 +1,8 @@
 #!/bin/sh
 
+# to start in gcodeviewer mode run `slicer --gcodeviewer`
 export APP_NAME="prusaslicer"
+export APP_ARGS="$@"
 export PRIVATE_HOME="yes"
 start_appimage.sh
 
