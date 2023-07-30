@@ -549,5 +549,16 @@ function showgpsimagelinkyandex()
 function adduserlikecurrent()
 {
   [ -n "$1" ] || return 1
-  groups alex | xargs -n1 | tail -n+4 | xargs -n1 sudo adduser "$1"
+  groups $(whoami) | xargs -n1 | tail -n+4 | xargs -n1 sudo adduser "$1"
+}
+
+# calculates maximum efficiency rpm for a prop with given size in inches
+# maximum efficiency is achieved at 0.6 Mach
+function calcmaxproprpm()
+{
+  [ -n "$1" ] || {
+    printf "Usage: $0 prop_size_in_inches"
+    return 1
+  }
+  awk -v ps=$1 'BEGIN{ printf("%d\n", int(0.5+345*0.6/((2.54*ps*3.1415926)*1e-2)*60)) }'
 }
