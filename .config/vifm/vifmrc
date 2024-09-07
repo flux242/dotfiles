@@ -244,10 +244,10 @@ filextype *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm,*.webp
         \ {View in shotwell}
         \ shotwell,
 fileviewer *.bmp,*.jpg,*.jpeg,*.png,*.gif,*.xpm
-         \ img2sixel -S -w $((%pw*11)) %c %pd %pc clear,
+         \ img2sixel -S -w $((%pw*10)) %c %pd %pc clear,
          \ convert -identify %f -verbose /dev/null
 fileviewer *.webp
-         \ convert %c jpg:- | img2sixel -S -w $((%pw*11)) /dev/stdin %pd %pc clear,
+         \ convert %c jpg:- | img2sixel -S -w $((%pw*10)) /dev/stdin %pd %pc clear,
          \ convert -identify %f -verbose /dev/null
 
 " OpenRaster
@@ -508,12 +508,12 @@ nnoremap H :cd<cr>
 set classify=' :dir:/, :exe:, :link:'
 " various file names
 set classify+=' ::../::'
-set classify+=' ::*.go::, ::*.java::, ::*.scala::, ::*.rb::, ::*.php::, ::*.coffee::, ::*.json::, ::*.lua::, ::*.diff::, ::*.cs::, ::*.js::'
+set classify+=' ::*.go::, ::*.java::, ::*.scala::, ::*.rb::, ::*.php::, ::*.coffee::, ::*.json::, ::*.lua::, ::*.diff::, ::*.cs::, ::*.js::'
 set classify+=' ::*.sh,,*.awk,,*.sed,,*.less::'
 set classify+=' ::*.pl::'
 set classify+=' ::*.[hc]pp,,*.cc,,*.cxx::, ::*.[hc]::'
 set classify+=' ::*.htm,,*.html,,*.xml,,*.sgml::, ::*.css::'
-set classify+=' ::*.py,,*.pyc,,*.pyo,,*.pyd::'
+set classify+=' ::*.py,,*.pyc,,*.pyo,,*.pyd::'
 set classify+=' ::*.conf,,*.ini,,*.yml::'
 set classify+=' ::*.sln,,*.suo::'
 set classify+=' ::*.twig::'
@@ -531,11 +531,11 @@ set classify+=' ::*.bmp,,*.gif,,*.jpeg,,*.jpg,,*.ico,,*.png,,*.ppm,,*.svg,,*.
 " audio
 set classify+=' ::*.aac,,*.anx,,*.asf,,*.au,,*.axa,,*.flac,,*.m2a,,*.m3u,,*.m4a,,*.mid,,*.midi,,*.mp3,,*.mpc,,*.oga,,*.ogg,,*.ogx,,*.ra,,*.ram,,*.rm,,*.spx,,*.wav,,*.wma,,*.ac3::'
 " media
-set classify+=' ::*.avi,,*.ts,,*.axv,,*.divx,,*.m2v,,*.m4p,,*.m4v,,.mka,,*.mkv,,*.mov,,*.mp4,,*.flv,,*.mp4v,,*.mpeg,,*.mpg,,*.nuv,,*.ogv,,*.pbm,,*.pgm,,*.qt,,*.vob,,*.wmv,,*.xvid::'
+set classify+='󰨜 ::*.avi,,*.ts,,*.axv,,*.divx,,*.m2v,,*.m4p,,*.m4v,,.mka,,*.mkv,,*.mov,,*.mp4,,*.flv,,*.mp4v,,*.mpeg,,*.mpg,,*.nuv,,*.ogv,,*.pbm,,*.pgm,,*.qt,,*.vob,,*.wmv,,*.xvid::'
 " office files
-set classify+=' ::*.doc,,*.docx::, ::*.xls,,*.xls[mx]::, ::*.pptx,,*.ppt::'
+set classify+=' ::*.doc,,*.docx::, ::*.xls,,*.xls[mx],,*.ods::, ::*.pptx,,*.ppt::'
 set classify+=' :reg:'
-set classify+=' ::*.iso::'
+set classify+='󰗮 ::*.iso::'
 
 " hide side borders
 set tuioptions-=s
