@@ -19,4 +19,5 @@ wget -qO- https://www.addicted-sports.com/fileadmin/webcam/chiemsee/current/$SIZ
 wget -qO- https://www.addicted-sports.com/fileadmin/webcam/torbole/current/$SIZE.jpg | img2sixel
 wget -qO- https://www.foto-webcam.eu/webcam/malcesine/current/$SIZE.jpg | img2sixel
 wget -qO- https://www.foto-webcam.eu/webcam/kampenwand/current/$SIZE.jpg | img2sixel
+wget -qO- https://www.foto-webcam.eu/webcam/hochries-nord/current/$SIZE.jpg | img2sixel
 
