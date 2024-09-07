@@ -15,6 +15,7 @@ Android
 .android
 .bin
 .gvfs
+.gradle
 .qt
 .adobe
 .aptitude
@@ -27,7 +28,9 @@ Android
 .java
 .cache
 .links2
+.openshot_qt
 .pulse*
+.platformio
 .smbcredentials
 .ssh
 .thumbnails
@@ -39,6 +42,7 @@ Android
 .local/share/vifm
 .local/share/Trash
 Books
+Downloads
 games
 Music
 Videos
@@ -47,7 +51,6 @@ VirtualBox*
 bin
 dotfiles
 media
-projects/linux_insiders
 .git
 projects/fres*
 projects/electro*
