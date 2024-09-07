@@ -48,6 +48,7 @@ alias cdl='cd "$(cat ~/.lastdir)"'
 alias tb='nc termbin.com 9999'
 alias smile='printf "$(awk  '\''BEGIN{c=127;while(c++<191){printf("\xf0\x9f\x98\\%s",sprintf("%o",c));}}'\'')"'
 alias pseudo='printf "$(awk  '\''BEGIN{c=127;while(c++<191){printf("\xe2\x96\\%s",sprintf("%o",c));}}'\'')"'
+alias showparent='cat "/proc/$PPID/cmdline"'
 
 # git shortcuts
 alias gc='git checkout'
@@ -60,6 +61,8 @@ alias gb='git branch'
 alias gd='git diff'
 alias gcm='git commit -m'
 alias glb='git log --graph --simplify-by-decoration --pretty=format:'%d' --all'
+alias glt='git log --oneline --decorate --graph --all'
+alias glta='git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset'\'' --all'
 
 #coloring some programs using grc (check /usr/share/grc)
 [[ -s "/etc/grc.bashrc" ]] && {
