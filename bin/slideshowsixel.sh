@@ -17,12 +17,13 @@ delay=3   # seconds between pictures
 font_width=11
 font_height=23
 
-while getopts ":d:w:h:z" opt; do
+while getopts ":d:w:hzs" opt; do
   case $opt in
       d) delay=$OPTARG ;;
       w) font_width=$OPTARG ;;
       h) font_heght=$OPTARG ;;
       z) do_zoom=1 ;;
+      s) do_shuffle=1 ;;
      \?) echo "Invalid option: $OPTARG" >/dev/sdterr ;;
       :) echo "Option $OPTARG requires an argument" >/dev/sdterr ;;
   esac
@@ -35,7 +36,14 @@ PIC_DIR="$1"
 CANVA_WIDTH=$(($(tput cols)*font_width))
 CANVA_HEIGHT=$(($(tput lines)*font_height))
 
-for pic in "$PIC_DIR"/*.jpg; do
+#for pic in "$PIC_DIR"/*.jpg; do
+if [[ do_shuffle -eq 1 ]]; then
+  shuffle_cmd='shuf'
+else
+  shuffle_cmd='cat -'
+fi
+
+find "$PIC_DIR" -iname '*.jpg' | $shuffle_cmd | while read pic; do
   widthheight=$(identify -format '%w,%h' $pic)
   width=${widthheight%,*}
   height=${widthheight#*,}
