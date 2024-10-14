@@ -16,7 +16,7 @@ vacuumFirefox()
   local counterAfter=0
   local fileSizeBefore fileSizeAfter
 
-  for i in "$HOME"/Applications/privatehome/waterfox/.waterfox/*/*.sqlite; do
+  for i in "$HOME"/Applications/privatehome/firefox/.mozilla/firefox/*/*.sqlite; do
     fileSizeBefore=$(wc -c < "$i")
     counterBefore=$((counterBefore + fileSizeBefore))
     sqlite3 "$i" vacuum
@@ -36,29 +36,23 @@ xargs -d \\n -I {} bash -c "shopt -s dotglob;echo 'Cleaning $HOME/{}';eval '/bin
 .thumbnails/*
 .cache/*
 .adobe/Flash_Player/AssetCache/*
-.mozilla/firefox/*/Cache/*
-.mozilla/firefox/*/minidumps
-.mozilla/firefox/*/datareporting
-.mozilla/firefox/*/saved-telemetry-pings
-.mozilla/firefox/*/healthreport*
-.mozilla/firefox/Crash\ Reports/
-.mozilla/firefox/*/crashes
-.mozilla/firefox/*/storage/*
-.mozilla/firefox/*/adblockplus/patterns-backup*
-.mozilla/firefox/*/weave/logs/
+Applications/privatehome/firefox/.mozilla/firefox/*/Cache/*
+Applications/privatehome/firefox/.mozilla/firefox/*/minidumps
+Applications/privatehome/firefox/.mozilla/firefox/*/datareporting
+Applications/privatehome/firefox/.mozilla/firefox/*/saved-telemetry-pings
+Applications/privatehome/firefox/.mozilla/firefox/*/healthreport*
+Applications/privatehome/firefox/.mozilla/firefox/Crash\ Reports/
+Applications/privatehome/firefox/.mozilla/firefox/*/crashes
+Applications/privatehome/firefox/.mozilla/firefox/*/storage/*
+Applications/privatehome/firefox/.mozilla/firefox/*/adblockplus/patterns-backup*
+Applications/privatehome/firefox/.mozilla/firefox/*/weave/logs/
 Applications/privatehome/*/.cache/*
-Applications/privatehome/waterfox/.waterfox/*/Cache/*
-Applications/privatehome/waterfox/.waterfox/*/minidumps
-Applications/privatehome/waterfox/.waterfox/*/datareporting
-Applications/privatehome/waterfox/.waterfox/*/saved-telemetry-pings
-Applications/privatehome/waterfox/.waterfox/*/healthreport*
-Applications/privatehome/waterfox/.waterfox/Crash\ Reports/
-Applications/privatehome/waterfox/.waterfox/*/crashes
-Applications/privatehome/waterfox/.waterfox/*/storage/*
-Applications/privatehome/waterfox/.waterfox/*/adblockplus/patterns-backup*
-Applications/privatehome/waterfox/.waterfox/*/weave/logs/*
 .davfs2/cache/*
 .config/sublime-text-3/Cache/*
+.config/VSCodium/CachedData/*
+.config/VSCodium/User/workspaceStorage/*
+.config/VSCodium/Cache/*
+.buildcache/*
 EOLIST
 #.local/share/Trash/*
 
