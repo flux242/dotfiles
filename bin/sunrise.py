@@ -119,12 +119,12 @@ class Sun:
 
 def parse_options() -> tuple[float, float, int, bool, bool]:
   p = OptionParser("usage: %prog [options]")
-  p.add_option('--lat', type='float', dest='lat', help='Latitude (float). Required option')
-  p.add_option('--lon', type='float', dest='lon', help='Longitude (float). Required option')
+  p.add_option('-l', '--lat', type='float', dest='lat', help='Latitude (float). Required option')
+  p.add_option('-L', '--lon', type='float', dest='lon', help='Longitude (float). Required option')
 
   p.add_option('-z', '--time_zone', type='int', dest='time_zone', default=0, help='UTC time zone (integer). Default: 0')
   p.add_option('-n', '--solar_noon', action='store_true', dest='solar_noon', default=False, help='Show solar noon additionally')
-  p.add_option('-l', '--day_length', action='store_true', dest='day_length', default=False, help='Show day length additionally')
+  p.add_option('-d', '--day_length', action='store_true', dest='day_length', default=False, help='Show day length additionally')
                
   (opts, args) = p.parse_args()
   if not opts.lat or not opts.lon:
