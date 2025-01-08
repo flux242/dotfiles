@@ -31,7 +31,7 @@ done
 shift $((OPTIND-1))
 
 PIC_DIR="$1"
-[ -d "$PIC_DIR" ] || PIC_DIR="$HOME/media/test/pics"
+[ -d "$PIC_DIR" ] || PIC_DIR="$HOME/Pictures"
 
 CANVA_WIDTH=$(($(tput cols)*font_width))
 CANVA_HEIGHT=$(($(tput lines)*font_height))
@@ -44,7 +44,7 @@ else
 fi
 
 find "$PIC_DIR" -iname '*.jpg' | $shuffle_cmd | while read pic; do
-  widthheight=$(identify -format '%w,%h' $pic)
+  widthheight=$(identify -format '%w,%h' "$pic")
   width=${widthheight%,*}
   height=${widthheight#*,}
 
