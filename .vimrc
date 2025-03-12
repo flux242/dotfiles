@@ -514,7 +514,7 @@ fun! ReMatch()
     return
   endif
   match MoreThen80 /\%>79v.\+/
-  2match ErrorMsg /\t/
+  2match ErrorMsg /\(\t\)\|\(\s\+$\)/
 endfun
 autocmd BufEnter * call ReMatch()
 
