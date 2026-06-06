@@ -53,6 +53,9 @@ Applications/privatehome/*/.cache/*
 .config/VSCodium/User/workspaceStorage/*
 .config/VSCodium/Cache/*
 .buildcache/*
+.android/cache
+.android/build-cache
+.config/Code/Cache
 EOLIST
 #.local/share/Trash/*
 
