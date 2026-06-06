@@ -13,6 +13,7 @@ awk '{printf("--exclude='\''%s'\'' ",$1)}'  <<EOEXCL
 Android
 .AndroidStudio3.5
 .android
+.arduino15
 .bin
 .gvfs
 .gradle
@@ -41,6 +42,13 @@ Android
 .xsession-errors
 .local/share/vifm
 .local/share/Trash
+.local/lib
+.local/share/gvfs-metadata
+.local/share/openshot
+.local/share/Gyroflow
+.config/Code
+.codeium
+.tlauncher
 Books
 Downloads
 games
