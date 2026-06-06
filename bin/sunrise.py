@@ -151,4 +151,4 @@ if __name__ == "__main__":
     if show_noon:
       print('solar noon:', s.solarnoon())
     if show_day_length:
-      print('day length:', "{}:{}:{}".format(int(dtdif/3600), int(dtdif/60)%60, int(dtdif%60)))
+      print('day length:', "{:02d}:{:02d}:{:02d}".format(int(dtdif/3600), int(dtdif/60)%60, int(dtdif%60)))
