@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export APP_NAME="MultiWii_Planner"
+export PRIVATE_HOME="yes"
+start_appimage.sh
+

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+case "$1" in
+  on)
+    curl "tasmota1.lan/cm?cmnd=Power%20On" # tasmota on
+    echo
+    ;;
+  off)
+    curl "tasmota1.lan/cm?cmnd=Power%20Off" # tasmota off
+    echo
+    ;;
+  status)
+    curl "tasmota1.lan/cm?cmnd=Status+10" # tasmota status
+    echo
+    ;;
+  *)
+    echo "Usage: $0 {on|off|status}"
+    exit 1
+    ;;
+esac
